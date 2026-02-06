@@ -55,7 +55,7 @@
       --shadow: var(--shadow-light);
       --border-color: #ddd;
     }
-
+    
     /* ========== ベーススタイル ========== */
     html { scroll-behavior: smooth; }
     body {
@@ -93,10 +93,9 @@
     .skip-link:focus { position: static; width: auto; height: auto; padding: 8px; background: var(--accent); color: #fff; }
     header {
       position: sticky; top: 0; z-index: 1000;
-      background: rgba(18, 18, 18, 0.85);
+      background: rgba(18, 18, 18, 0.85); /* 若干調整 */
       color: #fff;
       backdrop-filter: saturate(180%) blur(10px);
-      -webkit-backdrop-filter: saturate(180%) blur(10px);
       transition: background .3s ease;
     }
     nav .inner {
@@ -104,7 +103,7 @@
       height: 72px;
     }
     .brand { font-weight: 900; font-size: 24px; letter-spacing: 0.05em; }
-    .navlist { display: none; gap: 32px; list-style: none; margin: 0; padding: 0; }
+    .navlist { display: flex; gap: 32px; list-style: none; margin: 0; padding: 0; }
     .navlist a { color: #fff; font-weight: 700; transition: color .2s ease; position: relative; padding-bottom: 4px; }
     .navlist a:hover { color: var(--accent); }
     .navlist a.active { color: var(--accent); }
@@ -123,27 +122,6 @@
         transform: scaleX(1);
         transform-origin: left;
     }
-    .menu-toggle {
-        display: none; /* スマホでのみ表示 */
-        flex-direction: column;
-        justify-content: space-around;
-        width: 30px;
-        height: 24px;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        z-index: 1100;
-    }
-    .menu-toggle span {
-        width: 30px;
-        height: 3px;
-        background: #fff;
-        border-radius: 2px;
-        transition: all 0.3s linear;
-        position: relative;
-        transform-origin: 1px;
-    }
 
     /* ========== ヒーロー ========== */
     .hero {
@@ -153,37 +131,42 @@
       text-align: center;
       overflow: hidden;
     }
-    .hero-bg {
+      .hero-bg {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: url('img/hero-background.jpg') center center / cover no-repeat;
+      /* 背景画像を更新 */
+      background: url('img/hero-background.jpg') center center / cover no-repeat; 
       filter: brightness(0.5);
       z-index: -1;
       transform: scale(1.1);
       animation: zoomInBg 10s ease-out forwards;
     }
-    @keyframes zoomInBg { to { transform: scale(1); } }
+    @keyframes zoomInBg {
+      to { transform: scale(1); }
+    }
     .hero-content {
       position: relative;
       opacity: 0; animation: fadeInFromTop 1s ease-out forwards; animation-delay: 0.5s;
     }
-    @keyframes fadeInFromTop { to { opacity: 1; } }
+    @keyframes fadeInFromTop {
+      to { opacity: 1; }
+    }
     .hero-subtitle {
         font-weight: 700;
         color: var(--accent);
         margin-bottom: 8px;
         letter-spacing: 0.1em;
     }
-    .hero h1 {
-        font-size: clamp(36px, 6vw, 64px);
-        font-weight: 900;
-        margin-bottom: 16px;
+    .hero h1 { 
+        font-size: clamp(36px, 6vw, 64px); 
+        font-weight: 900; 
+        margin-bottom: 16px; 
         text-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
-    .hero p {
-        font-size: clamp(18px, 2.5vw, 22px);
-        color: #e0e0e0;
+    .hero p { 
+        font-size: clamp(18px, 2.5vw, 22px); 
+        color: #e0e0e0; 
         max-width: 650px;
         margin: 8px auto 48px;
     }
@@ -203,9 +186,9 @@
       border-radius: 999px;
       transition: background .3s ease, transform .3s ease, box-shadow .3s ease;
     }
-    .cta:hover {
-      background: var(--accent-strong);
-      transform: translateY(-4px);
+    .cta:hover { 
+      background: var(--accent-strong); 
+      transform: translateY(-4px); 
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
     .cta:active { transform: translateY(-1px); }
@@ -222,8 +205,7 @@
         background: var(--accent);
         color: #fff;
     }
-
-    /* ========== セクション見出し ========== */
+/* ========== セクション見出し ========== */
     .section-title {
       font-size: clamp(28px, 3.5vw, 40px);
       border-left: 8px solid var(--accent);
@@ -245,6 +227,9 @@
     .about ul { list-style: none; padding: 0; }
     .about li { position: relative; padding-left: 24px; margin-bottom: 12px; }
     .about li:before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    @media (max-width: 880px) {
+      .about { grid-template-columns: 1fr; padding: 32px; }
+    }
 
     /* ========== Works ========== */
     .grid {
@@ -272,20 +257,24 @@
         display: grid;
         grid-template-columns: 1fr 1.5fr;
         gap: 48px;
-        background: var(--surface);
-        border-radius: var(--radius);
+        background: var(--surface); 
+        border-radius: var(--radius); 
         box-shadow: var(--shadow);
         padding: 48px;
+    }
+    @media (max-width: 880px) {
+        .contact-grid { grid-template-columns: 1fr; padding: 32px; }
     }
     .contact-info .link { color: var(--accent-strong); font-weight: 700; transition: text-decoration .2s ease; }
     .contact-info .link:hover { text-decoration: underline; }
     .social-links { margin-top: 24px; display: flex; gap: 20px; }
-    .social-links a {
-      font-size: 28px;
+    .social-links a { 
+      font-size: 28px; 
       transition: color .2s ease, transform .2s ease;
       color: var(--fg);
     }
     .social-links a:hover { color: var(--accent); transform: translateY(-2px); }
+    
     .form-group { margin-bottom: 24px; }
     .form-group label {
         display: block;
@@ -324,9 +313,11 @@
         margin-top: 16px;
         text-align: center;
     }
-    
+
     /* ========== フッター ========== */
-    footer { text-align: center; color: var(--muted); padding: 56px 0 72px; }
+    footer {
+      text-align: center; color: var(--muted); padding: 56px 0 72px;
+    }
 
     /* ========== モーダル ========== */
     .modal-overlay {
@@ -376,63 +367,6 @@
     .modal-body .tag-group { margin-bottom: 20px; }
     .modal-body p { margin-bottom: 20px; }
     .modal-body .meta { margin-top: 24px; }
-    
-    /* ========== レスポンシブ対応 (スマートフォンなど) ========== */
-    @media (min-width: 769px) {
-        .navlist { display: flex; }
-    }
-
-    @media (max-width: 880px) {
-      .about { grid-template-columns: 1fr; padding: 32px; }
-      .contact-grid { grid-template-columns: 1fr; padding: 32px; }
-    }
-
-    @media (max-width: 768px) {
-      .menu-toggle { display: flex; }
-      nav .inner {
-        position: relative;
-        height: 60px; /* ハンバーガーメニュー用に高さを固定 */
-      }
-      .navlist {
-        position: fixed;
-        top: 0; right: -100%; /* 初期状態は画面外 */
-        width: 280px;
-        height: 100vh;
-        background: #1e1e1e;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 24px;
-        transition: right 0.4s ease-in-out;
-        z-index: 1050;
-        padding-top: 60px;
-      }
-      .navlist.is-open {
-        right: 0;
-        box-shadow: -5px 0 15px rgba(0,0,0,0.2);
-      }
-      .navlist a { font-size: 20px; }
-      .menu-toggle.is-open span:nth-child(1) { transform: rotate(45deg); }
-      .menu-toggle.is-open span:nth-child(2) { opacity: 0; }
-      .menu-toggle.is-open span:nth-child(3) { transform: rotate(-45deg); }
-
-      .container { padding: 0 16px; }
-      .section { padding: 60px 0; }
-      .hero { padding: 100px 0; }
-      .hero h1 { font-size: clamp(32px, 8vw, 48px); }
-      .hero p { font-size: clamp(16px, 4vw, 18px); }
-      .section-title { font-size: clamp(24px, 7vw, 32px); }
-      .about { padding: 32px 24px; }
-      .grid { grid-template-columns: 1fr; }
-      .contact-grid { padding: 32px 24px; }
-    }
-
-    @media (max-width: 480px) {
-      .cta-group { flex-direction: column; }
-      .cta, .cta-secondary { width: 80%; text-align: center; }
-      .modal-content { padding: 24px 16px; }
-      .modal-body h3 { font-size: 20px; }
-    }
   </style>
 </head>
 <body>
@@ -442,12 +376,7 @@
     <nav class="container">
       <div class="inner">
         <div class="brand">山田太郎</div>
-        <button class="menu-toggle" id="menu-toggle" aria-label="メニューを開閉" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <ul class="navlist" id="navlist" aria-label="サイト内ナビゲーション">
+        <ul class="navlist" aria-label="サイト内ナビゲーション">
           <li><a href="#about">自己紹介</a></li>
           <li><a href="#works">作品</a></li>
           <li><a href="#contact">連絡先</a></li>
@@ -505,8 +434,8 @@
               <span class="tag">長編</span>
             </div>
             <h3>作品タイトルA</h3>
-            <p class="muted">〇〇賞を受賞した長編小説です。読了率90%を達成。</p>
-            <p class="meta">担当範囲: 企画・構成・執筆 | 2025</p>
+            <p class="muted">〇〇賞を受賞した長編小説です。主要ターゲットを男性に設定し、読了率90%を達成しました。</p>
+            <p class="meta">担当範囲: 企画・構成・執筆 | 公開: 2025</p>
           </div>
         </article>
 
@@ -523,8 +452,8 @@
               <span class="tag">短編</span>
             </div>
             <h3>作品タイトルB</h3>
-            <p class="muted">〇〇社メディア掲載。SNSで1,000以上の反響を獲得。</p>
-            <p class="meta">担当範囲: 企画・執筆 | 2024</p>
+            <p class="muted">〇〇社オウンドメディア掲載の短編小説。〇〇というテーマで、SNSで1,000以上の反響を獲得しました。</p>
+            <p class="meta">担当範囲: 企画・執筆 | 公開: 2024</p>
           </div>
         </article>
 
@@ -541,8 +470,8 @@
               <span class="tag">連載</span>
             </div>
             <h3>作品タイトルC</h3>
-            <p class="muted">〇〇社ウェブサイトのUX改善を担当。回遊率15%向上。</p>
-            <p class="meta">担当範囲: 構成・UI設計 | 2023</p>
+            <p class="muted">〇〇社様のウェブサイトにおけるUX改善を担当。回遊率を15%向上させました。</p>
+            <p class="meta">担当範囲: 構成・UI設計 | 公開: 2023</p>
           </div>
         </article>
       </div>
@@ -602,11 +531,13 @@
           }
         });
       }, { threshold: 0.1 });
+
       document.querySelectorAll('.fade-in').forEach(el => fadeInObserver.observe(el));
 
       // 2. ナビゲーションのアクティブ追従
       const navLinks = document.querySelectorAll('.navlist a');
-      const sections = document.querySelectorAll('main section[id]');
+      const sections = document.querySelectorAll('section[id]');
+      
       const navObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -620,15 +551,13 @@
           }
         });
       }, { rootMargin: '-50% 0px -50% 0px' });
+
       sections.forEach(sec => navObserver.observe(sec));
 
       // 3. 作品詳細モーダル処理
       const modalOverlay = document.getElementById('modal-overlay');
       const modalContent = document.getElementById('modal-content');
-      const closeModal = () => {
-        modalOverlay.classList.remove('is-visible');
-        document.body.style.overflow = '';
-      };
+      
       document.querySelectorAll('.card[data-title]').forEach(card => {
         card.addEventListener('click', () => {
           const title = card.dataset.title;
@@ -636,6 +565,7 @@
           const desc = card.dataset.desc;
           const meta = card.dataset.meta;
           const img = card.dataset.img;
+
           const tagsHTML = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
           
           modalContent.innerHTML = `
@@ -650,34 +580,28 @@
           `;
           
           modalOverlay.classList.add('is-visible');
-          document.body.style.overflow = 'hidden';
+          modalContent.focus(); // モーダルにフォーカス
+          document.body.style.overflow = 'hidden'; // 背景のスクロールを禁止
         });
       });
+
+      // モーダルを閉じる処理
+      const closeModal = () => {
+        modalOverlay.classList.remove('is-visible');
+        document.body.style.overflow = '';
+      };
+      
       modalOverlay.addEventListener('click', (e) => {
         if (e.target === modalOverlay || e.target.closest('#modal-close')) {
           closeModal();
         }
       });
+
+      // Escキーでモーダルを閉じる
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modalOverlay.classList.contains('is-visible')) {
           closeModal();
         }
-      });
-
-      // 4. ハンバーガーメニュー処理
-      const menuToggle = document.getElementById('menu-toggle');
-      const navlist = document.getElementById('navlist');
-      menuToggle.addEventListener('click', () => {
-        const isOpen = navlist.classList.toggle('is-open');
-        menuToggle.classList.toggle('is-open');
-        menuToggle.setAttribute('aria-expanded', isOpen);
-      });
-      navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          navlist.classList.remove('is-open');
-          menuToggle.classList.remove('is-open');
-          menuToggle.setAttribute('aria-expanded', 'false');
-        });
       });
     });
   </script>
