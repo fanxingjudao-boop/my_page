@@ -1,609 +1,616 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>山田太郎 | コンテンツデザイナー</title>
-  <meta name="description" content="小説・デザイン・Web開発を横断する山田太郎のポートフォリオ。言葉とデザインで、心を動かす物語を創造します。">
-  <meta name="author" content="Taro Yamada">
-
-  <meta property="og:title" content="山田太郎 | コンテンツデザイナー">
-  <meta property="og:description" content="小説・デザイン・Web開発を横断する山田太郎のポートフォリオ。">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://your-portfolio-url.com">
-  <meta property="og:image" content="https://your-portfolio-url.com/img/ogp.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
-  
-  <style>
-    /* ========== 変数の再定義 ========== */
-    :root {
-      --bg-light: #f8f9fa;
-      --bg-dark: #121212;
-      --fg-light: #212529;
-      --fg-dark: #e0e0e0;
-      --accent-main: #e67e22; /* 落ち着いたオレンジ */
-      --accent-hover: #d35400;
-      --muted: #6c757d;
-      --surface-light: #ffffff;
-      --surface-dark: #1e1e1e;
-      --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
-      --shadow-dark: 0 4px 16px rgba(0, 0, 0, 0.4);
-      --radius: 12px;
-      --maxw: 1200px;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: var(--bg-dark);
-        --fg: var(--fg-dark);
-        --accent: var(--accent-main);
-        --accent-strong: var(--accent-hover);
-        --surface: var(--surface-dark);
-        --shadow: var(--shadow-dark);
-        --border-color: #444;
-      }
-    }
-    :root {
-      --bg: var(--bg-light);
-      --fg: var(--fg-light);
-      --accent: var(--accent-main);
-      --accent-strong: var(--accent-hover);
-      --surface: var(--surface-light);
-      --shadow: var(--shadow-light);
-      --border-color: #ddd;
-    }
-    
-    /* ========== ベーススタイル ========== */
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--fg);
-      line-height: 1.8;
-      font-family: 'Noto Sans JP', sans-serif;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-    }
-    img { max-width: 100%; height: auto; display: block; }
-    a { color: inherit; text-decoration: none; }
-    .container { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
-    .section { padding: 80px 0; }
-    h1, h2, h3 { margin: 0 0 16px; line-height: 1.2; font-weight: 700; }
-    p { margin: 0 0 16px; }
-
-    /* ========== ユーティリティ ========== */
-    .visually-hidden {
-      position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
-      clip: rect(0, 0, 0, 0); border: 0;
-    }
-    .fade-in {
-      opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-    .fade-in.is-visible {
-      opacity: 1; transform: translateY(0);
-    }
-
-    /* ========== ヘッダー ========== */
-    .skip-link {
-      position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
-    }
-    .skip-link:focus { position: static; width: auto; height: auto; padding: 8px; background: var(--accent); color: #fff; }
-    header {
-      position: sticky; top: 0; z-index: 1000;
-      background: rgba(18, 18, 18, 0.85); /* 若干調整 */
-      color: #fff;
-      backdrop-filter: saturate(180%) blur(10px);
-      transition: background .3s ease;
-    }
-    nav .inner {
-      display: flex; align-items: center; justify-content: space-between;
-      height: 72px;
-    }
-    .brand { font-weight: 900; font-size: 24px; letter-spacing: 0.05em; }
-    .navlist { display: flex; gap: 32px; list-style: none; margin: 0; padding: 0; }
-    .navlist a { color: #fff; font-weight: 700; transition: color .2s ease; position: relative; padding-bottom: 4px; }
-    .navlist a:hover { color: var(--accent); }
-    .navlist a.active { color: var(--accent); }
-    .navlist a::after {
-        content: '';
-        position: absolute;
-        bottom: 0; left: 0;
-        width: 100%; height: 2px;
-        background: var(--accent);
-        transform: scaleX(0);
-        transform-origin: right;
-        transition: transform .3s ease-out;
-    }
-    .navlist a:hover::after,
-    .navlist a.active::after {
-        transform: scaleX(1);
-        transform-origin: left;
-    }
-
-    /* ========== ヒーロー ========== */
-    .hero {
-      position: relative;
-      color: #fff;
-      padding: 140px 0 120px;
-      text-align: center;
-      overflow: hidden;
-    }
-      .hero-bg {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      /* 背景画像を更新 */
-      background: url('img/hero-background.jpg') center center / cover no-repeat; 
-      filter: brightness(0.5);
-      z-index: -1;
-      transform: scale(1.1);
-      animation: zoomInBg 10s ease-out forwards;
-    }
-    @keyframes zoomInBg {
-      to { transform: scale(1); }
-    }
-    .hero-content {
-      position: relative;
-      opacity: 0; animation: fadeInFromTop 1s ease-out forwards; animation-delay: 0.5s;
-    }
-    @keyframes fadeInFromTop {
-      to { opacity: 1; }
-    }
-    .hero-subtitle {
-        font-weight: 700;
-        color: var(--accent);
-        margin-bottom: 8px;
-        letter-spacing: 0.1em;
-    }
-    .hero h1 { 
-        font-size: clamp(36px, 6vw, 64px); 
-        font-weight: 900; 
-        margin-bottom: 16px; 
-        text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    }
-    .hero p { 
-        font-size: clamp(18px, 2.5vw, 22px); 
-        color: #e0e0e0; 
-        max-width: 650px;
-        margin: 8px auto 48px;
-    }
-    .cta-group {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 24px;
-        flex-wrap: wrap;
-    }
-    .cta {
-      display: inline-block;
-      padding: 16px 32px;
-      background: var(--accent);
-      color: #fff;
-      font-weight: 800;
-      border-radius: 999px;
-      transition: background .3s ease, transform .3s ease, box-shadow .3s ease;
-    }
-    .cta:hover { 
-      background: var(--accent-strong); 
-      transform: translateY(-4px); 
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-    .cta:active { transform: translateY(-1px); }
-    .cta-secondary {
-        display: inline-block;
-        padding: 14px 28px;
-        border: 2px solid var(--accent);
-        color: #fff;
-        font-weight: 700;
-        border-radius: 999px;
-        transition: background .3s ease, color .3s ease;
-    }
-    .cta-secondary:hover {
-        background: var(--accent);
-        color: #fff;
-    }
-/* ========== セクション見出し ========== */
-    .section-title {
-      font-size: clamp(28px, 3.5vw, 40px);
-      border-left: 8px solid var(--accent);
-      padding-left: 16px;
-      margin-bottom: 48px;
-      font-weight: 900;
-    }
-    .muted { color: var(--muted); }
-
-    /* ========== About ========== */
-    .about {
-      display: grid; gap: 48px; align-items: start;
-      grid-template-columns: 1.5fr 2fr;
-      background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
-      padding: 48px;
-    }
-    .about .panel { padding: 16px 0; }
-    .about h3 { font-size: 24px; }
-    .about ul { list-style: none; padding: 0; }
-    .about li { position: relative; padding-left: 24px; margin-bottom: 12px; }
-    .about li:before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
-    @media (max-width: 880px) {
-      .about { grid-template-columns: 1fr; padding: 32px; }
-    }
-
-    /* ========== Works ========== */
-    .grid {
-      display: grid; gap: 32px;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    }
-    .card {
-      background: var(--surface); border-radius: var(--radius); overflow: hidden;
-      box-shadow: var(--shadow); transition: transform .3s ease, box-shadow .3s ease;
-      cursor: pointer;
-    }
-    .card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18); }
-    .card-body { padding: 20px; }
-    .card h3 { font-size: 22px; margin-bottom: 10px; }
-    .tag-group { margin-bottom: 12px; }
-    .tag {
-      display: inline-block; font-size: 14px; padding: 6px 12px; border-radius: 999px;
-      background: rgba(230, 126, 34, 0.15); color: var(--accent-strong); font-weight: 700;
-      margin-right: 8px; margin-bottom: 8px;
-    }
-    .meta { font-size: 14px; color: var(--muted); margin-top: 10px; }
-
-    /* ========== Contact ========== */
-    .contact-grid {
-        display: grid;
-        grid-template-columns: 1fr 1.5fr;
-        gap: 48px;
-        background: var(--surface); 
-        border-radius: var(--radius); 
-        box-shadow: var(--shadow);
-        padding: 48px;
-    }
-    @media (max-width: 880px) {
-        .contact-grid { grid-template-columns: 1fr; padding: 32px; }
-    }
-    .contact-info .link { color: var(--accent-strong); font-weight: 700; transition: text-decoration .2s ease; }
-    .contact-info .link:hover { text-decoration: underline; }
-    .social-links { margin-top: 24px; display: flex; gap: 20px; }
-    .social-links a { 
-      font-size: 28px; 
-      transition: color .2s ease, transform .2s ease;
-      color: var(--fg);
-    }
-    .social-links a:hover { color: var(--accent); transform: translateY(-2px); }
-    
-    .form-group { margin-bottom: 24px; }
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 700;
-        font-size: 16px;
-    }
-    .form-group input,
-    .form-group textarea {
-        width: 100%;
-        padding: 12px 16px;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background: var(--bg);
-        color: var(--fg);
-        font-family: inherit;
-        font-size: 16px;
-        transition: border-color .2s ease, box-shadow .2s ease;
-    }
-    .form-group input:focus,
-    .form-group textarea:focus {
-        outline: none;
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2);
-    }
-    .contact-form .cta {
-        width: 100%;
-        border: none;
-        cursor: pointer;
-        font-size: 18px;
-        color: #fff;
-    }
-    .form-note {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 16px;
-        text-align: center;
-    }
-
-    /* ========== フッター ========== */
-    footer {
-      text-align: center; color: var(--muted); padding: 56px 0 72px;
-    }
-
-    /* ========== モーダル ========== */
-    .modal-overlay {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(18, 18, 18, 0.85);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; visibility: hidden;
-      transition: opacity .4s ease, visibility .4s ease;
-      z-index: 2000;
-      padding: 24px;
-    }
-    .modal-overlay.is-visible {
-      opacity: 1; visibility: visible;
-    }
-    .modal-content {
-      background: var(--surface);
-      border-radius: var(--radius);
-      padding: 32px;
-      width: 100%;
-      max-width: 800px;
-      max-height: 90vh;
-      overflow-y: auto;
-      position: relative;
-      transform: translateY(20px) scale(0.95);
-      transition: transform .4s ease;
-    }
-    .modal-overlay.is-visible .modal-content {
-      transform: translateY(0) scale(1);
-    }
-    .modal-close {
-      position: absolute; top: 16px; right: 16px;
-      background: none; border: none; font-size: 32px;
-      cursor: pointer; color: var(--fg);
-      padding: 8px; line-height: 1;
-      opacity: 0.7;
-      transition: opacity .2s ease;
-    }
-    .modal-close:hover { opacity: 1; }
-    .modal-img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin-bottom: 24px;
-    }
-    .modal-body h3 { font-size: clamp(22px, 3vw, 28px); margin-bottom: 8px; }
-    .modal-body .tag-group { margin-bottom: 20px; }
-    .modal-body p { margin-bottom: 20px; }
-    .modal-body .meta { margin-top: 24px; }
-  </style>
-</head>
-<body>
-  <a class="skip-link" href="#main">本文へスキップ</a>
-
-  <header>
-    <nav class="container">
-      <div class="inner">
-        <div class="brand">山田太郎</div>
-        <ul class="navlist" aria-label="サイト内ナビゲーション">
-          <li><a href="#about">自己紹介</a></li>
-          <li><a href="#works">作品</a></li>
-          <li><a href="#contact">連絡先</a></li>
-        </ul>
-      </div>
-    </nav>
-  </header>
-
-  <section class="hero" id="hero">
-    <div class="hero-bg"></div>
-    <div class="container hero-content">
-      <p class="hero-subtitle">小説家 × UI/UXデザイナー</p>
-      <h1>言葉とデザインで、<br>心を動かす物語を創造する。</h1>
-      <p>物語の構造設計とユーザー体験の接続を専門とする、山田太郎のポートフォリオサイトです。</p>
-      <div class="cta-group">
-        <a class="cta" href="#works" aria-label="作品一覧へ移動">作品を見る</a>
-        <a class="cta-secondary" href="#about">提供価値を見る</a>
-      </div>
-    </div>
-  </section>
-
-  <main id="main" class="container">
-    <section id="about" class="section fade-in" aria-labelledby="about-title">
-      <h2 id="about-title" class="section-title">自己紹介</h2>
-      <div class="about">
-        <div class="panel">
-          <h3>山田太郎 / コンテンツデザイナー</h3>
-          <p class="muted">執筆・編集・UI設計を横断し、物語の構造とユーザー体験を繋げる専門家です。</p>
-          <p>受賞歴、掲載媒体、クライアント、具体的な数字（例：部数、PV、納期短縮率）などを記載し、実績の説得力を高めます。</p>
-        </div>
-        <div class="panel">
-          <h3>提供できる価値</h3>
-          <ul>
-            <li>ユーザーを惹きつけるストーリーテリングと、WebサイトのUI/UX設計</li>
-            <li>読みやすく、SEOに強いWebライティングと、LP（ランディングページ）構成</li>
-            <li>ユーザーの行動を促すための、コンテンツ設計と改善提案</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section id="works" class="section fade-in" aria-labelledby="works-title">
-      <h2 id="works-title" class="section-title">作品一覧</h2>
-      <div class="grid">
-        <article class="card"
-          data-title="作品タイトルA"
-          data-tags='["小説", "長編"]'
-          data-desc="〇〇賞を受賞した長編小説です。主要ターゲットを男性に設定し、読了率90%を達成しました。このプロジェクトでは、読者の没入感を最大限に高めるため、伏線の配置と回収のタイミングを緻密に設計。キャラクターの心理描写にも注力し、多くの読者から共感の声が寄せられました。"
-          data-meta="担当範囲: 企画・構成・執筆 | 公開: 2025"
-          data-img="img/9be6df29cc.jpg">
-          <img src="img/9be6df29cc.jpg" alt="作品サムネイル1" width="800" height="500" loading="lazy" decoding="async">
-          <div class="card-body">
-            <div class="tag-group">
-              <span class="tag">小説</span>
-              <span class="tag">長編</span>
-            </div>
-            <h3>作品タイトルA</h3>
-            <p class="muted">〇〇賞を受賞した長編小説です。主要ターゲットを男性に設定し、読了率90%を達成しました。</p>
-            <p class="meta">担当範囲: 企画・構成・執筆 | 公開: 2025</p>
-          </div>
-        </article>
-
-        <article class="card"
-          data-title="作品タイトルB"
-          data-tags='["Webライティング", "短編"]'
-          data-desc="〇〇社オウンドメディア掲載の短編小説。〇〇というテーマで、SNSで1,000以上の反響を獲得しました。ターゲット層が関心を持つテーマ設定と、シェアされやすい感動的な結末を意識して執筆。結果として、記事公開後1週間でサイトへの新規流入が前月比200%を記録しました。"
-          data-meta="担当範囲: 企画・執筆 | 公開: 2024"
-          data-img="img/68f3e25bbc.jpg">
-          <img src="img/68f3e25bbc.jpg" alt="作品サムネイル2" width="800" height="500" loading="lazy" decoding="async">
-          <div class="card-body">
-            <div class="tag-group">
-              <span class="tag">Webライティング</span>
-              <span class="tag">短編</span>
-            </div>
-            <h3>作品タイトルB</h3>
-            <p class="muted">〇〇社オウンドメディア掲載の短編小説。〇〇というテーマで、SNSで1,000以上の反響を獲得しました。</p>
-            <p class="meta">担当範囲: 企画・執筆 | 公開: 2024</p>
-          </div>
-        </article>
-
-        <article class="card"
-          data-title="作品タイトルC"
-          data-tags='["UI/UXデザイン", "連載"]'
-          data-desc="〇〇社様のウェブサイトにおけるUX改善を担当。回遊率を15%向上させました。ユーザーインタビューを通じてペインポイントを特定し、ナビゲーション構造とコンテンツ配置を全面的に見直しました。特に、記事の読了後に関連記事への導線を最適化したことが、回遊率の向上に大きく貢献しました。"
-          data-meta="担当範囲: 構成・UI設計 | 公開: 2023"
-          data-img="img/35f86411d3.jpg">
-          <img src="img/35f86411d3.jpg" alt="作品サムネイル3" width="800" height="500" loading="lazy" decoding="async">
-          <div class="card-body">
-            <div class="tag-group">
-              <span class="tag">UI/UXデザイン</span>
-              <span class="tag">連載</span>
-            </div>
-            <h3>作品タイトルC</h3>
-            <p class="muted">〇〇社様のウェブサイトにおけるUX改善を担当。回遊率を15%向上させました。</p>
-            <p class="meta">担当範囲: 構成・UI設計 | 公開: 2023</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="contact" class="section fade-in" aria-labelledby="contact-title">
-      <h2 id="contact-title" class="section-title">お問い合わせ</h2>
-      <div class="contact-grid">
-        <div class="contact-info">
-          <h3>お気軽にご連絡ください</h3>
-          <p>お仕事のご相談、ご質問、創作に関するお話など、下記フォームまたはメールにてお待ちしております。</p>
-          <p>
-            <a class="link" href="mailto:taro.yamada.creative@example.com">taro.yamada.creative@example.com</a>
-          </p>
-          <div class="social-links">
-            <a href="#" aria-label="X（旧Twitter）" title="X"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="28" height="28" fill="currentColor"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a>
-            <a href="#" aria-label="GitHub" title="GitHub"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" width="28" height="28" fill="currentColor"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3.3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.3-6.2-10.1-27.8 2.3-57.4 0 0 21.1-6.9 69.1 25.8 20.1-5.6 41.6-8.4 63.1-8.4s43 2.8 63.1 8.4c48-32.6 69.1-25.8 69.1-25.8 12.4 29.6 4.6 51.2 2.3 57.4 16 17.6 23.6 31.4 23.6 58.9 0 96.5-56.4 104.2-112.6 110.2 9.1 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7z"/></svg></a>
-          </div>
-        </div>
-        <form class="contact-form" action="#" method="POST" onsubmit="alert('フォームが送信されました（実際には送信されません）'); return false;">
-          <div class="form-group">
-            <label for="name">お名前</label>
-            <input type="text" id="name" name="name" required>
-          </div>
-          <div class="form-group">
-            <label for="email">メールアドレス</label>
-            <input type="email" id="email" name="email" required>
-          </div>
-          <div class="form-group">
-            <label for="message">メッセージ</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
-          </div>
-          <button type="submit" class="cta">送信する</button>
-          <p class="form-note">ご入力いただいた情報は、お問い合わせへの返信目的以外には使用いたしません。</p>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Taro Yamada. All Rights Reserved.</p>
-  </footer>
-
-  <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
-    <div class="modal-content" id="modal-content" role="dialog" aria-modal="true">
-      </div>
-  </div>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1. セクションのフェードイン処理
-      const fadeInObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-
-      document.querySelectorAll('.fade-in').forEach(el => fadeInObserver.observe(el));
-
-      // 2. ナビゲーションのアクティブ追従
-      const navLinks = document.querySelectorAll('.navlist a');
-      const sections = document.querySelectorAll('section[id]');
-      
-      const navObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const id = entry.target.id;
-            navLinks.forEach(link => {
-              link.classList.remove('active');
-              if (link.getAttribute('href') === `#${id}`) {
-                link.classList.add('active');
-              }
-            });
-          }
-        });
-      }, { rootMargin: '-50% 0px -50% 0px' });
-
-      sections.forEach(sec => navObserver.observe(sec));
-
-      // 3. 作品詳細モーダル処理
-      const modalOverlay = document.getElementById('modal-overlay');
-      const modalContent = document.getElementById('modal-content');
-      
-      document.querySelectorAll('.card[data-title]').forEach(card => {
-        card.addEventListener('click', () => {
-          const title = card.dataset.title;
-          const tags = JSON.parse(card.dataset.tags);
-          const desc = card.dataset.desc;
-          const meta = card.dataset.meta;
-          const img = card.dataset.img;
-
-          const tagsHTML = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-          
-          modalContent.innerHTML = `
-            <button class="modal-close" id="modal-close" aria-label="閉じる">&times;</button>
-            <img src="${img}" alt="${title}の画像" class="modal-img" loading="lazy">
-            <div class="modal-body">
-              <div class="tag-group">${tagsHTML}</div>
-              <h3>${title}</h3>
-              <p class="muted">${desc}</p>
-              <p class="meta">${meta}</p>
-            </div>
-          `;
-          
-          modalOverlay.classList.add('is-visible');
-          modalContent.focus(); // モーダルにフォーカス
-          document.body.style.overflow = 'hidden'; // 背景のスクロールを禁止
-        });
-      });
-
-      // モーダルを閉じる処理
-      const closeModal = () => {
-        modalOverlay.classList.remove('is-visible');
-        document.body.style.overflow = '';
-      };
-      
-      modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay || e.target.closest('#modal-close')) {
-          closeModal();
-        }
-      });
-
-      // Escキーでモーダルを閉じる
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modalOverlay.classList.contains('is-visible')) {
-          closeModal();
-        }
-      });
-    });
-  </script>
-</body>
-</html>
+diff --git a/index.html b/index.html
+index 3c03484acf1decaf6ee1ccf83e9532fb46a2ced5..015a36c1a8e0b24e4d93e47a5fe16011110ae997 100644
+--- a/index.html
++++ b/index.html
+@@ -1,158 +1,179 @@
+ <!DOCTYPE html>
+ <html lang="ja">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>山田太郎 | コンテンツデザイナー</title>
+   <meta name="description" content="小説・デザイン・Web開発を横断する山田太郎のポートフォリオ。言葉とデザインで、心を動かす物語を創造します。">
+   <meta name="author" content="Taro Yamada">
+ 
+   <meta property="og:title" content="山田太郎 | コンテンツデザイナー">
+   <meta property="og:description" content="小説・デザイン・Web開発を横断する山田太郎のポートフォリオ。">
+   <meta property="og:type" content="website">
+   <meta property="og:url" content="https://your-portfolio-url.com">
+   <meta property="og:image" content="https://your-portfolio-url.com/img/ogp.jpg">
+   <meta name="twitter:card" content="summary_large_image">
+   
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+   
+   <style>
+     /* ========== 変数の再定義 ========== */
+-    :root {
++    :root {
+       --bg-light: #f8f9fa;
+       --bg-dark: #121212;
+       --fg-light: #212529;
+       --fg-dark: #e0e0e0;
+       --accent-main: #e67e22; /* 落ち着いたオレンジ */
+       --accent-hover: #d35400;
+       --muted: #6c757d;
+       --surface-light: #ffffff;
+       --surface-dark: #1e1e1e;
+       --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
+       --shadow-dark: 0 4px 16px rgba(0, 0, 0, 0.4);
+-      --radius: 12px;
+-      --maxw: 1200px;
+-    }
++      --radius: 12px;
++      --radius-sm: 10px;
++      --radius-lg: 18px;
++      --maxw: 1200px;
++    }
+     @media (prefers-color-scheme: dark) {
+       :root {
+         --bg: var(--bg-dark);
+         --fg: var(--fg-dark);
+         --accent: var(--accent-main);
+         --accent-strong: var(--accent-hover);
+         --surface: var(--surface-dark);
+         --shadow: var(--shadow-dark);
+         --border-color: #444;
+       }
+     }
+     :root {
+       --bg: var(--bg-light);
+       --fg: var(--fg-light);
+       --accent: var(--accent-main);
+       --accent-strong: var(--accent-hover);
+       --surface: var(--surface-light);
+       --shadow: var(--shadow-light);
+       --border-color: #ddd;
+     }
+     
+     /* ========== ベーススタイル ========== */
+     html { scroll-behavior: smooth; }
+-    body {
+-      margin: 0;
+-      background: var(--bg);
+-      color: var(--fg);
+-      line-height: 1.8;
++    body {
++      margin: 0;
++      background: var(--bg);
++      color: var(--fg);
++      line-height: 1.8;
+       font-family: 'Noto Sans JP', sans-serif;
+       text-rendering: optimizeLegibility;
+       -webkit-font-smoothing: antialiased;
+     }
+     img { max-width: 100%; height: auto; display: block; }
+     a { color: inherit; text-decoration: none; }
+-    .container { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+-    .section { padding: 80px 0; }
++    .container { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
++    .section { padding: 88px 0; }
+     h1, h2, h3 { margin: 0 0 16px; line-height: 1.2; font-weight: 700; }
+     p { margin: 0 0 16px; }
+ 
+     /* ========== ユーティリティ ========== */
+     .visually-hidden {
+       position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+       clip: rect(0, 0, 0, 0); border: 0;
+     }
+     .fade-in {
+       opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+     }
+     .fade-in.is-visible {
+       opacity: 1; transform: translateY(0);
+     }
+ 
+     /* ========== ヘッダー ========== */
+     .skip-link {
+       position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
+     }
+-    .skip-link:focus { position: static; width: auto; height: auto; padding: 8px; background: var(--accent); color: #fff; }
++    .skip-link:focus { position: static; width: auto; height: auto; padding: 8px; background: var(--accent); color: #fff; }
+     header {
+       position: sticky; top: 0; z-index: 1000;
+       background: rgba(18, 18, 18, 0.85); /* 若干調整 */
+       color: #fff;
+       backdrop-filter: saturate(180%) blur(10px);
+       transition: background .3s ease;
+     }
+     nav .inner {
+       display: flex; align-items: center; justify-content: space-between;
+       height: 72px;
+     }
+-    .brand { font-weight: 900; font-size: 24px; letter-spacing: 0.05em; }
++    .brand { font-weight: 900; font-size: 24px; letter-spacing: 0.05em; }
++    .menu-toggle {
++      display: none;
++      border: 1px solid rgba(255, 255, 255, 0.35);
++      background: rgba(255, 255, 255, 0.1);
++      color: #fff;
++      border-radius: 999px;
++      font-size: 14px;
++      font-weight: 700;
++      letter-spacing: 0.04em;
++      padding: 10px 16px;
++      cursor: pointer;
++    }
+     .navlist { display: flex; gap: 32px; list-style: none; margin: 0; padding: 0; }
+     .navlist a { color: #fff; font-weight: 700; transition: color .2s ease; position: relative; padding-bottom: 4px; }
+     .navlist a:hover { color: var(--accent); }
+     .navlist a.active { color: var(--accent); }
+     .navlist a::after {
+         content: '';
+         position: absolute;
+         bottom: 0; left: 0;
+         width: 100%; height: 2px;
+         background: var(--accent);
+         transform: scaleX(0);
+         transform-origin: right;
+         transition: transform .3s ease-out;
+     }
+     .navlist a:hover::after,
+     .navlist a.active::after {
+         transform: scaleX(1);
+         transform-origin: left;
+     }
+ 
+     /* ========== ヒーロー ========== */
+-    .hero {
++    .hero {
+       position: relative;
+       color: #fff;
+       padding: 140px 0 120px;
+       text-align: center;
+-      overflow: hidden;
+-    }
++      overflow: hidden;
++    }
++    .hero::before {
++      content: "";
++      position: absolute;
++      inset: 0;
++      background: linear-gradient(180deg, rgba(12, 12, 12, 0.35) 0%, rgba(12, 12, 12, 0.7) 100%);
++      z-index: -1;
++    }
+       .hero-bg {
+       position: absolute;
+       top: 0; left: 0;
+       width: 100%; height: 100%;
+       /* 背景画像を更新 */
+       background: url('img/hero-background.jpg') center center / cover no-repeat; 
+       filter: brightness(0.5);
+       z-index: -1;
+       transform: scale(1.1);
+       animation: zoomInBg 10s ease-out forwards;
+     }
+     @keyframes zoomInBg {
+       to { transform: scale(1); }
+     }
+     .hero-content {
+       position: relative;
+       opacity: 0; animation: fadeInFromTop 1s ease-out forwards; animation-delay: 0.5s;
+     }
+     @keyframes fadeInFromTop {
+       to { opacity: 1; }
+     }
+     .hero-subtitle {
+         font-weight: 700;
+         color: var(--accent);
+         margin-bottom: 8px;
+@@ -179,90 +200,133 @@
+     }
+     .cta {
+       display: inline-block;
+       padding: 16px 32px;
+       background: var(--accent);
+       color: #fff;
+       font-weight: 800;
+       border-radius: 999px;
+       transition: background .3s ease, transform .3s ease, box-shadow .3s ease;
+     }
+     .cta:hover { 
+       background: var(--accent-strong); 
+       transform: translateY(-4px); 
+       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+     }
+     .cta:active { transform: translateY(-1px); }
+     .cta-secondary {
+         display: inline-block;
+         padding: 14px 28px;
+         border: 2px solid var(--accent);
+         color: #fff;
+         font-weight: 700;
+         border-radius: 999px;
+         transition: background .3s ease, color .3s ease;
+     }
+-    .cta-secondary:hover {
+-        background: var(--accent);
+-        color: #fff;
+-    }
++    .cta-secondary:hover {
++        background: var(--accent);
++        color: #fff;
++    }
++
++    .hero-highlights {
++      margin: 44px auto 0;
++      max-width: 860px;
++      display: grid;
++      grid-template-columns: repeat(3, minmax(0, 1fr));
++      gap: 16px;
++    }
++    .highlight-item {
++      border: 1px solid rgba(255, 255, 255, 0.28);
++      background: rgba(255, 255, 255, 0.08);
++      border-radius: var(--radius-sm);
++      padding: 16px;
++      text-align: left;
++      backdrop-filter: blur(3px);
++    }
++    .highlight-item strong {
++      display: block;
++      font-size: 24px;
++      line-height: 1.3;
++      margin-bottom: 4px;
++      color: #fff;
++    }
++    .highlight-item span {
++      font-size: 13px;
++      color: #e8e8e8;
++    }
+ /* ========== セクション見出し ========== */
+     .section-title {
+       font-size: clamp(28px, 3.5vw, 40px);
+       border-left: 8px solid var(--accent);
+       padding-left: 16px;
+       margin-bottom: 48px;
+       font-weight: 900;
+     }
+     .muted { color: var(--muted); }
+ 
+     /* ========== About ========== */
+-    .about {
++    .about {
+       display: grid; gap: 48px; align-items: start;
+       grid-template-columns: 1.5fr 2fr;
+       background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
+-      padding: 48px;
+-    }
++      padding: 48px;
++      border: 1px solid color-mix(in srgb, var(--border-color) 75%, transparent);
++    }
+     .about .panel { padding: 16px 0; }
+     .about h3 { font-size: 24px; }
+     .about ul { list-style: none; padding: 0; }
+     .about li { position: relative; padding-left: 24px; margin-bottom: 12px; }
+-    .about li:before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
++    .about li:before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
++    .about-metrics {
++      display: grid;
++      grid-template-columns: repeat(3, minmax(0, 1fr));
++      gap: 14px;
++      margin-top: 20px;
++    }
++    .metric {
++      background: color-mix(in srgb, var(--accent) 10%, var(--surface));
++      border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
++      border-radius: var(--radius-sm);
++      padding: 14px;
++    }
++    .metric strong { display: block; font-size: 24px; line-height: 1.2; }
++    .metric span { font-size: 13px; color: var(--muted); }
+     @media (max-width: 880px) {
+       .about { grid-template-columns: 1fr; padding: 32px; }
+     }
+ 
+     /* ========== Works ========== */
+     .grid {
+       display: grid; gap: 32px;
+       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+     }
+-    .card {
+-      background: var(--surface); border-radius: var(--radius); overflow: hidden;
+-      box-shadow: var(--shadow); transition: transform .3s ease, box-shadow .3s ease;
+-      cursor: pointer;
+-    }
++    .card {
++      background: var(--surface); border-radius: var(--radius-lg); overflow: hidden;
++      box-shadow: var(--shadow); transition: transform .3s ease, box-shadow .3s ease;
++      cursor: pointer;
++      border: 1px solid color-mix(in srgb, var(--border-color) 75%, transparent);
++    }
+     .card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18); }
+     .card-body { padding: 20px; }
+     .card h3 { font-size: 22px; margin-bottom: 10px; }
+     .tag-group { margin-bottom: 12px; }
+     .tag {
+       display: inline-block; font-size: 14px; padding: 6px 12px; border-radius: 999px;
+       background: rgba(230, 126, 34, 0.15); color: var(--accent-strong); font-weight: 700;
+       margin-right: 8px; margin-bottom: 8px;
+     }
+     .meta { font-size: 14px; color: var(--muted); margin-top: 10px; }
+ 
+     /* ========== Contact ========== */
+     .contact-grid {
+         display: grid;
+         grid-template-columns: 1fr 1.5fr;
+         gap: 48px;
+         background: var(--surface); 
+         border-radius: var(--radius); 
+         box-shadow: var(--shadow);
+         padding: 48px;
+     }
+     @media (max-width: 880px) {
+         .contact-grid { grid-template-columns: 1fr; padding: 32px; }
+     }
+     .contact-info .link { color: var(--accent-strong); font-weight: 700; transition: text-decoration .2s ease; }
+@@ -343,92 +407,154 @@
+       overflow-y: auto;
+       position: relative;
+       transform: translateY(20px) scale(0.95);
+       transition: transform .4s ease;
+     }
+     .modal-overlay.is-visible .modal-content {
+       transform: translateY(0) scale(1);
+     }
+     .modal-close {
+       position: absolute; top: 16px; right: 16px;
+       background: none; border: none; font-size: 32px;
+       cursor: pointer; color: var(--fg);
+       padding: 8px; line-height: 1;
+       opacity: 0.7;
+       transition: opacity .2s ease;
+     }
+     .modal-close:hover { opacity: 1; }
+     .modal-img {
+       width: 100%;
+       height: auto;
+       border-radius: 8px;
+       margin-bottom: 24px;
+     }
+     .modal-body h3 { font-size: clamp(22px, 3vw, 28px); margin-bottom: 8px; }
+     .modal-body .tag-group { margin-bottom: 20px; }
+-    .modal-body p { margin-bottom: 20px; }
+-    .modal-body .meta { margin-top: 24px; }
+-  </style>
++    .modal-body p { margin-bottom: 20px; }
++    .modal-body .meta { margin-top: 24px; }
++
++    @media (max-width: 900px) {
++      .container { padding: 0 18px; }
++      .section { padding: 72px 0; }
++      nav .inner { height: 64px; }
++      .brand { font-size: 20px; }
++      .menu-toggle { display: inline-flex; }
++      .navlist {
++        position: absolute;
++        top: 64px;
++        left: 0;
++        right: 0;
++        flex-direction: column;
++        gap: 0;
++        background: rgba(18, 18, 18, 0.98);
++        border-top: 1px solid rgba(255, 255, 255, 0.15);
++        max-height: 0;
++        overflow: hidden;
++        transition: max-height .3s ease;
++      }
++      .navlist.is-open { max-height: 280px; }
++      .navlist li { border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
++      .navlist a {
++        display: block;
++        padding: 14px 24px;
++      }
++      .hero {
++        padding: 110px 0 88px;
++        text-align: left;
++      }
++      .hero p { margin-left: 0; margin-right: 0; }
++      .cta-group { justify-content: flex-start; gap: 12px; }
++      .cta,
++      .cta-secondary { width: 100%; text-align: center; }
++      .hero-highlights { grid-template-columns: 1fr; margin-top: 28px; }
++      .about,
++      .contact-grid { padding: 24px; border-radius: var(--radius-lg); }
++      .about-metrics { grid-template-columns: 1fr; }
++      .grid { grid-template-columns: 1fr; gap: 20px; }
++      .card h3 { font-size: 20px; }
++      footer { padding: 48px 0 56px; }
++    }
++  </style>
+ </head>
+ <body>
+   <a class="skip-link" href="#main">本文へスキップ</a>
+ 
+   <header>
+     <nav class="container">
+       <div class="inner">
+-        <div class="brand">山田太郎</div>
+-        <ul class="navlist" aria-label="サイト内ナビゲーション">
++        <div class="brand">山田太郎</div>
++        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="global-nav">MENU</button>
++        <ul class="navlist" id="global-nav" aria-label="サイト内ナビゲーション">
+           <li><a href="#about">自己紹介</a></li>
+           <li><a href="#works">作品</a></li>
+           <li><a href="#contact">連絡先</a></li>
+         </ul>
+       </div>
+     </nav>
+   </header>
+ 
+   <section class="hero" id="hero">
+     <div class="hero-bg"></div>
+     <div class="container hero-content">
+       <p class="hero-subtitle">小説家 × UI/UXデザイナー</p>
+       <h1>言葉とデザインで、<br>心を動かす物語を創造する。</h1>
+       <p>物語の構造設計とユーザー体験の接続を専門とする、山田太郎のポートフォリオサイトです。</p>
+-      <div class="cta-group">
+-        <a class="cta" href="#works" aria-label="作品一覧へ移動">作品を見る</a>
+-        <a class="cta-secondary" href="#about">提供価値を見る</a>
+-      </div>
+-    </div>
+-  </section>
++      <div class="cta-group">
++        <a class="cta" href="#works" aria-label="作品一覧へ移動">作品を見る</a>
++        <a class="cta-secondary" href="#about">提供価値を見る</a>
++      </div>
++      <div class="hero-highlights" aria-label="実績ハイライト">
++        <div class="highlight-item">
++          <strong>30+</strong>
++          <span>プロジェクトで企画〜公開まで担当</span>
++        </div>
++        <div class="highlight-item">
++          <strong>平均+26%</strong>
++          <span>コンテンツ改善後の回遊率向上</span>
++        </div>
++        <div class="highlight-item">
++          <strong>最短10日</strong>
++          <span>短納期でも品質を落とさない制作体制</span>
++        </div>
++      </div>
++    </div>
++  </section>
+ 
+   <main id="main" class="container">
+     <section id="about" class="section fade-in" aria-labelledby="about-title">
+       <h2 id="about-title" class="section-title">自己紹介</h2>
+       <div class="about">
+         <div class="panel">
+           <h3>山田太郎 / コンテンツデザイナー</h3>
+-          <p class="muted">執筆・編集・UI設計を横断し、物語の構造とユーザー体験を繋げる専門家です。</p>
+-          <p>受賞歴、掲載媒体、クライアント、具体的な数字（例：部数、PV、納期短縮率）などを記載し、実績の説得力を高めます。</p>
+-        </div>
++          <p class="muted">執筆・編集・UI設計を横断し、物語の構造とユーザー体験を繋げる専門家です。</p>
++          <p>受賞歴、掲載媒体、クライアント、具体的な数字（例：部数、PV、納期短縮率）などを記載し、実績の説得力を高めます。</p>
++          <div class="about-metrics">
++            <div class="metric"><strong>95%</strong><span>納期遵守率</span></div>
++            <div class="metric"><strong>4.9/5</strong><span>顧客評価（過去案件平均）</span></div>
++            <div class="metric"><strong>12社</strong><span>継続支援クライアント数</span></div>
++          </div>
++        </div>
+         <div class="panel">
+           <h3>提供できる価値</h3>
+           <ul>
+             <li>ユーザーを惹きつけるストーリーテリングと、WebサイトのUI/UX設計</li>
+             <li>読みやすく、SEOに強いWebライティングと、LP（ランディングページ）構成</li>
+             <li>ユーザーの行動を促すための、コンテンツ設計と改善提案</li>
+           </ul>
+         </div>
+       </div>
+     </section>
+ 
+     <section id="works" class="section fade-in" aria-labelledby="works-title">
+       <h2 id="works-title" class="section-title">作品一覧</h2>
+       <div class="grid">
+         <article class="card"
+           data-title="作品タイトルA"
+           data-tags='["小説", "長編"]'
+           data-desc="〇〇賞を受賞した長編小説です。主要ターゲットを男性に設定し、読了率90%を達成しました。このプロジェクトでは、読者の没入感を最大限に高めるため、伏線の配置と回収のタイミングを緻密に設計。キャラクターの心理描写にも注力し、多くの読者から共感の声が寄せられました。"
+           data-meta="担当範囲: 企画・構成・執筆 | 公開: 2025"
+           data-img="img/9be6df29cc.jpg">
+           <img src="img/9be6df29cc.jpg" alt="作品サムネイル1" width="800" height="500" loading="lazy" decoding="async">
+           <div class="card-body">
+             <div class="tag-group">
+               <span class="tag">小説</span>
+               <span class="tag">長編</span>
+@@ -512,52 +638,68 @@
+   </main>
+ 
+   <footer>
+     <p>&copy; 2025 Taro Yamada. All Rights Reserved.</p>
+   </footer>
+ 
+   <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
+     <div class="modal-content" id="modal-content" role="dialog" aria-modal="true">
+       </div>
+   </div>
+   
+   <script>
+     document.addEventListener('DOMContentLoaded', () => {
+       // 1. セクションのフェードイン処理
+       const fadeInObserver = new IntersectionObserver((entries, observer) => {
+         entries.forEach(entry => {
+           if (entry.isIntersecting) {
+             entry.target.classList.add('is-visible');
+             observer.unobserve(entry.target);
+           }
+         });
+       }, { threshold: 0.1 });
+ 
+       document.querySelectorAll('.fade-in').forEach(el => fadeInObserver.observe(el));
+ 
+-      // 2. ナビゲーションのアクティブ追従
+-      const navLinks = document.querySelectorAll('.navlist a');
++      // 2. ナビゲーションのアクティブ追従
++      const menuToggle = document.querySelector('.menu-toggle');
++      const navList = document.querySelector('.navlist');
++      if (menuToggle && navList) {
++        menuToggle.addEventListener('click', () => {
++          const isOpen = navList.classList.toggle('is-open');
++          menuToggle.setAttribute('aria-expanded', String(isOpen));
++        });
++
++        navList.querySelectorAll('a').forEach(link => {
++          link.addEventListener('click', () => {
++            navList.classList.remove('is-open');
++            menuToggle.setAttribute('aria-expanded', 'false');
++          });
++        });
++      }
++
++      const navLinks = document.querySelectorAll('.navlist a');
+       const sections = document.querySelectorAll('section[id]');
+       
+       const navObserver = new IntersectionObserver((entries) => {
+         entries.forEach(entry => {
+           if (entry.isIntersecting) {
+             const id = entry.target.id;
+             navLinks.forEach(link => {
+               link.classList.remove('active');
+               if (link.getAttribute('href') === `#${id}`) {
+                 link.classList.add('active');
+               }
+             });
+           }
+         });
+       }, { rootMargin: '-50% 0px -50% 0px' });
+ 
+       sections.forEach(sec => navObserver.observe(sec));
+ 
+       // 3. 作品詳細モーダル処理
+       const modalOverlay = document.getElementById('modal-overlay');
+       const modalContent = document.getElementById('modal-content');
+       
+       document.querySelectorAll('.card[data-title]').forEach(card => {
+         card.addEventListener('click', () => {
+           const title = card.dataset.title;
+@@ -584,26 +726,26 @@
+           document.body.style.overflow = 'hidden'; // 背景のスクロールを禁止
+         });
+       });
+ 
+       // モーダルを閉じる処理
+       const closeModal = () => {
+         modalOverlay.classList.remove('is-visible');
+         document.body.style.overflow = '';
+       };
+       
+       modalOverlay.addEventListener('click', (e) => {
+         if (e.target === modalOverlay || e.target.closest('#modal-close')) {
+           closeModal();
+         }
+       });
+ 
+       // Escキーでモーダルを閉じる
+       document.addEventListener('keydown', (e) => {
+         if (e.key === 'Escape' && modalOverlay.classList.contains('is-visible')) {
+           closeModal();
+         }
+       });
+     });
+   </script>
+ </body>
+-</html>
+\ No newline at end of file
++</html>
