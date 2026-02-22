@@ -1,815 +1,359 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>山田太郎 | コンテンツデザイナー</title>
-  <meta name="description" content="小説・デザイン・Web開発を横断する山田太郎のポートフォリオ。言葉とデザインで、心を動かす物語を創造します。">
-  <meta name="author" content="Taro Yamada">
-  <meta name="theme-color" content="#121212">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-  <meta property="og:title" content="山田太郎 | コンテンツデザイナー">
-  <meta property="og:description" content="小説・デザイン・Web開発を横断する山田太郎のポートフォリオ。">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://your-portfolio-url.com">
-  <meta property="og:image" content="https://your-portfolio-url.com/img/ogp.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>山田太郎 | Strategic Creative Studio</title>
+  <meta name="description" content="成果に直結する設計と表現で、ブランド体験をアップデートする山田太郎のスタジオサイト。" />
   <style>
-    /* ========== 変数の再定義 ========== */
     :root {
-      --bg-light: #f8f9fa;
-      --bg-dark: #121212;
-      --fg-light: #212529;
-      --fg-dark: #e0e0e0;
-      --accent-main: #e67e22;
-      --accent-hover: #d35400;
-      --muted: #6c757d;
-      --surface-light: #ffffff;
-      --surface-dark: #1e1e1e;
-      --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
-      --shadow-dark: 0 4px 16px rgba(0, 0, 0, 0.4);
-      --radius: 12px;
-      --maxw: 1200px;
-      --header-h: 60px;
+      --bg: #0b1020;
+      --bg-soft: #121a30;
+      --panel: rgba(19, 27, 48, 0.78);
+      --text: #e8efff;
+      --muted: #9fb1d5;
+      --accent: #4fd1ff;
+      --accent-2: #8b7bff;
+      --ok: #34d399;
+      --border: rgba(159, 177, 213, 0.28);
+      --max: 1140px;
+      --radius: 18px;
+      --shadow: 0 14px 40px rgba(3, 8, 18, 0.45);
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: var(--bg-dark);
-        --fg: var(--fg-dark);
-        --accent: var(--accent-main);
-        --accent-strong: var(--accent-hover);
-        --surface: var(--surface-dark);
-        --shadow: var(--shadow-dark);
-        --border-color: #444;
-      }
-    }
-    :root {
-      --bg: var(--bg-light);
-      --fg: var(--fg-light);
-      --accent: var(--accent-main);
-      --accent-strong: var(--accent-hover);
-      --surface: var(--surface-light);
-      --shadow: var(--shadow-light);
-      --border-color: #ddd;
-    }
-
-    /* ========== ベーススタイル ========== */
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
     body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--fg);
-      line-height: 1.8;
-      font-family: 'Noto Sans JP', sans-serif;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-      -webkit-tap-highlight-color: transparent;
-      overflow-x: hidden;
-    }
-    img { max-width: 100%; height: auto; display: block; }
-    a { color: inherit; text-decoration: none; }
-    .container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
-    .section { padding: 64px 0; }
-    h1, h2, h3 { margin: 0 0 16px; line-height: 1.3; font-weight: 700; }
-    p { margin: 0 0 16px; }
-
-    /* ========== ユーティリティ ========== */
-    .visually-hidden {
-      position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
-      clip: rect(0, 0, 0, 0); border: 0;
-    }
-    .fade-in {
-      opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-    .fade-in.is-visible {
-      opacity: 1; transform: translateY(0);
-    }
-
-    /* ========== ヘッダー ========== */
-    .skip-link {
-      position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
-    }
-    .skip-link:focus { position: static; width: auto; height: auto; padding: 8px; background: var(--accent); color: #fff; }
-    header {
-      position: sticky; top: 0; z-index: 1000;
-      background: rgba(18, 18, 18, 0.92);
-      color: #fff;
-      backdrop-filter: saturate(180%) blur(10px);
-      -webkit-backdrop-filter: saturate(180%) blur(10px);
-      transition: background .3s ease;
-    }
-    nav .inner {
-      display: flex; align-items: center; justify-content: space-between;
-      height: var(--header-h);
-    }
-    .brand { font-weight: 900; font-size: 20px; letter-spacing: 0.05em; }
-    .navlist { display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; }
-    .navlist a {
-      color: #fff; font-weight: 700; transition: color .2s ease;
-      position: relative; padding-bottom: 4px;
-      font-size: 15px;
-    }
-    .navlist a:hover { color: var(--accent); }
-    .navlist a.active { color: var(--accent); }
-    .navlist a::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 100%; height: 2px;
-      background: var(--accent);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform .3s ease-out;
-    }
-    .navlist a:hover::after,
-    .navlist a.active::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-
-    /* ========== ハンバーガーメニュー ========== */
-    .hamburger {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-      margin-right: -8px;
-      z-index: 1100;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .hamburger-line {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: #fff;
-      margin: 6px 0;
-      border-radius: 2px;
-      transition: transform .3s ease, opacity .3s ease;
-    }
-    .hamburger.is-active .hamburger-line:nth-child(1) {
-      transform: translateY(8px) rotate(45deg);
-    }
-    .hamburger.is-active .hamburger-line:nth-child(2) {
-      opacity: 0;
-    }
-    .hamburger.is-active .hamburger-line:nth-child(3) {
-      transform: translateY(-8px) rotate(-45deg);
-    }
-
-    @media (max-width: 640px) {
-      .hamburger { display: block; }
-      .navlist {
-        position: fixed;
-        top: 0; right: 0;
-        width: 70vw;
-        max-width: 280px;
-        height: 100dvh;
-        flex-direction: column;
-        background: rgba(18, 18, 18, 0.97);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        padding: calc(var(--header-h) + 32px) 32px 32px;
-        gap: 0;
-        transform: translateX(100%);
-        transition: transform .35s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: -4px 0 24px rgba(0, 0, 0, 0.3);
-      }
-      .navlist.is-open {
-        transform: translateX(0);
-      }
-      .navlist li { border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-      .navlist a {
-        display: block;
-        padding: 16px 0;
-        font-size: 18px;
-      }
-      .navlist a::after { display: none; }
-      .nav-overlay {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity .3s ease, visibility .3s ease;
-        z-index: 999;
-      }
-      .nav-overlay.is-visible {
-        opacity: 1;
-        visibility: visible;
-      }
-    }
-
-    /* ========== ヒーロー ========== */
-    .hero {
-      position: relative;
-      color: #fff;
-      padding: 100px 0 80px;
-      text-align: center;
-      overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: url('img/hero-background.jpg') center center / cover no-repeat;
-      filter: brightness(0.45);
-      z-index: -1;
-      transform: scale(1.05);
-      animation: zoomInBg 10s ease-out forwards;
-    }
-    @keyframes zoomInBg {
-      to { transform: scale(1); }
-    }
-    .hero-content {
-      position: relative;
-      opacity: 0; animation: fadeInFromTop 1s ease-out forwards; animation-delay: 0.3s;
-    }
-    @keyframes fadeInFromTop {
-      to { opacity: 1; }
-    }
-    .hero-subtitle {
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 8px;
-      letter-spacing: 0.08em;
-      font-size: clamp(14px, 3vw, 18px);
-    }
-    .hero h1 {
-      font-size: clamp(28px, 6vw, 56px);
-      font-weight: 900;
-      margin-bottom: 16px;
-      text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-      letter-spacing: -0.02em;
-    }
-    .hero p {
-      font-size: clamp(15px, 2.5vw, 20px);
-      color: #d0d0d0;
-      max-width: 600px;
-      margin: 8px auto 40px;
+      font-family: Inter, "Noto Sans JP", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 90% -10%, rgba(79, 209, 255, 0.15), transparent),
+        radial-gradient(1000px 600px at -20% 20%, rgba(139, 123, 255, 0.16), transparent),
+        var(--bg);
       line-height: 1.7;
     }
-    .cta-group {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .cta {
-      display: inline-block;
-      padding: 14px 32px;
-      background: var(--accent);
-      color: #fff;
-      font-weight: 800;
-      border-radius: 999px;
-      font-size: 16px;
-      transition: background .3s ease, transform .2s ease, box-shadow .3s ease;
-      min-height: 48px;
-    }
-    .cta:hover {
-      background: var(--accent-strong);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-    }
-    .cta:active { transform: translateY(0); }
-    .cta-secondary {
-      display: inline-block;
-      padding: 12px 28px;
-      border: 2px solid var(--accent);
-      color: #fff;
-      font-weight: 700;
-      font-size: 16px;
-      border-radius: 999px;
-      transition: background .3s ease, color .3s ease;
-      min-height: 48px;
-    }
-    .cta-secondary:hover {
-      background: var(--accent);
-      color: #fff;
-    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
 
-    /* ========== セクション見出し ========== */
-    .section-title {
-      font-size: clamp(24px, 4vw, 36px);
-      border-left: 6px solid var(--accent);
-      padding-left: 16px;
-      margin-bottom: 32px;
-      font-weight: 900;
+    header {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(11,16,32,0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: .25s ease;
     }
-    .muted { color: var(--muted); }
+    header.scrolled { border-color: var(--border); background: rgba(11,16,32,0.9); }
+    .nav { min-height: 72px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .brand { font-weight: 800; letter-spacing: .04em; }
+    .nav-links { display:flex; gap:20px; flex-wrap: wrap; }
+    .nav-links a { color: var(--muted); font-weight: 600; font-size: 14px; }
+    .nav-links a.active, .nav-links a:hover { color: var(--accent); }
 
-    /* ========== About ========== */
-    .about {
-      display: grid; gap: 32px; align-items: start;
-      grid-template-columns: 1fr 1.5fr;
-      background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
-      padding: 36px;
+    .hero { padding: 88px 0 56px; position: relative; overflow: hidden; }
+    .hero-grid { display:grid; grid-template-columns: 1.25fr .85fr; gap: 28px; align-items: center; }
+    .badge { display:inline-block; padding: 6px 12px; border:1px solid var(--border); border-radius:999px; color: var(--accent); font-size: 12px; letter-spacing: .05em; }
+    h1 { font-size: clamp(32px, 6vw, 54px); line-height:1.15; margin: 14px 0 18px; }
+    .lead { color: var(--muted); max-width: 52ch; }
+    .cta-wrap { display:flex; gap:12px; margin-top: 24px; flex-wrap: wrap; }
+    .btn { padding: 12px 18px; border-radius: 12px; border:1px solid var(--border); font-weight:700; display:inline-block; }
+    .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #06111e; border: none; }
+    .btn:hover { transform: translateY(-1px); }
+    .hero-card {
+      background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 22px;
     }
-    .about .panel { padding: 8px 0; }
-    .about h3 { font-size: 20px; }
-    .about ul { list-style: none; padding: 0; }
-    .about li { position: relative; padding-left: 24px; margin-bottom: 12px; line-height: 1.7; }
-    .about li:before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
-    @media (max-width: 880px) {
-      .about { grid-template-columns: 1fr; padding: 24px; }
-    }
+    .kpi { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+    .kpi b { font-size: 24px; display:block; color: var(--ok); }
+    .kpi span { color: var(--muted); font-size: 12px; }
 
-    /* ========== Works ========== */
-    .grid {
-      display: grid; gap: 24px;
-      grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
-    }
-    .card {
-      background: var(--surface); border-radius: var(--radius); overflow: hidden;
-      box-shadow: var(--shadow); transition: transform .3s ease, box-shadow .3s ease;
-      cursor: pointer;
-    }
-    .card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15); }
-    .card:active { transform: translateY(-1px); }
-    .card img { aspect-ratio: 16 / 10; object-fit: cover; width: 100%; }
-    .card-body { padding: 16px 20px 20px; }
-    .card h3 { font-size: 19px; margin-bottom: 8px; }
-    .tag-group { margin-bottom: 10px; }
-    .tag {
-      display: inline-block; font-size: 13px; padding: 4px 10px; border-radius: 999px;
-      background: rgba(230, 126, 34, 0.15); color: var(--accent-strong); font-weight: 700;
-      margin-right: 6px; margin-bottom: 6px;
-    }
-    .meta { font-size: 13px; color: var(--muted); margin-top: 8px; }
+    section { padding: 34px 0; }
+    .section-title { font-size: clamp(24px, 3.5vw, 36px); margin: 8px 0 20px; }
+    .section-sub { color: var(--muted); margin: 0 0 24px; }
 
-    /* ========== Contact ========== */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.5fr;
-      gap: 36px;
-      background: var(--surface);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 36px;
-    }
-    @media (max-width: 880px) {
-      .contact-grid { grid-template-columns: 1fr; padding: 24px; }
-    }
-    .contact-info h3 { font-size: 20px; }
-    .contact-info .link { color: var(--accent-strong); font-weight: 700; transition: text-decoration .2s ease; word-break: break-all; }
-    .contact-info .link:hover { text-decoration: underline; }
-    .social-links { margin-top: 20px; display: flex; gap: 16px; }
-    .social-links a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: rgba(128, 128, 128, 0.1);
-      transition: color .2s ease, transform .2s ease, background .2s ease;
-      color: var(--fg);
-    }
-    .social-links a:hover { color: var(--accent); transform: translateY(-2px); background: rgba(230, 126, 34, 0.1); }
-    .social-links a svg { width: 22px; height: 22px; }
+    .values { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 18px; }
+    .card h3 { margin: 8px 0; }
+    .card p { color: var(--muted); margin: 0; }
 
-    .form-group { margin-bottom: 20px; }
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 700;
-      font-size: 15px;
-    }
-    .form-group input,
-    .form-group textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: inherit;
-      font-size: 16px;
-      transition: border-color .2s ease, box-shadow .2s ease;
-      -webkit-appearance: none;
-      appearance: none;
-    }
-    .form-group input:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2);
-    }
-    .form-group textarea { resize: vertical; min-height: 120px; }
-    .contact-form .cta {
-      width: 100%;
-      border: none;
-      cursor: pointer;
-      font-size: 17px;
-      color: #fff;
-      font-family: inherit;
-    }
-    .form-note {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 12px;
-      text-align: center;
-    }
+    .proof { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .logos { display:grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+    .logo { border:1px dashed var(--border); border-radius:10px; text-align:center; padding:14px; color: var(--muted); }
 
-    /* ========== フッター ========== */
-    footer {
-      text-align: center; color: var(--muted); padding: 40px 0 48px;
-      font-size: 14px;
-    }
+    .filter { display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 14px; }
+    .chip { border:1px solid var(--border); background: transparent; color: var(--muted); border-radius: 999px; padding: 8px 12px; cursor:pointer; }
+    .chip.active { background: rgba(79, 209, 255, .18); color: var(--accent); border-color: rgba(79, 209, 255, .45); }
+    .projects { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+    .project img { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 10px; }
+    .meta { color: var(--muted); font-size: 13px; }
 
-    /* ========== モーダル ========== */
-    .modal-overlay {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(18, 18, 18, 0.85);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; visibility: hidden;
-      transition: opacity .3s ease, visibility .3s ease;
-      z-index: 2000;
-      padding: 16px;
-    }
-    .modal-overlay.is-visible {
-      opacity: 1; visibility: visible;
-    }
-    .modal-content {
-      background: var(--surface);
-      border-radius: var(--radius);
-      padding: 24px;
-      width: 100%;
-      max-width: 720px;
-      max-height: 85dvh;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      position: relative;
-      transform: translateY(20px) scale(0.97);
-      transition: transform .3s ease;
-    }
-    .modal-overlay.is-visible .modal-content {
-      transform: translateY(0) scale(1);
-    }
-    .modal-close {
-      position: sticky; top: 0; float: right;
-      background: var(--surface); border: none; font-size: 28px;
-      cursor: pointer; color: var(--fg);
-      padding: 4px 8px; line-height: 1;
-      opacity: 0.7;
-      transition: opacity .2s ease;
-      border-radius: 50%;
-      z-index: 1;
-      min-width: 44px;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-close:hover { opacity: 1; }
-    .modal-img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      aspect-ratio: 16 / 10;
-      object-fit: cover;
-    }
-    .modal-body h3 { font-size: clamp(20px, 3vw, 26px); margin-bottom: 8px; }
-    .modal-body .tag-group { margin-bottom: 16px; }
-    .modal-body p { margin-bottom: 16px; line-height: 1.8; }
-    .modal-body .meta { margin-top: 20px; }
+    .timeline { display:grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
+    .stack { display:grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
 
-    /* ========== モバイル向けの追加調整 ========== */
-    @media (max-width: 640px) {
-      :root {
-        --header-h: 56px;
-      }
-      .container { padding: 0 16px; }
-      .section { padding: 48px 0; }
-      .hero { padding: 72px 0 64px; }
-      .hero h1 br { display: none; }
-      .cta-group { flex-direction: column; gap: 12px; }
-      .cta, .cta-secondary { width: 100%; max-width: 280px; text-align: center; }
-      .section-title { margin-bottom: 24px; }
-      .about { padding: 20px; gap: 24px; }
-      .about h3 { font-size: 18px; }
-      .grid { gap: 16px; }
-      .card-body { padding: 14px 16px 16px; }
-      .card h3 { font-size: 17px; }
-      .contact-grid { padding: 20px; gap: 28px; }
-      .contact-info h3 { font-size: 18px; }
-      .modal-overlay { padding: 8px; }
-      .modal-content {
-        padding: 20px 16px;
-        max-height: 90dvh;
-        border-radius: 16px 16px 0 0;
-        align-self: flex-end;
-      }
-      footer { padding: 32px 0 40px; }
-    }
+    .pricing { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+    .price { font-size: 28px; font-weight: 800; margin: 8px 0; }
 
-    @media (max-width: 360px) {
-      .hero h1 { font-size: 24px; }
-      .hero p { font-size: 14px; }
-      .about { padding: 16px; }
-      .contact-grid { padding: 16px; }
-    }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { width:100%; text-align:left; background:none; border:none; color: var(--text); font-size: 16px; font-weight: 700; padding: 14px 0; cursor:pointer; }
+    .faq-a { max-height: 0; overflow:hidden; color: var(--muted); transition: max-height .22s ease; }
+    .faq-item.open .faq-a { max-height: 160px; }
 
-    /* safe area対応（ノッチ付きデバイス） */
-    @supports (padding: env(safe-area-inset-bottom)) {
-      footer {
-        padding-bottom: calc(48px + env(safe-area-inset-bottom));
-      }
-      .modal-content {
-        padding-bottom: calc(24px + env(safe-area-inset-bottom));
-      }
-      .navlist {
-        padding-bottom: env(safe-area-inset-bottom);
-      }
+    .news { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:12px; }
+    .cta-banner { display:flex; justify-content:space-between; gap:16px; align-items:center; padding: 20px; background: linear-gradient(135deg, rgba(79, 209, 255,.16), rgba(139,123,255,.2)); border:1px solid var(--border); border-radius: var(--radius); }
+
+    footer { padding: 30px 0 50px; color: var(--muted); font-size: 14px; }
+
+    .modal {
+      position: fixed; inset: 0; background: rgba(2, 6, 14, .72); display:none; place-items:center; z-index:2000;
     }
+    .modal.open { display:grid; }
+    .modal-panel { width:min(740px, calc(100% - 28px)); background: #101a32; border:1px solid var(--border); border-radius: 14px; padding: 18px; }
+    .modal-panel img { width:100%; border-radius:10px; margin-bottom: 10px; }
+
+    @media (max-width: 980px) {
+      .hero-grid, .proof { grid-template-columns: 1fr; }
+      .values, .projects, .timeline, .stack, .pricing, .news { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 680px) {
+      .container { width: calc(100% - 28px); }
+      .nav { min-height: 62px; }
+      .nav-links { display:none; }
+      .values, .projects, .timeline, .stack, .pricing, .news { grid-template-columns: 1fr; }
+      .cta-banner { flex-direction: column; align-items: start; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">本文へスキップ</a>
-
-  <!-- ナビゲーション用オーバーレイ -->
-  <div class="nav-overlay" id="nav-overlay"></div>
-
-  <header>
-    <nav class="container">
-      <div class="inner">
-        <div class="brand">山田太郎</div>
-        <button class="hamburger" id="hamburger" aria-label="メニューを開く" aria-expanded="false">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-        </button>
-        <ul class="navlist" id="navlist" aria-label="サイト内ナビゲーション">
-          <li><a href="#about">自己紹介</a></li>
-          <li><a href="#works">作品</a></li>
-          <li><a href="#contact">連絡先</a></li>
-        </ul>
-      </div>
-    </nav>
+  <header id="header">
+    <div class="container nav">
+      <a class="brand" href="#hero">TARO YAMADA / STUDIO</a>
+      <nav class="nav-links">
+        <a href="#value">Value</a>
+        <a href="#projects">Projects</a>
+        <a href="#process">Process</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
   </header>
 
   <section class="hero" id="hero">
-    <div class="hero-bg"></div>
-    <div class="container hero-content">
-      <p class="hero-subtitle">小説家 × UI/UXデザイナー</p>
-      <h1>言葉とデザインで、<br>心を動かす物語を創造する。</h1>
-      <p>物語の構造設計とユーザー体験の接続を専門とする、山田太郎のポートフォリオサイトです。</p>
-      <div class="cta-group">
-        <a class="cta" href="#works" aria-label="作品一覧へ移動">作品を見る</a>
-        <a class="cta-secondary" href="#about">提供価値を見る</a>
+    <div class="container hero-grid">
+      <div>
+        <span class="badge">PLAN C / PRODUCTION GRADE TOP PAGE</span>
+        <h1>成果に直結する、
+          <br>動的で信頼されるホームページへ。</h1>
+        <p class="lead">戦略設計・UI/UX・実装品質を統合し、見た目だけでなくCVに効くトップページを構築します。main単体から多ページ/CMS/多言語へ段階拡張可能です。</p>
+        <div class="cta-wrap">
+          <a class="btn primary" href="#projects">事例を見る</a>
+          <a class="btn" href="#contact">無料相談する</a>
+        </div>
       </div>
+      <aside class="hero-card">
+        <h3>Performance Snapshot</h3>
+        <p class="meta">初期目標値（Plan C仕様準拠）</p>
+        <div class="kpi">
+          <div><b data-count="42">0</b><span>導入PJ</span></div>
+          <div><b data-count="93">0</b><span>継続率(%)</span></div>
+          <div><b data-count="138">0</b><span>改善施策数</span></div>
+        </div>
+      </aside>
     </div>
   </section>
 
-  <main id="main" class="container">
-    <section id="about" class="section fade-in" aria-labelledby="about-title">
-      <h2 id="about-title" class="section-title">自己紹介</h2>
-      <div class="about">
-        <div class="panel">
-          <h3>山田太郎 / コンテンツデザイナー</h3>
-          <p class="muted">執筆・編集・UI設計を横断し、物語の構造とユーザー体験を繋げる専門家です。</p>
-          <p>受賞歴、掲載媒体、クライアント、具体的な数字（例：部数、PV、納期短縮率）などを記載し、実績の説得力を高めます。</p>
+  <main class="container">
+    <section id="value">
+      <h2 class="section-title">Value Proposition</h2>
+      <p class="section-sub">成果を生むために必要な4要素を、スピードと品質の両立で提供します。</p>
+      <div class="values">
+        <article class="card"><h3>戦略設計</h3><p>訴求・導線・検証KPIを一貫設計。</p></article>
+        <article class="card"><h3>表現品質</h3><p>ブランドと一貫した高精度ビジュアル。</p></article>
+        <article class="card"><h3>実装速度</h3><p>段階開発で最短の価値提供を実現。</p></article>
+        <article class="card"><h3>運用拡張</h3><p>CMS・多言語・分析連携を前提に構築。</p></article>
+      </div>
+    </section>
+
+    <section id="proof">
+      <h2 class="section-title">Social Proof</h2>
+      <div class="proof">
+        <div class="card">
+          <h3>導入企業</h3>
+          <div class="logos">
+            <div class="logo">ALPHA Inc.</div><div class="logo">NOVA Labs</div><div class="logo">Kairo Co.</div>
+            <div class="logo">Sonic LLC</div><div class="logo">Mira Works</div><div class="logo">Axis Group</div>
+          </div>
         </div>
-        <div class="panel">
-          <h3>提供できる価値</h3>
-          <ul>
-            <li>ユーザーを惹きつけるストーリーテリングと、WebサイトのUI/UX設計</li>
-            <li>読みやすく、SEOに強いWebライティングと、LP（ランディングページ）構成</li>
-            <li>ユーザーの行動を促すための、コンテンツ設計と改善提案</li>
-          </ul>
+        <div class="card">
+          <h3>クライアントコメント</h3>
+          <p>「トップページ刷新後、問い合わせ率が前年比 2.1倍。説明のわかりやすさと信頼感が大きく向上しました。」</p>
+          <p class="meta">B2B SaaS / Marketing Director</p>
         </div>
       </div>
     </section>
 
-    <section id="works" class="section fade-in" aria-labelledby="works-title">
-      <h2 id="works-title" class="section-title">作品一覧</h2>
-      <div class="grid">
-        <article class="card"
-          data-title="作品タイトルA"
-          data-tags='["小説", "長編"]'
-          data-desc="〇〇賞を受賞した長編小説です。主要ターゲットを男性に設定し、読了率90%を達成しました。このプロジェクトでは、読者の没入感を最大限に高めるため、伏線の配置と回収のタイミングを緻密に設計。キャラクターの心理描写にも注力し、多くの読者から共感の声が寄せられました。"
-          data-meta="担当範囲: 企画・構成・執筆 | 公開: 2025"
-          data-img="img/9be6df29cc.jpg">
-          <img src="img/9be6df29cc.jpg" alt="作品サムネイル1" width="800" height="500" loading="lazy" decoding="async">
-          <div class="card-body">
-            <div class="tag-group">
-              <span class="tag">小説</span>
-              <span class="tag">長編</span>
-            </div>
-            <h3>作品タイトルA</h3>
-            <p class="muted">〇〇賞を受賞した長編小説です。主要ターゲットを男性に設定し、読了率90%を達成しました。</p>
-            <p class="meta">担当範囲: 企画・構成・執筆 | 公開: 2025</p>
-          </div>
-        </article>
-
-        <article class="card"
-          data-title="作品タイトルB"
-          data-tags='["Webライティング", "短編"]'
-          data-desc="〇〇社オウンドメディア掲載の短編小説。〇〇というテーマで、SNSで1,000以上の反響を獲得しました。ターゲット層が関心を持つテーマ設定と、シェアされやすい感動的な結末を意識して執筆。結果として、記事公開後1週間でサイトへの新規流入が前月比200%を記録しました。"
-          data-meta="担当範囲: 企画・執筆 | 公開: 2024"
-          data-img="img/68f3e25bbc.jpg">
-          <img src="img/68f3e25bbc.jpg" alt="作品サムネイル2" width="800" height="500" loading="lazy" decoding="async">
-          <div class="card-body">
-            <div class="tag-group">
-              <span class="tag">Webライティング</span>
-              <span class="tag">短編</span>
-            </div>
-            <h3>作品タイトルB</h3>
-            <p class="muted">〇〇社オウンドメディア掲載の短編小説。〇〇というテーマで、SNSで1,000以上の反響を獲得しました。</p>
-            <p class="meta">担当範囲: 企画・執筆 | 公開: 2024</p>
-          </div>
-        </article>
-
-        <article class="card"
-          data-title="作品タイトルC"
-          data-tags='["UI/UXデザイン", "連載"]'
-          data-desc="〇〇社様のウェブサイトにおけるUX改善を担当。回遊率を15%向上させました。ユーザーインタビューを通じてペインポイントを特定し、ナビゲーション構造とコンテンツ配置を全面的に見直しました。特に、記事の読了後に関連記事への導線を最適化したことが、回遊率の向上に大きく貢献しました。"
-          data-meta="担当範囲: 構成・UI設計 | 公開: 2023"
-          data-img="img/35f86411d3.jpg">
-          <img src="img/35f86411d3.jpg" alt="作品サムネイル3" width="800" height="500" loading="lazy" decoding="async">
-          <div class="card-body">
-            <div class="tag-group">
-              <span class="tag">UI/UXデザイン</span>
-              <span class="tag">連載</span>
-            </div>
-            <h3>作品タイトルC</h3>
-            <p class="muted">〇〇社様のウェブサイトにおけるUX改善を担当。回遊率を15%向上させました。</p>
-            <p class="meta">担当範囲: 構成・UI設計 | 公開: 2023</p>
-          </div>
-        </article>
+    <section id="projects">
+      <h2 class="section-title">Featured Projects</h2>
+      <div class="filter" id="filters">
+        <button class="chip active" data-filter="all">すべて</button>
+        <button class="chip" data-filter="brand">Brand</button>
+        <button class="chip" data-filter="media">Media</button>
+        <button class="chip" data-filter="conversion">Conversion</button>
+      </div>
+      <div class="projects" id="projectList">
+        <article class="card project" data-cat="brand" data-title="ブランドサイト再設計" data-desc="Hero再設計と導線最適化で、平均滞在時間 47% 改善。" data-img="img/9be6df29cc.jpg"><img src="img/9be6df29cc.jpg" alt="事例1"><h3>ブランドサイト再設計</h3><p class="meta">Brand / 2025</p></article>
+        <article class="card project" data-cat="media" data-title="オウンドメディア刷新" data-desc="カテゴリ導線と記事テンプレ改善でPV 2.4倍。" data-img="img/68f3e25bbc.jpg"><img src="img/68f3e25bbc.jpg" alt="事例2"><h3>オウンドメディア刷新</h3><p class="meta">Media / 2024</p></article>
+        <article class="card project" data-cat="conversion" data-title="LP最適化プロジェクト" data-desc="CTA配置と文脈改善でCVR 1.8倍を達成。" data-img="img/35f86411d3.jpg"><img src="img/35f86411d3.jpg" alt="事例3"><h3>LP最適化プロジェクト</h3><p class="meta">Conversion / 2025</p></article>
       </div>
     </section>
 
-    <section id="contact" class="section fade-in" aria-labelledby="contact-title">
-      <h2 id="contact-title" class="section-title">お問い合わせ</h2>
-      <div class="contact-grid">
-        <div class="contact-info">
-          <h3>お気軽にご連絡ください</h3>
-          <p>お仕事のご相談、ご質問、創作に関するお話など、下記フォームまたはメールにてお待ちしております。</p>
-          <p>
-            <a class="link" href="mailto:taro.yamada.creative@example.com">taro.yamada.creative@example.com</a>
-          </p>
-          <div class="social-links">
-            <a href="#" aria-label="X（旧Twitter）" title="X"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a>
-            <a href="#" aria-label="GitHub" title="GitHub"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" fill="currentColor"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3.3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.3-6.2-10.1-27.8 2.3-57.4 0 0 21.1-6.9 69.1 25.8 20.1-5.6 41.6-8.4 63.1-8.4s43 2.8 63.1 8.4c48-32.6 69.1-25.8 69.1-25.8 12.4 29.6 4.6 51.2 2.3 57.4 16 17.6 23.6 31.4 23.6 58.9 0 96.5-56.4 104.2-112.6 110.2 9.1 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7z"/></svg></a>
-          </div>
+    <section id="process">
+      <h2 class="section-title">Process</h2>
+      <div class="timeline">
+        <article class="card"><h3>1. Discovery</h3><p>課題・KPI・競合を確認。</p></article>
+        <article class="card"><h3>2. Strategy</h3><p>訴求設計と情報設計を定義。</p></article>
+        <article class="card"><h3>3. Production</h3><p>デザイン・実装・レビュー実施。</p></article>
+        <article class="card"><h3>4. Growth</h3><p>計測改善で成果を継続的に向上。</p></article>
+      </div>
+    </section>
+
+    <section id="stack">
+      <h2 class="section-title">Technology Stack</h2>
+      <div class="stack">
+        <div class="card">Frontend<br><span class="meta">HTML / CSS / JS</span></div>
+        <div class="card">Animation<br><span class="meta">GSAP / Motion</span></div>
+        <div class="card">Analytics<br><span class="meta">GA4 / GSC</span></div>
+        <div class="card">CMS<br><span class="meta">Headless CMS</span></div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <h2 class="section-title">Pricing Plan</h2>
+      <div class="pricing">
+        <article class="card"><h3>Starter</h3><div class="price">¥300k〜</div><p class="meta">小規模刷新 / 最短導入</p></article>
+        <article class="card"><h3>Growth</h3><div class="price">¥700k〜</div><p class="meta">戦略 + 実装 + 計測改善</p></article>
+        <article class="card"><h3>Enterprise</h3><div class="price">Custom</div><p class="meta">多拠点 / 多言語 / CMS連携</p></article>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="card">
+        <div class="faq-item"><button class="faq-q">どこまで対応可能ですか？</button><div class="faq-a"><p>戦略設計、デザイン、実装、計測改善まで一気通貫で対応可能です。</p></div></div>
+        <div class="faq-item"><button class="faq-q">公開後の改善は可能ですか？</button><div class="faq-a"><p>可能です。定例レビューでKPIを監視し、改善施策を提案します。</p></div></div>
+        <div class="faq-item"><button class="faq-q">mainのみ構成でも進められますか？</button><div class="faq-a"><p>はい。main単体から開始し、段階的にページ分割やCMS化できます。</p></div></div>
+      </div>
+    </section>
+
+    <section id="news">
+      <h2 class="section-title">Insights / News</h2>
+      <div class="news">
+        <article class="card"><h3>CVに効くHero設計</h3><p class="meta">2026-02-01 / UX</p></article>
+        <article class="card"><h3>Lighthouse改善実践</h3><p class="meta">2026-01-22 / Performance</p></article>
+        <article class="card"><h3>B2B導線最適化</h3><p class="meta">2026-01-05 / Conversion</p></article>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="cta-banner">
+        <div>
+          <h2 class="section-title" style="margin:0 0 6px">次の一手を、最短で。</h2>
+          <p class="section-sub" style="margin:0">要件整理からでも歓迎です。まずは無料相談で現状を整理しましょう。</p>
         </div>
-        <form class="contact-form" action="#" method="POST" onsubmit="alert('フォームが送信されました（実際には送信されません）'); return false;">
-          <div class="form-group">
-            <label for="name">お名前</label>
-            <input type="text" id="name" name="name" autocomplete="name" required>
-          </div>
-          <div class="form-group">
-            <label for="email">メールアドレス</label>
-            <input type="email" id="email" name="email" autocomplete="email" inputmode="email" required>
-          </div>
-          <div class="form-group">
-            <label for="message">メッセージ</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
-          </div>
-          <button type="submit" class="cta">送信する</button>
-          <p class="form-note">ご入力いただいた情報は、お問い合わせへの返信目的以外には使用いたしません。</p>
-        </form>
+        <a class="btn primary" href="mailto:hello@example.com">無料相談する</a>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 Taro Yamada. All Rights Reserved.</p>
+    <div class="container">© <span id="year"></span> Taro Yamada Studio. All rights reserved.</div>
   </footer>
 
-  <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
-    <div class="modal-content" id="modal-content" role="dialog" aria-modal="true">
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="btn" id="closeModal">閉じる</button>
+      <img id="modalImg" src="" alt="プロジェクト画像" />
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc" class="meta"></p>
     </div>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1. ハンバーガーメニュー制御
-      const hamburger = document.getElementById('hamburger');
-      const navlist = document.getElementById('navlist');
-      const navOverlay = document.getElementById('nav-overlay');
+    const header = document.getElementById('header');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('main section, .hero');
+    const kpis = document.querySelectorAll('[data-count]');
 
-      const toggleMenu = (open) => {
-        const isOpen = typeof open === 'boolean' ? open : !navlist.classList.contains('is-open');
-        navlist.classList.toggle('is-open', isOpen);
-        hamburger.classList.toggle('is-active', isOpen);
-        navOverlay.classList.toggle('is-visible', isOpen);
-        hamburger.setAttribute('aria-expanded', isOpen);
-        hamburger.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
-        document.body.style.overflow = isOpen ? 'hidden' : '';
-      };
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 8);
+    });
 
-      hamburger.addEventListener('click', () => toggleMenu());
-      navOverlay.addEventListener('click', () => toggleMenu(false));
-
-      // メニュー内リンクをタップしたら閉じる
-      navlist.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => toggleMenu(false));
+    const secObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.id;
+        navLinks.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
       });
+    }, { threshold: 0.35 });
+    sections.forEach((s) => secObserver.observe(s));
 
-      // 2. セクションのフェードイン処理
-      const fadeInObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-
-      document.querySelectorAll('.fade-in').forEach(el => fadeInObserver.observe(el));
-
-      // 3. ナビゲーションのアクティブ追従
-      const navLinks = document.querySelectorAll('.navlist a');
-      const sections = document.querySelectorAll('section[id]');
-
-      const navObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const id = entry.target.id;
-            navLinks.forEach(link => {
-              link.classList.remove('active');
-              if (link.getAttribute('href') === `#${id}`) {
-                link.classList.add('active');
-              }
-            });
-          }
-        });
-      }, { rootMargin: '-50% 0px -50% 0px' });
-
-      sections.forEach(sec => navObserver.observe(sec));
-
-      // 4. 作品詳細モーダル処理
-      const modalOverlay = document.getElementById('modal-overlay');
-      const modalContent = document.getElementById('modal-content');
-
-      document.querySelectorAll('.card[data-title]').forEach(card => {
-        card.addEventListener('click', () => {
-          const title = card.dataset.title;
-          const tags = JSON.parse(card.dataset.tags);
-          const desc = card.dataset.desc;
-          const meta = card.dataset.meta;
-          const img = card.dataset.img;
-
-          const tagsHTML = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-
-          modalContent.innerHTML = `
-            <button class="modal-close" id="modal-close" aria-label="閉じる">&times;</button>
-            <img src="${img}" alt="${title}の画像" class="modal-img" loading="lazy">
-            <div class="modal-body">
-              <div class="tag-group">${tagsHTML}</div>
-              <h3>${title}</h3>
-              <p class="muted">${desc}</p>
-              <p class="meta">${meta}</p>
-            </div>
-          `;
-
-          modalOverlay.classList.add('is-visible');
-          modalOverlay.setAttribute('aria-hidden', 'false');
-          document.body.style.overflow = 'hidden';
-          document.getElementById('modal-close').focus();
-        });
+    const kpiObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const target = Number(el.dataset.count);
+        let n = 0;
+        const t = setInterval(() => {
+          n += Math.max(1, Math.ceil(target / 30));
+          if (n >= target) { n = target; clearInterval(t); }
+          el.textContent = n;
+        }, 28);
+        obs.unobserve(el);
       });
+    }, { threshold: .6 });
+    kpis.forEach((k) => kpiObserver.observe(k));
 
-      // モーダルを閉じる処理
-      const closeModal = () => {
-        modalOverlay.classList.remove('is-visible');
-        modalOverlay.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-      };
-
-      modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay || e.target.closest('#modal-close')) {
-          closeModal();
-        }
-      });
-
-      // Escキーでモーダルを閉じる
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          if (modalOverlay.classList.contains('is-visible')) {
-            closeModal();
-          }
-          if (navlist.classList.contains('is-open')) {
-            toggleMenu(false);
-          }
-        }
+    const chips = document.querySelectorAll('.chip');
+    const cards = document.querySelectorAll('.project');
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        const f = chip.dataset.filter;
+        cards.forEach((card) => {
+          card.style.display = (f === 'all' || card.dataset.cat === f) ? '' : 'none';
+        });
       });
     });
+
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalImg = document.getElementById('modalImg');
+    document.querySelectorAll('.project').forEach((p) => {
+      p.addEventListener('click', () => {
+        modalTitle.textContent = p.dataset.title;
+        modalDesc.textContent = p.dataset.desc;
+        modalImg.src = p.dataset.img;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+      });
+    });
+    document.getElementById('closeModal').addEventListener('click', () => {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    });
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    document.querySelectorAll('.faq-q').forEach((btn) => {
+      btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
