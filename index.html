@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>山田太郎 | Professional Experience Design</title>
-  <meta name="description" content="高齢者にもやさしい設計で、課題と解決策を視覚化するプロ仕様のトップページ。" />
+  <meta name="description" content="視認性と操作性に優れ、課題と解決策を視覚化するプロ仕様のトップページ。" />
   <style>
     :root {
       --bg: #f4f7fb;
@@ -19,7 +19,7 @@
       --max: 1160px;
       --radius: 16px;
       --shadow: 0 10px 30px rgba(9, 36, 78, 0.08);
-      --base-size: 18px;
+      --base-size: 19px;
     }
     body.hc {
       --bg: #ffffff;
@@ -67,7 +67,7 @@
     .hero { padding: 64px 0 36px; }
     .hero-grid { display:grid; grid-template-columns: 1.2fr .8fr; gap: 18px; align-items: stretch; }
     .card { background: var(--panel); border: 2px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; }
-    .label { display:inline-block; font-size: 14px; font-weight: 700; background: var(--accent-soft); color: var(--accent); padding: 6px 10px; border-radius: 999px; }
+    .label { display:inline-block; font-size: 16px; font-weight: 700; background: var(--accent-soft); color: var(--accent); padding: 8px 12px; border-radius: 999px; }
     h1 { margin: 12px 0 14px; line-height: 1.25; font-size: clamp(30px, 5vw, 50px); }
     .lead { color: var(--muted); }
     .cta { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
@@ -75,13 +75,13 @@
 
     section { padding: 26px 0; }
     h2 { margin: 0 0 14px; font-size: clamp(26px, 4vw, 36px); }
-    .sub { margin: 0 0 16px; color: var(--muted); }
+    .sub { margin: 0 0 16px; color: var(--muted); font-size: 18px; }
 
     .grid-3 { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
     .grid-4 { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; }
 
     .metric b { font-size: 34px; color: var(--ok); display:block; line-height: 1.2; }
-    .metric span { color: var(--muted); font-size: 15px; }
+    .metric span { color: var(--muted); font-size: 17px; }
 
     .flow { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
     .flow .card { position:relative; }
@@ -94,12 +94,12 @@
 
     .project img { border-radius: 10px; margin-bottom: 10px; aspect-ratio: 16/10; object-fit: cover; }
     .chips { display:flex; gap:8px; flex-wrap: wrap; margin-bottom: 10px; }
-    .chip { border: 2px solid var(--border); background: #fff; color: var(--muted); border-radius: 999px; padding: 8px 12px; cursor:pointer; min-height: 44px; }
+    .chip { border: 2px solid var(--border); background: #fff; color: var(--muted); border-radius: 999px; padding: 10px 14px; cursor:pointer; min-height: 48px; font-size: 17px; }
     .chip.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
 
     .faq-item + .faq-item { margin-top: 8px; }
-    .faq-q { width:100%; text-align:left; background:#fff; border:2px solid var(--border); border-radius:10px; padding: 14px; font-size: 18px; font-weight: 700; cursor:pointer; }
-    .faq-a { display:none; padding: 10px 12px 6px; color: var(--muted); }
+    .faq-q { width:100%; text-align:left; background:#fff; border:2px solid var(--border); border-radius:10px; padding: 16px; font-size: 20px; font-weight: 700; cursor:pointer; }
+    .faq-a { display:none; padding: 12px 14px 8px; color: var(--muted); font-size: 18px; }
     .faq-item.open .faq-a { display:block; }
 
     .contact { display:flex; justify-content: space-between; gap: 12px; align-items: center; }
@@ -156,7 +156,7 @@
       <div class="card">
         <span class="label">Professional / Accessible / Conversion</span>
         <h1>「なぜ良いのか」がすぐ伝わる。
-          <br>高齢者にも使いやすい、プロ品質のトップページ。</h1>
+          <br>誰にとっても使いやすい、プロ品質のトップページ。</h1>
         <p class="lead">情報を詰め込むのではなく、課題→解決→成果を視覚化。文字サイズ・コントラスト・タップしやすさを最初から設計し、誰でも迷わず行動できる導線をつくります。</p>
         <div class="cta">
           <a href="#solution" class="btn primary">解決策を見る</a>
@@ -180,7 +180,7 @@
       <h2>なぜこの設計が良いのか（課題の見える化）</h2>
       <p class="sub">よくある失敗を明確化し、どこでユーザーが困るのかを先に示します。</p>
       <div class="grid-3">
-        <article class="card pain"><h3>文字が小さく読みにくい</h3><p>特に高齢者は情報取得に時間がかかり、途中離脱につながります。</p></article>
+        <article class="card pain"><h3>文字が小さく読みにくい</h3><p>小さな文字や情報密度の高さは、読解負担を増やし途中離脱につながります。</p></article>
         <article class="card pain"><h3>どこを押せばよいか不明</h3><p>導線が曖昧だと、目的行動（相談・問い合わせ）に進めません。</p></article>
         <article class="card pain"><h3>価値が抽象的で伝わらない</h3><p>「何が解決できるか」が見えないと、信頼形成が進みません。</p></article>
       </div>
@@ -197,7 +197,7 @@
       <div class="grid-3" style="margin-top:12px">
         <article class="card effect"><h3>理解速度の向上</h3><p>「何を提供しているか」が短時間で把握できます。</p></article>
         <article class="card effect"><h3>問い合わせ率の向上</h3><p>導線が明確なため、相談までの心理的負担が下がります。</p></article>
-        <article class="card effect"><h3>高齢者にも公平な体験</h3><p>視認性・操作性を重視し、年齢に依存しない利用体験を実現します。</p></article>
+        <article class="card effect"><h3>誰にとっても公平な体験</h3><p>視認性・操作性を重視し、利用環境に依存しない体験を実現します。</p></article>
       </div>
     </section>
 
@@ -205,12 +205,12 @@
       <h2>実績（課題と解決の具体例）</h2>
       <div class="chips">
         <button class="chip active" data-filter="all">すべて</button>
-        <button class="chip" data-filter="accessibility">高齢者配慮</button>
+        <button class="chip" data-filter="accessibility">視認性最適化</button>
         <button class="chip" data-filter="conversion">CV改善</button>
         <button class="chip" data-filter="branding">ブランド訴求</button>
       </div>
       <div class="grid-3" id="projectList">
-        <article class="card project" data-cat="accessibility" data-title="自治体サイト再設計" data-desc="文字サイズ調整・高コントラスト・大きなボタンで、手続き完遂率が向上。" data-img="img/9be6df29cc.jpg"><img src="img/9be6df29cc.jpg" alt="自治体サイト再設計"><h3>自治体サイト再設計</h3><p class="sub">高齢者配慮 / 完遂率 +31%</p></article>
+        <article class="card project" data-cat="accessibility" data-title="自治体サイト再設計" data-desc="文字サイズ調整・高コントラスト・大きなボタンで、手続き完遂率が向上。" data-img="img/9be6df29cc.jpg"><img src="img/9be6df29cc.jpg" alt="自治体サイト再設計"><h3>自治体サイト再設計</h3><p class="sub">視認性最適化 / 完遂率 +31%</p></article>
         <article class="card project" data-cat="conversion" data-title="B2B相談導線最適化" data-desc="比較表とCTA再配置で、問い合わせ率を1.9倍に改善。" data-img="img/68f3e25bbc.jpg"><img src="img/68f3e25bbc.jpg" alt="B2B相談導線最適化"><h3>B2B相談導線最適化</h3><p class="sub">CV改善 / CVR 1.9x</p></article>
         <article class="card project" data-cat="branding" data-title="ブランドページ刷新" data-desc="価値訴求を課題起点で再構成し、滞在時間を47%改善。" data-img="img/35f86411d3.jpg"><img src="img/35f86411d3.jpg" alt="ブランドページ刷新"><h3>ブランドページ刷新</h3><p class="sub">ブランド訴求 / 滞在 +47%</p></article>
       </div>
@@ -219,8 +219,8 @@
     <section id="faq">
       <h2>FAQ</h2>
       <div class="faq-item">
-        <button class="faq-q">高齢者向けデザインは本当に必要ですか？</button>
-        <div class="faq-a"><p>はい。読みやすさと操作しやすさは全世代の体験を改善し、結果的にCV向上にもつながります。</p></div>
+        <button class="faq-q">視認性重視のデザインは本当に必要ですか？</button>
+        <div class="faq-a"><p>はい。読みやすさと操作しやすさはすべてのユーザー体験を改善し、結果的にCV向上にもつながります。</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q">現状のmainだけでも改善可能ですか？</button>
@@ -337,7 +337,7 @@
 
     fontBtn.addEventListener('click', () => {
       const large = document.body.classList.toggle('large-font');
-      document.documentElement.style.setProperty('--base-size', large ? '20px' : '18px');
+      document.documentElement.style.setProperty('--base-size', large ? '22px' : '19px');
       fontBtn.setAttribute('aria-pressed', String(large));
       fontBtn.textContent = large ? '標準サイズに戻す' : '文字を大きく';
     });
