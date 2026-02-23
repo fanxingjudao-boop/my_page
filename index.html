@@ -40,6 +40,21 @@
       color: var(--text);
       background: radial-gradient(900px 500px at 90% -15%, #eaf2ff, transparent), var(--bg);
     }
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: 440px;
+      height: 440px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+      filter: blur(40px);
+      opacity: 0.45;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    body::before { top: -140px; right: -100px; background: rgba(0, 95, 204, 0.18); }
+    body::after { bottom: -170px; left: -130px; background: rgba(11, 143, 87, 0.12); animation-delay: 3s; }
     a { color: inherit; text-decoration: none; }
     img { max-width: 100%; height: auto; display: block; }
     .container { width: min(var(--max), calc(100% - 36px)); margin: 0 auto; }
@@ -54,19 +69,67 @@
     .nav { min-height: 76px; display: flex; align-items:center; justify-content: space-between; gap: 14px; }
     .brand { font-weight: 800; font-size: 20px; letter-spacing: .02em; }
     .links { display: flex; gap: 18px; flex-wrap: wrap; }
-    .links a { color: var(--muted); font-weight: 700; padding: 8px 10px; border-radius: 10px; }
+    .links a { color: var(--muted); font-weight: 700; padding: 8px 10px; border-radius: 10px; transition: transform .25s ease, background-color .25s ease, color .25s ease; }
     .links a:hover, .links a.active { background: var(--accent-soft); color: var(--accent); }
+    .links a:hover { transform: translateY(-1px); }
 
     .ui-tools { display:flex; gap:8px; flex-wrap: wrap; }
     .tool-btn, .btn {
       min-height: 48px; min-width: 48px; padding: 10px 14px; border-radius: 10px;
       border: 2px solid var(--border); background: #fff; color: var(--text); font-weight: 700; cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease, background-color .24s ease;
     }
+    .tool-btn::after, .btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.85) 48%, transparent 100%);
+      transform: translateX(-120%);
+      transition: transform .55s ease;
+    }
+    .tool-btn:hover::after, .btn:hover::after { transform: translateX(120%); }
+    .tool-btn:hover, .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 18px rgba(9, 36, 78, 0.12); }
+    .tool-btn:active, .btn:active { transform: translateY(0); }
     .tool-btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+    .tool-btn:focus-visible,
+    .btn:focus-visible,
+    .chip:focus-visible,
+    .faq-q:focus-visible,
+    .links a:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--accent) 70%, white);
+      outline-offset: 2px;
+    }
 
-    .hero { padding: 64px 0 36px; }
+    .hero { padding: 64px 0 36px; position: relative; overflow: hidden; }
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: .55;
+    }
+    .hero::before {
+      width: 320px;
+      height: 320px;
+      right: -120px;
+      top: -80px;
+      background: radial-gradient(circle at 30% 30%, rgba(0,95,204,.25), transparent 70%);
+      animation: floatY 8s ease-in-out infinite;
+    }
+    .hero::after {
+      width: 260px;
+      height: 260px;
+      left: -100px;
+      bottom: -120px;
+      background: radial-gradient(circle at 60% 40%, rgba(11,143,87,.18), transparent 70%);
+      animation: floatY 10s ease-in-out infinite reverse;
+    }
     .hero-grid { display:grid; grid-template-columns: 1.2fr .8fr; gap: 18px; align-items: stretch; }
-    .card { background: var(--panel); border: 2px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; }
+    .card { background: var(--panel); border: 2px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 16px 28px rgba(9, 36, 78, 0.14); border-color: color-mix(in srgb, var(--accent) 20%, var(--border)); }
     .label { display:inline-block; font-size: 16px; font-weight: 700; background: var(--accent-soft); color: var(--accent); padding: 8px 12px; border-radius: 999px; }
     h1 { margin: 12px 0 14px; line-height: 1.25; font-size: clamp(30px, 5vw, 50px); }
     .lead { color: var(--muted); }
@@ -94,11 +157,13 @@
 
     .project img { border-radius: 10px; margin-bottom: 10px; aspect-ratio: 16/10; object-fit: cover; }
     .chips { display:flex; gap:8px; flex-wrap: wrap; margin-bottom: 10px; }
-    .chip { border: 2px solid var(--border); background: #fff; color: var(--muted); border-radius: 999px; padding: 10px 14px; cursor:pointer; min-height: 48px; font-size: 17px; }
+    .chip { border: 2px solid var(--border); background: #fff; color: var(--muted); border-radius: 999px; padding: 10px 14px; cursor:pointer; min-height: 48px; font-size: 17px; transition: transform .2s ease, border-color .2s ease, background-color .2s ease; }
+    .chip:hover { transform: translateY(-1px); }
     .chip.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
 
     .faq-item + .faq-item { margin-top: 8px; }
-    .faq-q { width:100%; text-align:left; background:#fff; border:2px solid var(--border); border-radius:10px; padding: 16px; font-size: 20px; font-weight: 700; cursor:pointer; }
+    .faq-q { width:100%; text-align:left; background:#fff; border:2px solid var(--border); border-radius:10px; padding: 16px; font-size: 20px; font-weight: 700; cursor:pointer; transition: border-color .2s ease, background-color .2s ease; }
+    .faq-item.open .faq-q { border-color: var(--accent); background: color-mix(in srgb, var(--accent-soft) 60%, #fff); }
     .faq-a { display:none; padding: 12px 14px 8px; color: var(--muted); font-size: 18px; }
     .faq-item.open .faq-a { display:block; }
 
@@ -106,10 +171,23 @@
 
     footer { padding: 20px 0 40px; color: var(--muted); }
 
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.48); display:none; place-items:center; z-index:2000; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.48); display:none; place-items:center; z-index:2000; backdrop-filter: blur(2px); }
     .modal.open { display:grid; }
-    .modal-panel { width:min(760px,calc(100% - 24px)); background:#fff; border-radius: 14px; border:2px solid var(--border); padding:16px; }
+    .modal-panel { width:min(760px,calc(100% - 24px)); background:#fff; border-radius: 14px; border:2px solid var(--border); padding:16px; transform: translateY(16px) scale(.98); opacity: 0; transition: transform .28s ease, opacity .28s ease; }
+    .modal.open .modal-panel { transform: translateY(0) scale(1); opacity: 1; }
     .modal-panel img { border-radius: 10px; margin-bottom: 8px; }
+
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    @keyframes drift {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      100% { transform: translate3d(18px, -22px, 0) scale(1.06); }
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
 
     @media (max-width: 1000px) {
       .hero-grid, .flow { grid-template-columns: 1fr; }
@@ -128,6 +206,7 @@
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
       html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; }
     }
   </style>
 </head>
@@ -151,7 +230,7 @@
     </div>
   </header>
 
-  <section id="hero" class="hero">
+    <section id="hero" class="hero reveal">
     <div class="container hero-grid">
       <div class="card">
         <span class="label">Professional / Accessible / Conversion</span>
@@ -176,7 +255,7 @@
   </section>
 
   <main id="main" class="container">
-    <section id="why">
+    <section id="why" class="reveal">
       <h2>なぜこの設計が良いのか（課題の見える化）</h2>
       <p class="sub">よくある失敗を明確化し、どこでユーザーが困るのかを先に示します。</p>
       <div class="grid-3">
@@ -186,7 +265,7 @@
       </div>
     </section>
 
-    <section id="solution">
+    <section id="solution" class="reveal">
       <h2>どうすれば解決できるのか（解決策の視覚化）</h2>
       <p class="sub">課題→解決策→成果までを1画面で追える構成にしています。</p>
       <div class="flow">
@@ -201,7 +280,7 @@
       </div>
     </section>
 
-    <section id="projects">
+    <section id="projects" class="reveal">
       <h2>実績（課題と解決の具体例）</h2>
       <div class="chips">
         <button class="chip active" data-filter="all">すべて</button>
@@ -210,29 +289,29 @@
         <button class="chip" data-filter="branding">ブランド訴求</button>
       </div>
       <div class="grid-3" id="projectList">
-        <article class="card project" data-cat="accessibility" data-title="自治体サイト再設計" data-desc="文字サイズ調整・高コントラスト・大きなボタンで、手続き完遂率が向上。" data-img="img/9be6df29cc.jpg"><img src="img/9be6df29cc.jpg" alt="自治体サイト再設計"><h3>自治体サイト再設計</h3><p class="sub">視認性最適化 / 完遂率 +31%</p></article>
-        <article class="card project" data-cat="conversion" data-title="B2B相談導線最適化" data-desc="比較表とCTA再配置で、問い合わせ率を1.9倍に改善。" data-img="img/68f3e25bbc.jpg"><img src="img/68f3e25bbc.jpg" alt="B2B相談導線最適化"><h3>B2B相談導線最適化</h3><p class="sub">CV改善 / CVR 1.9x</p></article>
-        <article class="card project" data-cat="branding" data-title="ブランドページ刷新" data-desc="価値訴求を課題起点で再構成し、滞在時間を47%改善。" data-img="img/35f86411d3.jpg"><img src="img/35f86411d3.jpg" alt="ブランドページ刷新"><h3>ブランドページ刷新</h3><p class="sub">ブランド訴求 / 滞在 +47%</p></article>
+        <article class="card project" tabindex="0" role="button" aria-label="自治体サイト再設計の詳細を開く" data-cat="accessibility" data-title="自治体サイト再設計" data-desc="文字サイズ調整・高コントラスト・大きなボタンで、手続き完遂率が向上。" data-img="img/9be6df29cc.jpg"><img src="img/9be6df29cc.jpg" alt="自治体サイト再設計"><h3>自治体サイト再設計</h3><p class="sub">視認性最適化 / 完遂率 +31%</p></article>
+        <article class="card project" tabindex="0" role="button" aria-label="B2B相談導線最適化の詳細を開く" data-cat="conversion" data-title="B2B相談導線最適化" data-desc="比較表とCTA再配置で、問い合わせ率を1.9倍に改善。" data-img="img/68f3e25bbc.jpg"><img src="img/68f3e25bbc.jpg" alt="B2B相談導線最適化"><h3>B2B相談導線最適化</h3><p class="sub">CV改善 / CVR 1.9x</p></article>
+        <article class="card project" tabindex="0" role="button" aria-label="ブランドページ刷新の詳細を開く" data-cat="branding" data-title="ブランドページ刷新" data-desc="価値訴求を課題起点で再構成し、滞在時間を47%改善。" data-img="img/35f86411d3.jpg"><img src="img/35f86411d3.jpg" alt="ブランドページ刷新"><h3>ブランドページ刷新</h3><p class="sub">ブランド訴求 / 滞在 +47%</p></article>
       </div>
     </section>
 
-    <section id="faq">
+    <section id="faq" class="reveal">
       <h2>FAQ</h2>
       <div class="faq-item">
-        <button class="faq-q">視認性重視のデザインは本当に必要ですか？</button>
+        <button class="faq-q" aria-expanded="false">視認性重視のデザインは本当に必要ですか？</button>
         <div class="faq-a"><p>はい。読みやすさと操作しやすさはすべてのユーザー体験を改善し、結果的にCV向上にもつながります。</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">現状のmainだけでも改善可能ですか？</button>
+        <button class="faq-q" aria-expanded="false">現状のmainだけでも改善可能ですか？</button>
         <div class="faq-a"><p>可能です。まずはトップページ改善から着手し、必要に応じて段階的に拡張できます。</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">なぜ“課題→解決→成果”を見せるのですか？</button>
+        <button class="faq-q" aria-expanded="false">なぜ“課題→解決→成果”を見せるのですか？</button>
         <div class="faq-a"><p>ユーザーの納得形成が早まり、提案の妥当性が直感的に理解されるためです。</p></div>
       </div>
     </section>
 
-    <section id="contact">
+    <section id="contact" class="reveal">
       <div class="card contact">
         <div>
           <h2 style="margin:0 0 8px">現状の課題を、具体的に整理しませんか？</h2>
@@ -260,6 +339,7 @@
     const header = document.getElementById('header');
     const links = document.querySelectorAll('.links a');
     const sections = document.querySelectorAll('main section, #hero');
+    const revealTargets = document.querySelectorAll('.reveal, .card');
 
     window.addEventListener('scroll', () => {
       header.classList.toggle('scrolled', window.scrollY > 8);
@@ -273,6 +353,18 @@
       });
     }, { threshold: 0.4 });
     sections.forEach((s) => secObserver.observe(s));
+
+    const revealObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.12 });
+    revealTargets.forEach((target, i) => {
+      target.style.transitionDelay = `${Math.min(i * 16, 220)}ms`;
+      revealObserver.observe(target);
+    });
 
     const countObserver = new IntersectionObserver((entries, obs) => {
       entries.forEach((entry) => {
@@ -311,25 +403,41 @@
     const modalTitle = document.getElementById('modalTitle');
     const modalDesc = document.getElementById('modalDesc');
     const modalImg = document.getElementById('modalImg');
+    const closeBtn = document.getElementById('closeModal');
+    let lastFocused = null;
+    const openProjectModal = (card) => {
+      modalTitle.textContent = card.dataset.title;
+      modalDesc.textContent = card.dataset.desc;
+      modalImg.src = card.dataset.img;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      lastFocused = document.activeElement;
+      closeBtn.focus();
+    };
     document.querySelectorAll('.project').forEach((card) => {
-      card.addEventListener('click', () => {
-        modalTitle.textContent = card.dataset.title;
-        modalDesc.textContent = card.dataset.desc;
-        modalImg.src = card.dataset.img;
-        modal.classList.add('open');
-        modal.setAttribute('aria-hidden', 'false');
+      card.addEventListener('click', () => openProjectModal(card));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openProjectModal(card);
+        }
       });
     });
     const closeModal = () => {
       modal.classList.remove('open');
       modal.setAttribute('aria-hidden', 'true');
+      if (lastFocused) lastFocused.focus();
     };
-    document.getElementById('closeModal').addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
     document.querySelectorAll('.faq-q').forEach((q) => {
-      q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const open = item.classList.toggle('open');
+        q.setAttribute('aria-expanded', String(open));
+      });
     });
 
     const fontBtn = document.getElementById('fontBtn');
@@ -346,6 +454,19 @@
       const hc = document.body.classList.toggle('hc');
       contrastBtn.setAttribute('aria-pressed', String(hc));
       contrastBtn.textContent = hc ? '標準配色に戻す' : '高コントラスト';
+    });
+
+    document.querySelectorAll('.btn, .tool-btn').forEach((btn) => {
+      btn.addEventListener('pointermove', (e) => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const rect = btn.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 5;
+        const y = ((e.clientY - rect.top) / rect.height - 0.5) * 5;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
+      });
+      btn.addEventListener('pointerleave', () => {
+        btn.style.transform = '';
+      });
     });
 
     document.getElementById('year').textContent = new Date().getFullYear();
