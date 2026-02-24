@@ -128,26 +128,39 @@
       animation: floatY 10s ease-in-out infinite reverse;
     }
     .hero-grid { display:grid; grid-template-columns: 1.1fr .9fr; gap: 18px; align-items: stretch; }
-    .hero-visual { display:grid; gap: 12px; }
+    .hero-visual { display:grid; gap: 12px; align-content:start; }
     .video-shell {
       border-radius: 14px;
       overflow: hidden;
       border: 2px solid var(--border);
       box-shadow: var(--shadow);
-      min-height: 220px;
       position: relative;
       background: #0b1324;
+      aspect-ratio: 16 / 9;
+      isolation: isolate;
+    }
+    .video-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(5,11,24,0.05) 25%, rgba(5,11,24,0.55) 100%);
+      z-index: 1;
+      pointer-events: none;
     }
     .video-shell video {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: saturate(1.08) contrast(1.04);
+      object-position: center;
+      filter: saturate(1.06) contrast(1.03);
+      transform: scale(1.01);
+      display: block;
     }
     .video-chip {
       position: absolute;
       top: 12px;
       left: 12px;
+      z-index: 2;
       font-size: 14px;
       font-weight: 700;
       color: #fff;
@@ -165,6 +178,7 @@
       min-height: 290px;
       position: relative;
       overflow: hidden;
+      isolation: isolate;
     }
     .model-shell::after {
       content: "3D Preview";
@@ -290,20 +304,20 @@
         <span class="label">Professional / Accessible / Conversion</span>
         <h1>最新の表現技術で、
           <br>情報を美しく、直感的に伝える。</h1>
-        <p class="lead">実写映像・3Dビジュアル・繊細なUIアニメーションを統合し、最初の3秒で「品質が違う」と感じるトップページへ。視覚訴求と操作性の両立で、成果までの導線を最短化します。</p>
+        <p class="lead">実写映像・3Dビジュアル・繊細なUIアニメーションを統合し、最初の3秒で「品質が違う」と感じるトップページへ。視覚訴求と操作性を両立し、成果までの導線を滑らかに最短化します。</p>
         <div class="cta">
           <a href="#solution" class="btn primary">解決策を見る</a>
           <a href="#projects" class="btn">最新事例を見る</a>
         </div>
       </div>
       <aside class="hero-visual">
-        <div class="video-shell card">
+        <div class="video-shell" aria-label="ブランドイメージ映像">
           <span class="video-chip">Cinematic Preview</span>
           <video autoplay muted loop playsinline poster="img/hero-background.jpg">
-            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
+            <source src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4" type="video/mp4" />
           </video>
         </div>
-        <div class="model-shell card">
+        <div class="model-shell" aria-label="3Dイメージプレビュー">
           <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" camera-controls auto-rotate auto-rotate-delay="0" shadow-intensity="1" exposure="1.1" alt="3D model preview"></model-viewer>
         </div>
         <div class="card">
@@ -354,7 +368,7 @@
         <button class="chip" data-filter="branding">ブランド訴求</button>
       </div>
       <div class="grid-3" id="projectList">
-        <article class="card project" tabindex="0" role="button" aria-label="自治体サイト再設計の詳細を開く" data-cat="accessibility" data-title="自治体サイト再設計" data-desc="文字サイズ調整・高コントラスト・大きなボタンで、手続き完遂率が向上。" data-img="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80" alt="自治体サイト再設計"><h3>自治体サイト再設計</h3><p class="sub">視認性最適化 / 完遂率 +31%</p></article>
+        <article class="card project" tabindex="0" role="button" aria-label="公共情報サイト再設計の詳細を開く" data-cat="accessibility" data-title="公共情報サイト再設計" data-desc="文字サイズ調整・高コントラスト・大きなボタンで、手続き完遂率が向上。" data-img="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80" alt="公共情報サイト再設計"><h3>公共情報サイト再設計</h3><p class="sub">視認性最適化 / 完遂率 +31%</p></article>
         <article class="card project" tabindex="0" role="button" aria-label="B2B相談導線最適化の詳細を開く" data-cat="conversion" data-title="B2B相談導線最適化" data-desc="比較表とCTA再配置で、問い合わせ率を1.9倍に改善。" data-img="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80" alt="B2B相談導線最適化"><h3>B2B相談導線最適化</h3><p class="sub">CV改善 / CVR 1.9x</p></article>
         <article class="card project" tabindex="0" role="button" aria-label="ブランドページ刷新の詳細を開く" data-cat="branding" data-title="ブランドページ刷新" data-desc="価値訴求を課題起点で再構成し、滞在時間を47%改善。" data-img="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1400&q=80"><img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1400&q=80" alt="ブランドページ刷新"><h3>ブランドページ刷新</h3><p class="sub">ブランド訴求 / 滞在 +47%</p></article>
       </div>
