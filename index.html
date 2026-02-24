@@ -127,7 +127,7 @@
       background: radial-gradient(circle at 60% 40%, rgba(11,143,87,.18), transparent 70%);
       animation: floatY 10s ease-in-out infinite reverse;
     }
-    .hero-grid { display:grid; grid-template-columns: 1.1fr .9fr; gap: 18px; align-items: stretch; }
+    .hero-grid { display:grid; grid-template-columns: 1.1fr .9fr; gap: 18px; align-items: start; }
     .hero-visual { display:grid; gap: 12px; align-content:start; }
     .video-shell {
       border-radius: 14px;
@@ -169,13 +169,25 @@
       padding: 6px 10px;
       border-radius: 999px;
       backdrop-filter: blur(8px);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .video-chip::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #ff5d73;
+      box-shadow: 0 0 0 rgba(255,93,115,.65);
+      animation: pulse 1.8s ease-out infinite;
     }
     .model-shell {
       border-radius: 14px;
       border: 2px solid var(--border);
       background: linear-gradient(160deg, #f2f7ff 0%, #ecf6f2 100%);
       box-shadow: var(--shadow);
-      min-height: 290px;
+      min-height: 240px;
       position: relative;
       overflow: hidden;
       isolation: isolate;
@@ -192,7 +204,7 @@
     }
     model-viewer {
       width: 100%;
-      height: 290px;
+      height: 240px;
       --poster-color: transparent;
       background: transparent;
     }
@@ -203,6 +215,7 @@
     .lead { color: var(--muted); }
     .cta { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
     .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .hero-metrics { margin-top: 12px; }
 
     section { padding: 26px 0; }
     h2 { margin: 0 0 14px; font-size: clamp(26px, 4vw, 36px); }
@@ -255,6 +268,11 @@
     @keyframes floatY {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-14px); }
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,93,115,.65); }
+      70% { box-shadow: 0 0 0 8px rgba(255,93,115,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,93,115,0); }
     }
 
     @media (max-width: 1000px) {
@@ -312,24 +330,26 @@
       </div>
       <aside class="hero-visual">
         <div class="video-shell" aria-label="ブランドイメージ映像">
-          <span class="video-chip">Cinematic Preview</span>
-          <video autoplay muted loop playsinline poster="img/hero-background.jpg">
+          <span class="video-chip">LIVE VIDEO</span>
+          <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="img/hero-background.jpg">
             <source src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4" type="video/mp4" />
           </video>
         </div>
         <div class="model-shell" aria-label="3Dイメージプレビュー">
           <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" camera-controls auto-rotate auto-rotate-delay="0" shadow-intensity="1" exposure="1.1" alt="3D model preview"></model-viewer>
         </div>
-        <div class="card">
-          <h2 style="font-size:26px;margin-top:0">成果イメージ</h2>
-          <p class="sub">初期3ヶ月で目指す変化</p>
-          <div class="grid-3">
-            <div class="metric"><b data-count="38">0</b><span>問い合わせ増加(%)</span></div>
-            <div class="metric"><b data-count="52">0</b><span>離脱率改善(%)</span></div>
-            <div class="metric"><b data-count="91">0</b><span>操作完遂率(%)</span></div>
-          </div>
-        </div>
       </aside>
+    </div>
+    <div class="container hero-metrics">
+      <div class="card">
+        <h2 style="font-size:26px;margin-top:0">成果イメージ</h2>
+        <p class="sub">初期3ヶ月で目指す変化</p>
+        <div class="grid-3">
+          <div class="metric"><b data-count="38">0</b><span>問い合わせ増加(%)</span></div>
+          <div class="metric"><b data-count="52">0</b><span>離脱率改善(%)</span></div>
+          <div class="metric"><b data-count="91">0</b><span>操作完遂率(%)</span></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -548,6 +568,13 @@
         btn.style.transform = '';
       });
     });
+
+    const heroVideo = document.getElementById('hero-video');
+    if (heroVideo) {
+      heroVideo.play().catch(() => {
+        heroVideo.controls = true;
+      });
+    }
 
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
