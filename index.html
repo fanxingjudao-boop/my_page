@@ -144,10 +144,27 @@
       position: absolute;
       inset: 0;
       background: linear-gradient(180deg, rgba(5,11,24,0.05) 25%, rgba(5,11,24,0.55) 100%);
-      z-index: 1;
+      z-index: 2;
       pointer-events: none;
     }
+    .video-fallback {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(79,163,255,.34), transparent 58%),
+                  radial-gradient(circle at 78% 72%, rgba(88,223,173,.24), transparent 55%),
+                  url('img/hero-background.jpg') center/cover no-repeat;
+      transform: scale(1.06);
+      animation: fallbackPan 22s ease-in-out infinite alternate;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity .45s ease;
+    }
+    .video-shell.is-fallback .video-fallback { opacity: 1; }
+    .video-shell.is-fallback video { opacity: 0; }
+
     .video-shell video {
+      position: relative;
+      z-index: 1;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -274,6 +291,11 @@
       70% { box-shadow: 0 0 0 8px rgba(255,93,115,0); }
       100% { box-shadow: 0 0 0 0 rgba(255,93,115,0); }
     }
+    @keyframes fallbackPan {
+      0% { transform: scale(1.06) translate3d(0,0,0); filter: saturate(1.02); }
+      50% { transform: scale(1.08) translate3d(-1.2%, -0.8%, 0); filter: saturate(1.08); }
+      100% { transform: scale(1.06) translate3d(0,0,0); filter: saturate(1.02); }
+    }
 
     @media (max-width: 1000px) {
       .hero-grid, .flow { grid-template-columns: 1fr; }
@@ -329,9 +351,10 @@
         </div>
       </div>
       <aside class="hero-visual">
-        <div class="video-shell" aria-label="ブランドイメージ映像">
-          <span class="video-chip">LIVE VIDEO</span>
-          <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="img/hero-background.jpg">
+        <div class="video-shell" id="video-shell" aria-label="ブランドイメージ映像" data-state="loading">
+          <span class="video-chip" id="video-chip">LIVE VIDEO</span>
+          <div class="video-fallback" aria-hidden="true"></div>
+          <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="img/hero-background.jpg" webkit-playsinline>
             <source src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4" type="video/mp4" />
           </video>
         </div>
@@ -570,10 +593,28 @@
     });
 
     const heroVideo = document.getElementById('hero-video');
-    if (heroVideo) {
-      heroVideo.play().catch(() => {
-        heroVideo.controls = true;
+    const videoShell = document.getElementById('video-shell');
+    const videoChip = document.getElementById('video-chip');
+    if (heroVideo && videoShell) {
+      let hasStarted = false
+      const activateFallback = () => {
+        if (videoShell.classList.contains('is-fallback')) return;
+        videoShell.classList.add('is-fallback');
+        videoShell.dataset.state = 'fallback';
+        if (videoChip) videoChip.textContent = 'LOOP MOTION';
+      };
+      heroVideo.addEventListener('playing', () => {
+        hasStarted = true;
+        videoShell.classList.remove('is-fallback');
+        videoShell.dataset.state = 'live';
+        if (videoChip) videoChip.textContent = 'LIVE VIDEO';
       });
+      heroVideo.addEventListener('error', activateFallback);
+      setTimeout(() => {
+        if (!hasStarted || heroVideo.readyState < 2) activateFallback();
+      }, 2200);
+
+      heroVideo.play().catch(() => activateFallback());
     }
 
     document.getElementById('year').textContent = new Date().getFullYear();
