@@ -127,7 +127,61 @@
       background: radial-gradient(circle at 60% 40%, rgba(11,143,87,.18), transparent 70%);
       animation: floatY 10s ease-in-out infinite reverse;
     }
-    .hero-grid { display:grid; grid-template-columns: 1.2fr .8fr; gap: 18px; align-items: stretch; }
+    .hero-grid { display:grid; grid-template-columns: 1.1fr .9fr; gap: 18px; align-items: stretch; }
+    .hero-visual { display:grid; gap: 12px; }
+    .video-shell {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      box-shadow: var(--shadow);
+      min-height: 220px;
+      position: relative;
+      background: #0b1324;
+    }
+    .video-shell video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.08) contrast(1.04);
+    }
+    .video-chip {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      background: rgba(16, 35, 63, 0.72);
+      border: 1px solid rgba(255,255,255,.35);
+      padding: 6px 10px;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+    }
+    .model-shell {
+      border-radius: 14px;
+      border: 2px solid var(--border);
+      background: linear-gradient(160deg, #f2f7ff 0%, #ecf6f2 100%);
+      box-shadow: var(--shadow);
+      min-height: 290px;
+      position: relative;
+      overflow: hidden;
+    }
+    .model-shell::after {
+      content: "3D Preview";
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    model-viewer {
+      width: 100%;
+      height: 290px;
+      --poster-color: transparent;
+      background: transparent;
+    }
     .card { background: var(--panel); border: 2px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease; }
     .card:hover { transform: translateY(-3px); box-shadow: 0 16px 28px rgba(9, 36, 78, 0.14); border-color: color-mix(in srgb, var(--accent) 20%, var(--border)); }
     .label { display:inline-block; font-size: 16px; font-weight: 700; background: var(--accent-soft); color: var(--accent); padding: 8px 12px; border-radius: 999px; }
@@ -234,21 +288,32 @@
     <div class="container hero-grid">
       <div class="card">
         <span class="label">Professional / Accessible / Conversion</span>
-        <h1>「なぜ良いのか」がすぐ伝わる。
-          <br>誰にとっても使いやすい、プロ品質のトップページ。</h1>
-        <p class="lead">情報を詰め込むのではなく、課題→解決→成果を視覚化。文字サイズ・コントラスト・タップしやすさを最初から設計し、誰でも迷わず行動できる導線をつくります。</p>
+        <h1>最新の表現技術で、
+          <br>情報を美しく、直感的に伝える。</h1>
+        <p class="lead">実写映像・3Dビジュアル・繊細なUIアニメーションを統合し、最初の3秒で「品質が違う」と感じるトップページへ。視覚訴求と操作性の両立で、成果までの導線を最短化します。</p>
         <div class="cta">
           <a href="#solution" class="btn primary">解決策を見る</a>
-          <a href="#contact" class="btn">無料で相談する</a>
+          <a href="#projects" class="btn">最新事例を見る</a>
         </div>
       </div>
-      <aside class="card">
-        <h2 style="font-size:26px;margin-top:0">成果イメージ</h2>
-        <p class="sub">初期3ヶ月で目指す変化</p>
-        <div class="grid-3">
-          <div class="metric"><b data-count="38">0</b><span>問い合わせ増加(%)</span></div>
-          <div class="metric"><b data-count="52">0</b><span>離脱率改善(%)</span></div>
-          <div class="metric"><b data-count="91">0</b><span>操作完遂率(%)</span></div>
+      <aside class="hero-visual">
+        <div class="video-shell card">
+          <span class="video-chip">Cinematic Preview</span>
+          <video autoplay muted loop playsinline poster="img/hero-background.jpg">
+            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="model-shell card">
+          <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" camera-controls auto-rotate auto-rotate-delay="0" shadow-intensity="1" exposure="1.1" alt="3D model preview"></model-viewer>
+        </div>
+        <div class="card">
+          <h2 style="font-size:26px;margin-top:0">成果イメージ</h2>
+          <p class="sub">初期3ヶ月で目指す変化</p>
+          <div class="grid-3">
+            <div class="metric"><b data-count="38">0</b><span>問い合わせ増加(%)</span></div>
+            <div class="metric"><b data-count="52">0</b><span>離脱率改善(%)</span></div>
+            <div class="metric"><b data-count="91">0</b><span>操作完遂率(%)</span></div>
+          </div>
         </div>
       </aside>
     </div>
@@ -289,9 +354,9 @@
         <button class="chip" data-filter="branding">ブランド訴求</button>
       </div>
       <div class="grid-3" id="projectList">
-        <article class="card project" tabindex="0" role="button" aria-label="自治体サイト再設計の詳細を開く" data-cat="accessibility" data-title="自治体サイト再設計" data-desc="文字サイズ調整・高コントラスト・大きなボタンで、手続き完遂率が向上。" data-img="img/9be6df29cc.jpg"><img src="img/9be6df29cc.jpg" alt="自治体サイト再設計"><h3>自治体サイト再設計</h3><p class="sub">視認性最適化 / 完遂率 +31%</p></article>
-        <article class="card project" tabindex="0" role="button" aria-label="B2B相談導線最適化の詳細を開く" data-cat="conversion" data-title="B2B相談導線最適化" data-desc="比較表とCTA再配置で、問い合わせ率を1.9倍に改善。" data-img="img/68f3e25bbc.jpg"><img src="img/68f3e25bbc.jpg" alt="B2B相談導線最適化"><h3>B2B相談導線最適化</h3><p class="sub">CV改善 / CVR 1.9x</p></article>
-        <article class="card project" tabindex="0" role="button" aria-label="ブランドページ刷新の詳細を開く" data-cat="branding" data-title="ブランドページ刷新" data-desc="価値訴求を課題起点で再構成し、滞在時間を47%改善。" data-img="img/35f86411d3.jpg"><img src="img/35f86411d3.jpg" alt="ブランドページ刷新"><h3>ブランドページ刷新</h3><p class="sub">ブランド訴求 / 滞在 +47%</p></article>
+        <article class="card project" tabindex="0" role="button" aria-label="自治体サイト再設計の詳細を開く" data-cat="accessibility" data-title="自治体サイト再設計" data-desc="文字サイズ調整・高コントラスト・大きなボタンで、手続き完遂率が向上。" data-img="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80" alt="自治体サイト再設計"><h3>自治体サイト再設計</h3><p class="sub">視認性最適化 / 完遂率 +31%</p></article>
+        <article class="card project" tabindex="0" role="button" aria-label="B2B相談導線最適化の詳細を開く" data-cat="conversion" data-title="B2B相談導線最適化" data-desc="比較表とCTA再配置で、問い合わせ率を1.9倍に改善。" data-img="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80" alt="B2B相談導線最適化"><h3>B2B相談導線最適化</h3><p class="sub">CV改善 / CVR 1.9x</p></article>
+        <article class="card project" tabindex="0" role="button" aria-label="ブランドページ刷新の詳細を開く" data-cat="branding" data-title="ブランドページ刷新" data-desc="価値訴求を課題起点で再構成し、滞在時間を47%改善。" data-img="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1400&q=80"><img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1400&q=80" alt="ブランドページ刷新"><h3>ブランドページ刷新</h3><p class="sub">ブランド訴求 / 滞在 +47%</p></article>
       </div>
     </section>
 
@@ -335,6 +400,7 @@
     </div>
   </div>
 
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <script>
     const header = document.getElementById('header');
     const links = document.querySelectorAll('.links a');
