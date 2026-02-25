@@ -130,7 +130,7 @@
     .hero-grid { display:grid; grid-template-columns: 1.1fr .9fr; gap: 18px; align-items: start; }
     .hero-visual { display:grid; gap: 12px; align-content:start; }
     .video-shell {
-      border-radius: 14px;
+      border-radius: 16px;
       overflow: hidden;
       border: 2px solid var(--border);
       box-shadow: var(--shadow);
@@ -139,95 +139,68 @@
       aspect-ratio: 16 / 9;
       isolation: isolate;
     }
-    .video-shell::before {
-      content: "";
+    .motion-stage {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(5,11,24,0.05) 25%, rgba(5,11,24,0.55) 100%);
+      background: #0c172d;
+    }
+    .motion-frame {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1.08);
+      transition: opacity 1.3s ease, transform 5.8s ease;
+      filter: contrast(1.06) saturate(1.1);
+    }
+    .motion-frame.active {
+      opacity: 1;
+      transform: scale(1.01);
+    }
+    .motion-overlay {
+      position: absolute;
+      inset: 0;
       z-index: 2;
+      background: linear-gradient(180deg, rgba(7,11,22,.2) 0%, rgba(7,11,22,.68) 100%);
       pointer-events: none;
     }
-    .video-fallback {
+    .motion-caption {
       position: absolute;
-      inset: 0;
-      background: linear-gradient(145deg, #0b1630 0%, #113259 52%, #0f6a74 100%);
-      transform: scale(1.06);
-      animation: fallbackPan 22s ease-in-out infinite alternate;
-      z-index: 0;
-      opacity: 0;
-      transition: opacity .45s ease;
+      left: 16px;
+      bottom: 14px;
+      right: 16px;
+      z-index: 3;
+      display: grid;
+      gap: 10px;
+    }
+    .motion-label {
+      color: #f5f8ff;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-shadow: 0 2px 10px rgba(0,0,0,.38);
+    }
+    .motion-progress {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.24);
       overflow: hidden;
     }
-    .video-fallback::before,
-    .video-fallback::after {
-      content: "";
-      position: absolute;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.24);
-      background: rgba(255,255,255,.08);
-      backdrop-filter: blur(2px);
-    }
-    .video-fallback::before {
-      width: 52%;
-      height: 52%;
-      top: 14%;
-      left: 10%;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
-      animation: panelFloat 14s ease-in-out infinite;
-    }
-    .video-fallback::after {
-      width: 34%;
-      height: 34%;
-      right: 11%;
-      bottom: 12%;
-      animation: panelFloat 18s ease-in-out infinite reverse;
-    }
-    .video-shell.is-fallback .video-fallback { opacity: 1; }
-    .video-shell.is-fallback video { opacity: 0; }
-
-    .fallback-ui {
-      position: absolute;
-      left: 14px;
-      right: 14px;
-      bottom: 12px;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap: 8px;
-    }
-    .fallback-step {
-      background: rgba(255,255,255,.14);
-      color: rgba(255,255,255,.94);
-      border: 1px solid rgba(255,255,255,.32);
-      border-radius: 10px;
-      padding: 8px 8px;
-      font-size: 12px;
-      font-weight: 700;
-      text-align: center;
-      backdrop-filter: blur(2px);
-      transform: translateY(8px);
-      opacity: .85;
-      animation: stepPulse 6s ease-in-out infinite;
-    }
-    .fallback-step:nth-child(2) { animation-delay: .6s; }
-    .fallback-step:nth-child(3) { animation-delay: 1.2s; }
-    .fallback-step:nth-child(4) { animation-delay: 1.8s; }
-    .video-shell video {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      filter: saturate(1.06) contrast(1.03);
-      transform: scale(1.01);
+    .motion-progress > span {
       display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #66b6ff 0%, #58dfad 100%);
+      animation: progressFill 5s linear infinite;
+      transform-origin: left;
     }
     .video-chip {
       position: absolute;
       top: 12px;
       left: 12px;
-      z-index: 2;
+      z-index: 3;
       font-size: 14px;
       font-weight: 700;
       color: #fff;
@@ -341,18 +314,9 @@
       70% { box-shadow: 0 0 0 8px rgba(255,93,115,0); }
       100% { box-shadow: 0 0 0 0 rgba(255,93,115,0); }
     }
-    @keyframes fallbackPan {
-      0% { transform: scale(1.04) translate3d(0,0,0); filter: saturate(1.02) brightness(1); }
-      50% { transform: scale(1.07) translate3d(-1.1%, -0.7%, 0); filter: saturate(1.1) brightness(1.05); }
-      100% { transform: scale(1.04) translate3d(0,0,0); filter: saturate(1.02) brightness(1); }
-    }
-    @keyframes panelFloat {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-    @keyframes stepPulse {
-      0%,100% { transform: translateY(8px); opacity: .82; }
-      50% { transform: translateY(0); opacity: 1; }
+    @keyframes progressFill {
+      0% { width: 0; }
+      100% { width: 100%; }
     }
 
     @media (max-width: 1000px) {
@@ -368,9 +332,6 @@
       .tool-btn, .btn, .chip { width: 100%; }
       .ui-tools { width: 100%; }
       .ui-tools .tool-btn { width: calc(50% - 4px); }
-      .fallback-ui { grid-template-columns: 1fr 1fr; }
-      .fallback-step { font-size: 11px; padding: 7px 6px; }
-
     }
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
@@ -412,19 +373,18 @@
         </div>
       </div>
       <aside class="hero-visual">
-        <div class="video-shell" id="video-shell" aria-label="ブランドイメージ映像" data-state="loading">
+        <div class="video-shell" id="video-shell" aria-label="ブランドイメージ映像">
           <span class="video-chip" id="video-chip">LIVE CINEMATIC</span>
-          <div class="video-fallback" aria-hidden="true">
-            <div class="fallback-ui">
-              <span class="fallback-step">課題分析</span>
-              <span class="fallback-step">UX設計</span>
-              <span class="fallback-step">実装</span>
-              <span class="fallback-step">改善</span>
-            </div>
+          <div class="motion-stage" id="motion-stage" aria-hidden="true">
+            <div class="motion-frame active" style="background-image:url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80')"></div>
+            <div class="motion-frame" style="background-image:url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1600&q=80')"></div>
+            <div class="motion-frame" style="background-image:url('https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1600&q=80')"></div>
           </div>
-          <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="img/hero-background.jpg" webkit-playsinline>
-            <source src="https://storage.googleapis.com/coverr-main/mp4/Footboys.mp4" type="video/mp4" />
-          </video>
+          <div class="motion-overlay"></div>
+          <div class="motion-caption">
+            <div class="motion-label" id="motion-label">課題分析 → UX設計 → 実装 → 改善</div>
+            <div class="motion-progress" aria-hidden="true"><span></span></div>
+          </div>
         </div>
         <div class="model-shell" aria-label="3Dイメージプレビュー">
           <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" camera-controls auto-rotate auto-rotate-delay="0" shadow-intensity="1" exposure="1.1" alt="3D model preview"></model-viewer>
@@ -660,29 +620,24 @@
       });
     });
 
-    const heroVideo = document.getElementById('hero-video');
-    const videoShell = document.getElementById('video-shell');
     const videoChip = document.getElementById('video-chip');
-    if (heroVideo && videoShell) {
-      let hasStarted = false
-      const activateFallback = () => {
-        if (videoShell.classList.contains('is-fallback')) return;
-        videoShell.classList.add('is-fallback');
-        videoShell.dataset.state = 'fallback';
-        if (videoChip) videoChip.textContent = 'FLOW MOTION';
-      };
-      heroVideo.addEventListener('playing', () => {
-        hasStarted = true;
-        videoShell.classList.remove('is-fallback');
-        videoShell.dataset.state = 'live';
-        if (videoChip) videoChip.textContent = 'LIVE CINEMATIC';
-      });
-      heroVideo.addEventListener('error', activateFallback);
-      setTimeout(() => {
-        if (!hasStarted || heroVideo.readyState < 2) activateFallback();
-      }, 2200);
-
-      heroVideo.play().catch(() => activateFallback());
+    const motionLabel = document.getElementById('motion-label');
+    const frames = [...document.querySelectorAll('.motion-frame')];
+    const labels = [
+      '課題分析: 現状のボトルネックを可視化',
+      'UX設計: 迷わない導線を設計',
+      '実装: 体験品質を高い精度で構築',
+      '改善: 計測しながら継続的に最適化'
+    ];
+    let frameIndex = 0;
+    if (frames.length > 1) {
+      setInterval(() => {
+        frames[frameIndex].classList.remove('active');
+        frameIndex = (frameIndex + 1) % frames.length;
+        frames[frameIndex].classList.add('active');
+        if (motionLabel) motionLabel.textContent = labels[frameIndex % labels.length];
+      }, 5000);
+      if (videoChip) videoChip.textContent = 'CINEMATIC FLOW';
     }
 
     document.getElementById('year').textContent = new Date().getFullYear();
