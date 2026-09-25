@@ -3,917 +3,597 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>山田太郎 | Professional Experience Design</title>
-  <meta name="description" content="視認性と操作性に優れ、課題と解決策を視覚化するプロ仕様のトップページ。" />
-  <meta name="theme-color" content="#070d1c" />
+  <title>Taro Yamada Studio — 手触りまで、画面の向こうへ。</title>
+  <meta name="description" content="リアルタイム3D・モーション・アクセシビリティを一つの設計で仕上げるWebスタジオ。素材の光沢、刺繍の凹凸、色の表情まで、ブラウザの中で確かめられる体験をつくります。" />
+  <meta name="theme-color" content="#0c0e0d" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%230c0e0d%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2218%22 text-anchor=%22middle%22 font-family=%22serif%22 font-style=%22italic%22 fill=%22%23d9bd86%22%3EY%3C/text%3E%3C/svg%3E" />
+  <link rel="preload" href="assets/fonts/fraunces-italic.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/shippori-b1-500.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/img/gown-poster.webp" as="image" fetchpriority="high" />
+  <link rel="modulepreload" href="assets/js/three.vendor.js" />
   <style>
-    @property --spin { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+    @font-face { font-family: "Fraunces"; src: url(assets/fonts/fraunces-normal.woff2) format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Fraunces"; src: url(assets/fonts/fraunces-italic.woff2) format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
+    @font-face { font-family: "Shippori B1"; src: url(assets/fonts/shippori-b1-500.woff2) format("woff2"); font-weight: 500; font-display: swap; }
+
     :root {
-      --bg: #f4f7fb;
-      --panel: #ffffff;
-      --text: #10233f;
-      --muted: #445b7a;
-      --accent: #005fcc;
-      --accent-soft: #e8f1ff;
-      --ok: #0b8f57;
-      --warn: #b26a00;
-      --border: #d3dfef;
-      --ink: #070d1c;
-      --glow-blue: #3d9bff;
-      --glow-cyan: #45d4f5;
-      --glow-mint: #45e0ad;
-      --glow-amber: #ffb547;
-      --max: 1160px;
-      --radius: 18px;
-      --shadow: 0 1px 2px rgba(9, 36, 78, 0.06), 0 12px 32px -8px rgba(9, 36, 78, 0.12);
-      --shadow-hover: 0 1px 2px rgba(9, 36, 78, 0.08), 0 22px 44px -12px rgba(9, 36, 78, 0.22);
-      --base-size: 19px;
-      --border-w: 1px;
-    }
-    body.hc {
-      --bg: #ffffff;
-      --panel: #ffffff;
-      --text: #000;
-      --muted: #111;
-      --accent: #003d99;
-      --accent-soft: #dce9ff;
-      --border: #222;
-      --border-w: 2px;
+      --ink: #0c0e0d;
+      --on-ink: #efe9dc;
+      --on-ink-muted: rgba(239, 233, 220, .74);
+      --paper: #f2eee5;
+      --paper-2: #e9e3d6;
+      --line: #d3cbba;
+      --text: #1b1d1c;
+      --muted: #565c58;
+      --gold: #8a6a2f;
+      --gold-lt: #d9bd86;
+      --display: "Fraunces", "Times New Roman", serif;
+      --mincho: "Shippori B1", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+      --sans: "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+      --base-size: 17px;
+      --wrap: min(1240px, calc(100% - 64px));
+      --ease: cubic-bezier(.2, .8, .2, 1);
+      interpolate-size: allow-keywords;
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
+    html, body { margin: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: "Noto Sans JP", "Hiragino Sans", system-ui, sans-serif;
+      font-family: var(--sans);
       font-size: var(--base-size);
-      font-feature-settings: "palt";
-      line-height: 1.85;
+      line-height: 1.9;
       color: var(--text);
-      background: radial-gradient(900px 500px at 90% 30%, #eaf2ff, transparent), var(--bg);
+      background: var(--ink);
+      font-feature-settings: "palt";
       -webkit-font-smoothing: antialiased;
     }
-    a { color: inherit; text-decoration: none; }
-    img, svg { max-width: 100%; display: block; }
-    .container { width: min(var(--max), calc(100% - 36px)); margin: 0 auto; }
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+    button { font: inherit; color: inherit; }
+    .wrap { width: var(--wrap); margin: 0 auto; }
+    .vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
     .skip { position: absolute; left: -9999px; }
-    .skip:focus { left: 8px; top: 8px; background: #000; color:#fff; padding: 8px 12px; border-radius: 8px; z-index:9999; }
-    .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+    .skip:focus { left: 12px; top: 12px; z-index: 9999; background: var(--gold-lt); color: var(--ink); padding: 8px 14px; }
+    :focus-visible { outline: 2px solid var(--gold-lt); outline-offset: 3px; }
+    .paper :focus-visible, .on-paper :focus-visible { outline-color: var(--gold); }
+    ::selection { background: var(--gold-lt); color: var(--ink); }
 
-    /* ---------- Scroll progress (scroll-driven animation, progressive) ---------- */
-    .scroll-progress {
-      position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 1100;
-      background: linear-gradient(90deg, var(--glow-blue), var(--glow-cyan), var(--glow-mint));
-      transform-origin: left; transform: scaleX(0); display: none;
+    /* ---------------- Header ---------------- */
+    .site-header {
+      position: fixed; inset: 0 0 auto; z-index: 100;
+      color: var(--on-ink);
+      border-bottom: 1px solid transparent;
+      transition: background-color .4s ease, color .4s ease, border-color .4s ease;
     }
-    @supports (animation-timeline: scroll()) {
-      .scroll-progress { display: block; animation: grow linear both; animation-timeline: scroll(root); }
+    .site-header.on-paper { background: rgba(242, 238, 229, .86); color: var(--text); border-color: var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .nav { width: var(--wrap); margin: 0 auto; height: 72px; display: flex; align-items: center; gap: 28px; }
+    .wordmark { font-family: var(--display); font-style: italic; font-size: 23px; text-decoration: none; margin-right: auto; letter-spacing: -.01em; font-variation-settings: "opsz" 48, "SOFT" 50; white-space: nowrap; }
+    .wordmark b { font-weight: 400; font-style: normal; font-size: 11px; letter-spacing: .26em; text-transform: uppercase; margin-left: 10px; vertical-align: 3px; opacity: .7; font-family: var(--sans); }
+    .menu { display: flex; gap: 30px; }
+    .menu a { text-decoration: none; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; position: relative; padding: 6px 0; }
+    .menu a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease); }
+    .menu a:hover::after { transform: scaleX(1); transform-origin: left; }
+    .tools { display: flex; gap: 6px; }
+    .tool {
+      width: 44px; height: 44px; border-radius: 50%; border: 1px solid currentColor; background: transparent; cursor: pointer;
+      display: grid; place-items: center; font-size: 14px; font-weight: 600; opacity: .78; transition: opacity .2s, background-color .2s, color .2s;
     }
+    .tool:hover { opacity: 1; }
+    .tool[aria-pressed="true"] { background: var(--gold-lt); color: var(--ink); border-color: var(--gold-lt); opacity: 1; }
 
-    /* ---------- Header ---------- */
-    header {
-      position: sticky; top: 0; z-index: 1000;
-      background: rgba(255,255,255,.82);
-      backdrop-filter: saturate(1.4) blur(14px);
-      -webkit-backdrop-filter: saturate(1.4) blur(14px);
-      border-bottom: 1px solid transparent; transition: background-color .3s ease, border-color .3s ease, color .3s ease;
-    }
-    header.on-dark { background: rgba(7,13,28,.35); color: #eef4ff; }
-    header.scrolled { border-color: var(--border); }
-    .nav { min-height: 76px; display: flex; align-items:center; justify-content: space-between; gap: 14px; }
-    .brand { font-weight: 800; font-size: 20px; letter-spacing: .02em; display: inline-flex; align-items: center; gap: 10px; }
-    .brand-mark {
-      width: 26px; height: 26px; border-radius: 8px;
-      background: conic-gradient(from 210deg, var(--glow-blue), var(--glow-cyan), var(--glow-mint), var(--glow-blue));
-      box-shadow: inset 0 0 0 5px rgba(255,255,255,.9);
-    }
-    header.on-dark .brand-mark { box-shadow: inset 0 0 0 5px var(--ink); }
-    .links { display: flex; gap: 10px; flex-wrap: wrap; }
-    .links a { color: var(--muted); font-weight: 700; padding: 8px 10px; border-radius: 10px; transition: transform .25s ease, background-color .25s ease, color .25s ease; }
-    .links a:hover, .links a.active { background: var(--accent-soft); color: var(--accent); }
-    .links a:hover { transform: translateY(-1px); }
-    header.on-dark .links a { color: rgba(238,244,255,.82); }
-    header.on-dark .links a:hover, header.on-dark .links a.active { background: rgba(255,255,255,.12); color: #fff; }
-
-    .ui-tools { display:flex; gap:8px; flex-wrap: wrap; }
-    .tool-btn, .btn {
-      min-height: 48px; min-width: 48px; padding: 10px 16px; border-radius: 12px;
-      border: var(--border-w) solid var(--border); background: #fff; color: var(--text); font: inherit; font-size: 16px; font-weight: 700; cursor: pointer;
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      position: relative; overflow: hidden;
-      transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease, background-color .24s ease;
-    }
-    .tool-btn { font-size: 14px; }
-    .tb-ic { display: none; font-size: 17px; line-height: 1; }
-    header.on-dark .tool-btn { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.28); color: #fff; }
-    .tool-btn::after, .btn::after {
+    /* ---------------- Stage ---------------- */
+    #stage { position: relative; overflow-x: clip; height: 400svh; color: var(--on-ink); background: var(--ink); }
+    .stage-sticky { --gx: 66%; position: sticky; top: 0; height: 100svh; overflow: hidden; }
+    .stage-sticky::before {
       content: ""; position: absolute; inset: 0;
-      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.55) 48%, transparent 100%);
-      transform: translateX(-120%); transition: transform .55s ease;
-    }
-    .tool-btn:hover::after, .btn:hover::after { transform: translateX(120%); }
-    .tool-btn:hover, .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 18px rgba(9, 36, 78, 0.14); }
-    .tool-btn:active, .btn:active { transform: translateY(0); }
-    .tool-btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-    .tool-btn:focus-visible, .btn:focus-visible, .chip:focus-visible, .faq-q:focus-visible, .links a:focus-visible, .project:focus-visible {
-      outline: 3px solid color-mix(in srgb, var(--accent) 70%, white);
-      outline-offset: 2px;
-    }
-    .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .btn .arrow { transition: transform .25s ease; }
-    .btn:hover .arrow { transform: translateX(3px); }
-
-    /* ---------- Hero ---------- */
-    .hero {
-      position: relative; isolation: isolate; overflow: hidden;
-      margin-top: calc(-1 * var(--header-h, 77px)); padding: calc(var(--header-h, 77px) + 72px) 0 72px;
-      color: #eef4ff;
       background:
-        radial-gradient(60% 70% at 78% 30%, rgba(0,95,204,.55), transparent 70%),
-        radial-gradient(40% 50% at 95% 85%, rgba(69,224,173,.28), transparent 70%),
-        radial-gradient(50% 60% at 60% 0%, rgba(69,212,245,.25), transparent 70%),
-        var(--ink);
+        radial-gradient(30% 55% at var(--gx) 25%, rgba(255, 232, 196, .09), transparent 70%),
+        radial-gradient(55% 65% at var(--gx) 75%, #19211d 0%, transparent 72%);
     }
-    #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; opacity: 0; transition: opacity 1.2s ease; }
-    #hero-canvas.ready { opacity: 1; }
-    .hero::before {
-      /* legibility scrim for copy column */
-      content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-      background: linear-gradient(90deg, rgba(7,13,28,.78) 0%, rgba(7,13,28,.45) 42%, rgba(7,13,28,0) 70%),
-                  linear-gradient(0deg, rgba(7,13,28,.9) 0%, rgba(7,13,28,0) 28%);
+    .bigword {
+      position: absolute; left: 0; right: 0; bottom: -.1em; z-index: 0; margin: 0;
+      font-family: var(--display); font-style: italic; font-weight: 300; font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+      font-size: clamp(110px, 21vw, 380px); line-height: 1; letter-spacing: -.04em; text-align: center; white-space: nowrap;
+      color: transparent; -webkit-text-stroke: 1px rgba(217, 189, 134, .3);
+      pointer-events: none; user-select: none;
     }
-    .hero::after {
-      /* film grain */
-      content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .14; mix-blend-mode: overlay;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    .bigword span { display: inline-block; transition: opacity .6s ease, transform .9s var(--ease), filter .6s ease; }
+    .bigword span.out { opacity: 0; transform: translateY(14%); filter: blur(8px); }
+    .poster {
+      position: absolute; z-index: 1; top: 0; height: 100%; width: auto; max-width: none; left: var(--gx); transform: translateX(-50%);
+      transition: opacity 1s ease, left 1s var(--ease); pointer-events: none;
+      -webkit-mask-image: radial-gradient(50% 50% at 50% 50%, #000 70%, transparent 100%);
+      mask-image: radial-gradient(50% 50% at 50% 50%, #000 70%, transparent 100%);
     }
-    .hero-grid { display:grid; grid-template-columns: 1fr 1.02fr; gap: 48px; align-items: center; }
-    .eyebrow {
-      display:inline-flex; align-items:center; gap:10px; font-size: 14px; font-weight: 700; letter-spacing: .08em;
-      color: #cfe3ff; padding: 7px 14px 7px 10px; border-radius: 999px;
-      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.18);
-      backdrop-filter: blur(6px);
+    #gown-canvas { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s ease; cursor: grab; touch-action: pan-y; }
+    .is-dragging #gown-canvas { cursor: grabbing; }
+    .stage-live #gown-canvas { opacity: 1; }
+    .stage-live .poster { opacity: 0; }
+    .stage-sticky::after {
+      content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background:
+        radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0, 0, 0, .55) 100%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
-    .eyebrow::before { content:""; width: 8px; height: 8px; border-radius: 50%; background: var(--glow-mint); box-shadow: 0 0 12px var(--glow-mint); }
-    .hero h1 { margin: 20px 0 18px; line-height: 1.25; font-size: clamp(32px, 4.6vw, 56px); word-break: auto-phrase; letter-spacing: -.01em; font-weight: 800; }
-    .nw { white-space: nowrap; }
-    .hero h1 .grad {
-      background: linear-gradient(100deg, #9fd0ff 0%, var(--glow-cyan) 45%, var(--glow-mint) 100%);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
+    .stage-meta {
+      position: absolute; left: 0; right: 0; bottom: 28px; z-index: 3; width: var(--wrap); margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--on-ink-muted); pointer-events: none;
     }
-    .hero .lead { color: rgba(226,236,255,.84); max-width: 34em; }
-    .cta { display:flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
-    .hero .btn.primary {
-      background: linear-gradient(135deg, #1a7dff, #0058c7); border-color: transparent;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset, 0 12px 30px -8px rgba(26,125,255,.7);
+    .live { display: inline-flex; align-items: center; gap: 10px; }
+    .live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #e0574f; animation: live 2s infinite; }
+    .no-webgl .live, .no-webgl .drag { visibility: hidden; }
+    #stage-loader { --load: 0; width: 120px; height: 1px; background: rgba(239, 233, 220, .2); position: relative; transition: opacity .6s; }
+    #stage-loader::after { content: ""; position: absolute; inset: 0; background: var(--gold-lt); transform: scaleX(var(--load)); transform-origin: left; transition: transform .2s; }
+    .stage-live #stage-loader, .no-webgl #stage-loader { opacity: 0; }
+
+    .chapters { position: relative; z-index: 3; margin-top: -100svh; pointer-events: none; }
+    .chapter { min-height: 100svh; display: flex; align-items: center; padding: 110px 0 90px; }
+    .chapter .wrap { display: flex; }
+    .chapter.right .wrap { justify-content: flex-end; }
+    .copy { max-width: 420px; pointer-events: auto; }
+    .hero-copy { max-width: 720px; }
+    .eyebrow { font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: var(--gold-lt); margin: 0 0 30px; }
+    .hero h1 { font-family: var(--mincho); font-weight: 500; margin: 0 0 32px; font-size: clamp(38px, 5.6vw, 88px); line-height: 1.16; letter-spacing: .02em; }
+    .line { display: block; overflow: hidden; padding-bottom: .08em; white-space: nowrap; }
+    .line > span { display: block; animation: rise 1.5s var(--ease) .2s both; }
+    .line:nth-child(2) > span { animation-delay: .36s; }
+    .hero-copy > p:not(.eyebrow) { color: var(--on-ink-muted); max-width: 32em; margin: 0; animation: fade 1.4s ease .7s both; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 40px; animation: fade 1.4s ease .9s both; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 26px; border-radius: 999px;
+      border: 1px solid var(--gold-lt); text-decoration: none; font-size: 15px; letter-spacing: .06em; position: relative; overflow: hidden; isolation: isolate;
+      transition: color .45s var(--ease);
     }
-    .hero .btn.ghost { background: rgba(255,255,255,.06); color: #fff; border-color: rgba(255,255,255,.3); }
-    .hero .btn.ghost:hover { background: rgba(255,255,255,.12); }
-    .trust { display:flex; gap: 22px; flex-wrap: wrap; margin-top: 30px; font-size: 14px; color: rgba(226,236,255,.7); }
-    .trust b { display:block; font-size: 22px; color: #fff; line-height: 1.3; }
+    .pill::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--gold-lt); transform: translateY(101%); transition: transform .5s var(--ease); }
+    .pill:hover { color: var(--ink); }
+    .pill:hover::before { transform: none; }
+    .pill.solid { background: var(--gold-lt); color: var(--ink); }
+    .pill.solid::before { background: var(--on-ink); }
+    .pill .arr { transition: transform .45s var(--ease); }
+    .pill:hover .arr { transform: translateX(4px); }
+    .pill.ghost { border-color: rgba(239, 233, 220, .35); }
 
-    /* Hero stage: layered glass UI composition */
-    .stage { position: relative; aspect-ratio: 1 / .86; perspective: 1400px; }
-    .stage-inner { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
-    .glass {
-      position: absolute; border-radius: 18px; padding: 16px 18px;
-      background: linear-gradient(160deg, rgba(255,255,255,.14), rgba(255,255,255,.04));
-      border: 1px solid rgba(255,255,255,.2);
-      box-shadow: 0 30px 60px -20px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.18);
-      backdrop-filter: blur(18px) saturate(1.3);
-      -webkit-backdrop-filter: blur(18px) saturate(1.3);
-      color: #eef4ff;
+    .ch-num { font-family: var(--display); font-style: italic; font-weight: 300; font-size: 96px; line-height: .9; color: var(--gold-lt); margin: 0; font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1; }
+    .ch-tag { font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--on-ink-muted); margin: 14px 0 26px; }
+    .chapter h2 { font-family: var(--mincho); font-weight: 500; font-size: clamp(30px, 3.3vw, 46px); line-height: 1.42; margin: 0 0 22px; letter-spacing: .02em; }
+    .chapter .copy > p { color: var(--on-ink-muted); margin: 0; }
+    .chapter .copy > .hint { margin-top: 18px; font-size: 13px; letter-spacing: .06em; }
+
+    .swatches { display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
+    .swatch {
+      width: 46px; height: 46px; border-radius: 50%; cursor: pointer; padding: 0;
+      border: 1px solid rgba(239, 233, 220, .4); background: var(--c); position: relative;
+      transition: transform .35s var(--ease);
     }
-    .glass h3 { margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .08em; color: rgba(226,236,255,.72); text-transform: uppercase; }
-    .g-chart { left: 0; top: 9%; width: 70%; transform: translateZ(0); }
-    .g-kpi { right: 0; top: 0; width: 36%; transform: translateZ(70px); animation: bob 7s ease-in-out infinite; }
-    .g-flow { left: 4%; bottom: 0; width: 58%; transform: translateZ(50px); animation: bob 8s ease-in-out infinite reverse; }
-    .g-score { right: 2%; bottom: 8%; width: 36%; transform: translateZ(90px); animation: bob 9s ease-in-out -2s infinite; }
-    .legend { display:flex; gap: 14px; margin-top: 6px; font-size: 12px; color: rgba(226,236,255,.75); }
-    .legend i { display:inline-block; width: 14px; height: 3px; border-radius: 3px; vertical-align: middle; margin-right: 5px; }
-    .chart svg { width: 100%; height: auto; margin-top: 8px; overflow: visible; }
-    .draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.4s cubic-bezier(.6,.1,.2,1) .4s forwards; }
-    .fade-area { opacity: 0; animation: fadeIn 1.4s ease 1.6s forwards; }
-    .pulse-dot { animation: ping 2s ease-out 2.6s infinite; transform-box: fill-box; transform-origin: center; }
-    .kpi-val { font-size: 38px; font-weight: 800; line-height: 1.1; margin-top: 6px; letter-spacing: -.02em;
-      background: linear-gradient(100deg, #fff, var(--glow-mint)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .kpi-sub { font-size: 12px; color: rgba(226,236,255,.7); }
-    .bars { display:flex; align-items:flex-end; gap: 5px; height: 42px; margin-top: 10px; }
-    .bars span { flex: 1; border-radius: 4px 4px 2px 2px; background: linear-gradient(180deg, var(--glow-cyan), rgba(61,155,255,.35)); transform-origin: bottom; animation: rise 1s cubic-bezier(.2,.8,.2,1) both; }
-    .flow-steps { display:grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
-    .flow-step { font-size: 12px; text-align: center; padding: 6px 4px; border-radius: 10px; color: rgba(226,236,255,.7);
-      border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.04); transition: all .45s ease; }
-    .flow-step.active { color: #fff; border-color: rgba(69,212,245,.8); background: rgba(69,212,245,.18); box-shadow: 0 0 18px -4px rgba(69,212,245,.8); }
-    .flow-step.done { color: #d8fff0; border-color: rgba(69,224,173,.45); }
-    .flow-label { font-size: 14px; font-weight: 700; margin-top: 10px; min-height: 1.6em; }
-    .flow-track { height: 4px; border-radius: 4px; background: rgba(255,255,255,.14); margin-top: 8px; overflow: hidden; }
-    .flow-track span { display:block; height: 100%; width: 25%; border-radius: 4px; background: linear-gradient(90deg, var(--glow-blue), var(--glow-mint)); transition: width .8s cubic-bezier(.2,.8,.2,1); }
-    .rings { display:flex; gap: 10px; justify-content: space-between; margin-top: 8px; }
-    .ring { position: relative; width: 64px; text-align: center; font-size: 11px; color: rgba(226,236,255,.75); }
-    .ring svg { width: 64px; height: 64px; transform: rotate(-90deg); }
-    .ring b { position: absolute; left: 0; right: 0; top: 20px; font-size: 18px; color: #fff; }
-    .ring .arc { stroke-dasharray: 100; stroke-dashoffset: 100; animation: ring 1.8s cubic-bezier(.2,.8,.2,1) 1s forwards; }
-    .stage-note { position: absolute; right: 0; bottom: -30px; font-size: 12px; color: rgba(226,236,255,.55); }
+    .swatch::after { content: ""; position: absolute; inset: -7px; border-radius: 50%; border: 1px solid var(--gold-lt); opacity: 0; transform: scale(.8); transition: opacity .3s, transform .4s var(--ease); }
+    .swatch:hover { transform: translateY(-2px); }
+    .swatch[aria-pressed="true"]::after { opacity: 1; transform: none; }
+    .chapter .copy > .colorway-name { margin-top: 18px; font-family: var(--display); font-style: italic; font-size: 22px; color: var(--on-ink); min-height: 1.5em; }
+    .no-webgl .swatches, .no-webgl .colorway-name, .no-webgl .hint { display: none; }
+    .chapter .copy > .webgl-note { display: none; font-size: 14px; margin-top: 18px; }
+    .no-webgl .chapter .copy > .webgl-note { display: block; }
 
-    /* ---------- Sections ---------- */
-    .card { background: var(--panel); border: var(--border-w) solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease; }
-    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: color-mix(in srgb, var(--accent) 28%, var(--border)); }
-    .card h3 { margin: 12px 0 6px; font-size: 21px; line-height: 1.45; }
-    .card p { margin: 0; }
-    .lead { color: var(--muted); }
+    /* ---------------- Paper sections ---------------- */
+    .paper { background: var(--paper); color: var(--text); position: relative; z-index: 1; }
+    .sec { padding: clamp(96px, 16vh, 180px) 0; }
+    .sec-head { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px; margin-bottom: 56px; border-bottom: 1px solid currentColor; padding-bottom: 20px; }
+    .sec-head h2 { margin: 0; font-family: var(--display); font-weight: 300; font-size: clamp(60px, 9.5vw, 150px); line-height: .88; letter-spacing: -.04em; font-variation-settings: "opsz" 144, "SOFT" 30; }
+    .sec-head h2 em { color: var(--gold); }
+    .sec-head p { margin: 0; font-family: var(--mincho); font-size: 18px; text-align: right; }
 
-    section { padding: 36px 0; }
-    main > section:first-child { padding-top: 56px; }
-    .kicker { font-size: 13px; font-weight: 800; letter-spacing: .14em; color: var(--accent); text-transform: uppercase; }
-    h2 { margin: 4px 0 12px; font-size: clamp(26px, 4vw, 38px); line-height: 1.35; letter-spacing: -.005em; }
-    .sub { margin: 0 0 20px; color: var(--muted); font-size: 18px; }
+    .statement p#statement {
+      font-family: var(--mincho); font-weight: 500; margin: 0;
+      font-size: clamp(26px, 3.3vw, 50px); line-height: 1.75; letter-spacing: .03em; max-width: 21em;
+    }
+    .statement .seg { opacity: .14; transition: opacity .5s ease; }
+    .statement .seg.on { opacity: 1; }
+    .statement .sig { margin: 48px 0 0; font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: var(--muted); }
 
-    .grid-3 { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+    .rows { list-style: none; margin: 0; padding: 0; }
+    .row {
+      display: grid; grid-template-columns: 120px 1fr 1.25fr; gap: 32px; padding: 44px 0; border-bottom: 1px solid var(--line);
+      transition: background-color .5s ease, padding .5s var(--ease);
+    }
+    .row:hover { background: var(--paper-2); padding-left: 20px; padding-right: 20px; }
+    .row .n { font-family: var(--display); font-style: italic; font-weight: 300; font-size: 60px; line-height: 1; color: var(--gold); font-variation-settings: "opsz" 144, "SOFT" 100; }
+    .row h3 { margin: 0; font-family: var(--mincho); font-weight: 500; font-size: clamp(24px, 2.4vw, 34px); line-height: 1.45; }
+    .row h3 small { display: block; font-family: var(--display); font-style: italic; font-weight: 400; font-size: 18px; color: var(--muted); margin-top: 6px; }
+    .row p { margin: 0; color: var(--muted); }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
+    .tags li { font-size: 12px; letter-spacing: .06em; border: 1px solid var(--line); border-radius: 999px; padding: 2px 12px; color: var(--muted); }
 
-    .ico { width: 46px; height: 46px; padding: 11px; border-radius: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
-    .card:hover .ico { transform: translateY(-2px) rotate(-4deg) scale(1.05); }
-    .pain .ico { color: var(--warn); background: #fff3e0; }
-    .solve .ico { color: var(--accent); background: var(--accent-soft); }
-    .effect .ico { color: var(--ok); background: #e3f6ee; }
-    .pain { border-top: 4px solid var(--warn); }
-    .solve { border-top: 4px solid var(--accent); }
-    .effect { border-top: 4px solid var(--ok); }
+    .proof { background: var(--ink); color: var(--on-ink); }
+    .proof .sec-head { border-color: rgba(239, 233, 220, .4); }
+    .proof .sec-head h2 em { color: var(--gold-lt); }
+    .facts { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .fact { padding: 8px 28px 0; border-left: 1px solid rgba(239, 233, 220, .18); }
+    .fact:first-child { border-left: 0; padding-left: 0; }
+    .fact b { display: block; font-family: var(--display); font-weight: 300; font-size: clamp(60px, 6.6vw, 108px); line-height: 1; letter-spacing: -.035em; font-variation-settings: "opsz" 144; }
+    .fact b i { font-size: .4em; color: var(--gold-lt); margin-left: 4px; letter-spacing: 0; }
+    .fact span { display: block; margin-top: 18px; color: var(--on-ink-muted); font-size: 15px; }
+    .proof-note { margin: 64px 0 0; color: var(--on-ink-muted); font-size: 14px; max-width: 46em; }
 
-    /* Metrics bento */
-    .metrics { margin-top: -40px; position: relative; z-index: 2; }
-    .metrics .card { padding: 26px 28px; }
-    .metrics-head { display:flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 14px; }
-    .metrics-head h2 { font-size: 24px; margin: 0; }
-    .metrics-head .sub { margin: 0; font-size: 16px; }
-    .metric { padding: 16px 18px; border-radius: 14px; background: linear-gradient(180deg, #f6faff, #fff); border: 1px solid var(--border); }
-    .metric b { font-size: 44px; color: var(--ok); display:block; line-height: 1.15; letter-spacing: -.02em; }
-    .metric b::after { content: "%"; font-size: .5em; margin-left: 2px; }
-    .metric span { color: var(--muted); font-size: 16px; }
-    .meter { height: 6px; border-radius: 6px; background: #e4ecf7; margin-top: 10px; overflow: hidden; }
-    .meter i { display:block; height: 100%; width: 0; border-radius: 6px; background: linear-gradient(90deg, var(--accent), var(--ok)); transition: width 1.4s cubic-bezier(.2,.8,.2,1); }
+    .works .row { grid-template-columns: 120px 1fr auto; align-items: baseline; }
+    .works .result { font-family: var(--display); font-size: clamp(28px, 3.2vw, 48px); font-weight: 300; letter-spacing: -.02em; white-space: nowrap; }
+    .works .cat { display: block; font-family: var(--sans); font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
 
-    .flow { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; counter-reset: step; }
-    .flow .card { position:relative; }
-    .flow .card::before {
-      content: attr(data-step); position:absolute; top:22px; right:22px; font-size: 13px; font-weight: 800; letter-spacing: .1em; color: var(--accent);
+    .faq details { border-bottom: 1px solid var(--line); }
+    .faq details:first-of-type { border-top: 1px solid var(--line); }
+    .faq summary {
+      list-style: none; cursor: pointer; padding: 30px 56px 30px 0; position: relative;
+      font-family: var(--mincho); font-weight: 500; font-size: clamp(20px, 2vw, 26px); line-height: 1.5;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after, .faq summary::before { content: ""; position: absolute; right: 8px; top: 50%; width: 20px; height: 1px; background: currentColor; transition: transform .45s var(--ease); }
+    .faq summary::before { transform: rotate(90deg); }
+    .faq details[open] summary::before { transform: rotate(0); }
+    .faq details p { margin: 0 0 32px; color: var(--muted); max-width: 44em; }
+    .faq details::details-content { block-size: 0; overflow: hidden; transition: block-size .45s var(--ease), content-visibility .45s allow-discrete; }
+    .faq details[open]::details-content { block-size: auto; }
+
+    .contact { background: var(--ink); color: var(--on-ink); padding: clamp(110px, 20vh, 220px) 0 48px; overflow: hidden; }
+    .contact h2 { margin: 0; font-family: var(--display); font-weight: 300; font-size: clamp(64px, 12.5vw, 220px); line-height: .9; letter-spacing: -.045em; font-variation-settings: "opsz" 144, "SOFT" 50; }
+    .contact h2 em { color: var(--gold-lt); font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1; }
+    .contact-row { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-top: 64px; flex-wrap: wrap; }
+    .contact-row p { margin: 0; font-family: var(--mincho); font-size: clamp(18px, 1.8vw, 24px); max-width: 24em; }
+    .foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 120px; padding-top: 24px; border-top: 1px solid rgba(239, 233, 220, .2); font-size: 13px; color: var(--on-ink-muted); }
+
+    @supports (animation-timeline: view()) {
+      .chapter:not(.hero) .copy { animation: chapter linear both; animation-timeline: view(); animation-range: cover 5% cover 95%; }
+      .chapter.hero .copy { animation: chapter-out linear both; animation-timeline: view(); animation-range: exit 10% exit 60%; }
+      .reveal { animation: enter linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
     }
 
-    /* Projects */
-    .project { cursor: pointer; padding: 14px 14px 20px; }
-    .project .thumb { border-radius: 12px; overflow: hidden; aspect-ratio: 16 / 10; margin-bottom: 4px; }
-    .project .thumb svg { width: 100%; height: 100%; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
-    .project:hover .thumb svg { transform: scale(1.04); }
-    .project h3, .project .sub { padding: 0 6px; }
-    .project .sub { margin: 0; font-size: 16px; }
-    .chips { display:flex; gap:8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .chip { border: var(--border-w) solid var(--border); background: #fff; color: var(--muted); border-radius: 999px; padding: 10px 16px; cursor:pointer; min-height: 48px; font: inherit; font-size: 16px; font-weight: 700; transition: transform .2s ease, border-color .2s ease, background-color .2s ease; }
-    .chip:hover { transform: translateY(-1px); }
-    .chip.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+    /* ---------------- High contrast ---------------- */
+    body.hc { --on-ink: #fff; --on-ink-muted: #fff; --gold-lt: #fff; --gold: #000; --muted: #000; --text: #000; --paper: #fff; --paper-2: #eee; --line: #000; --ink: #000; }
+    body.hc .bigword, body.hc .stage-sticky::after, body.hc .stage-sticky::before { display: none; }
+    body.hc .statement .seg { opacity: 1; }
+    body.hc .copy { background: #000; }
+    body.hc .site-header.on-paper { background: #fff; }
+    body.hc .tool[aria-pressed="true"] { background: transparent; color: inherit; border: 3px solid currentColor; }
 
-    .faq-item + .faq-item { margin-top: 10px; }
-    .faq-q { width:100%; text-align:left; background:#fff; border: var(--border-w) solid var(--border); border-radius:14px; padding: 18px 20px; font: inherit; font-size: 20px; font-weight: 700; color: var(--text); cursor:pointer; transition: border-color .2s ease, background-color .2s ease; display:flex; justify-content: space-between; gap: 12px; }
-    .faq-q::after { content: "+"; color: var(--accent); font-weight: 400; font-size: 26px; line-height: 1; transition: transform .25s ease; }
-    .faq-item.open .faq-q::after { transform: rotate(45deg); }
-    .faq-item.open .faq-q { border-color: var(--accent); background: color-mix(in srgb, var(--accent-soft) 60%, #fff); }
-    .faq-a { display:none; padding: 12px 20px 8px; color: var(--muted); font-size: 18px; }
-    .faq-item.open .faq-a { display:block; }
+    @keyframes rise { from { transform: translateY(108%); } }
+    @keyframes fade { from { opacity: 0; transform: translateY(14px); } }
+    @keyframes chapter { 0% { opacity: 0; transform: translateY(48px); } 30%, 70% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-48px); } }
+    @keyframes chapter-out { to { opacity: 0; transform: translateY(-48px); } }
+    @keyframes enter { from { opacity: 0; transform: translateY(48px); } }
+    @keyframes live { 0% { box-shadow: 0 0 0 0 rgba(224, 87, 79, .6); } 70%, 100% { box-shadow: 0 0 0 7px rgba(224, 87, 79, 0); } }
 
-    .contact {
-      display:flex; justify-content: space-between; gap: 20px; align-items: center; padding: 36px;
-      color: #eef4ff; border: 0; position: relative; overflow: hidden; isolation: isolate;
-      background: radial-gradient(80% 140% at 100% 0%, rgba(61,155,255,.55), transparent 60%),
-                  radial-gradient(60% 120% at 0% 100%, rgba(69,224,173,.3), transparent 60%), var(--ink);
-    }
-    .contact::before {
-      content:""; position:absolute; inset: -40%; z-index: -1; opacity: .35;
-      background: conic-gradient(from var(--spin), transparent 0 70%, rgba(69,212,245,.6) 80%, transparent 90%);
-      animation: spin 14s linear infinite;
-    }
-    .contact .sub { color: rgba(226,236,255,.8); }
-    .contact .btn.primary { background: #fff; color: var(--ink); border-color: #fff; flex-shrink: 0; }
-    .contact:hover { transform: none; }
-
-    footer { padding: 24px 0 44px; color: var(--muted); }
-
-    .modal { position: fixed; inset: 0; background: rgba(7,13,28,.6); display:none; place-items:center; z-index:2000; backdrop-filter: blur(6px); }
-    .modal.open { display:grid; }
-    .modal-panel { width:min(760px,calc(100% - 24px)); max-height: calc(100vh - 32px); overflow: auto; background:#fff; border-radius: 18px; border: var(--border-w) solid var(--border); padding:18px; transform: translateY(16px) scale(.98); opacity: 0; transition: transform .28s ease, opacity .28s ease; }
-    .modal.open .modal-panel { transform: translateY(0) scale(1); opacity: 1; }
-    .modal-art { border-radius: 12px; overflow: hidden; aspect-ratio: 16 / 9; margin: 12px 0 8px; }
-    .modal-art svg { width: 100%; height: 100%; }
-
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
-    .reveal.in { opacity: 1; transform: translateY(0); }
-    .reveal .card { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .28s ease, border-color .28s ease; }
-    .reveal.in .card { opacity: 1; transform: none; }
-    .reveal.in .card:hover { transform: translateY(-3px); }
-    .reveal.in .grid-3 > .card:nth-child(2), .reveal.in .flow > .card:nth-child(2) { transition-delay: .08s, .08s, 0s, 0s; }
-    .reveal.in .grid-3 > .card:nth-child(3), .reveal.in .flow > .card:nth-child(3) { transition-delay: .16s, .16s, 0s, 0s; }
-
-    ::view-transition-group(*) { animation-duration: .38s; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
-
-    /* High contrast: flatten decorative layers */
-    body.hc header, body.hc header.on-dark { background: #fff; color: #000; }
-    body.hc header.on-dark .links a, body.hc header.on-dark .tool-btn { color: #000; background: #fff; border-color: #222; }
-    body.hc .hero, body.hc .contact { background: #000; color: #fff; }
-    body.hc #hero-canvas, body.hc .hero::after, body.hc .contact::before { display: none; }
-    body.hc .hero::before { background: none; }
-    body.hc .hero h1 .grad, body.hc .kpi-val { background: none; color: #fff; }
-    body.hc .hero .lead, body.hc .contact .sub { color: #fff; }
-    body.hc .glass { background: #000; border: 2px solid #fff; backdrop-filter: none; }
-
-    @keyframes grow { to { transform: scaleX(1); } }
-    @keyframes bob { 0%,100% { translate: 0 0; } 50% { translate: 0 -10px; } }
-    @keyframes draw { to { stroke-dashoffset: 0; } }
-    @keyframes fadeIn { to { opacity: 1; } }
-    @keyframes ping { 0% { r: 5; opacity: .9; } 100% { r: 16; opacity: 0; } }
-    @keyframes rise { from { transform: scaleY(0); } }
-    @keyframes ring { to { stroke-dashoffset: var(--off); } }
-    @keyframes spin { to { --spin: 360deg; } }
-
-    @media (max-width: 1100px) {
-      .links { display: none; }
-    }
     @media (max-width: 1000px) {
-      .hero-grid, .flow { grid-template-columns: 1fr; }
-      .hero { padding-bottom: 96px; }
-      .hero::before { background: linear-gradient(180deg, rgba(7,13,28,.7) 0%, rgba(7,13,28,.35) 45%, rgba(7,13,28,.85) 100%); }
-      .stage { max-width: 620px; width: 100%; margin: 12px auto 0; }
-      .grid-3 { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .row, .works .row { grid-template-columns: 76px 1fr; }
+      .row > div:last-child, .works .result { grid-column: 2; }
+      .row .n { font-size: 42px; }
+      .facts { grid-template-columns: 1fr 1fr; row-gap: 48px; }
+      .fact:nth-child(3) { border-left: 0; padding-left: 0; }
     }
-    @media (max-width: 680px) {
-      .links { display:none; }
-      .grid-3 { grid-template-columns: 1fr; }
-      .contact { flex-direction: column; align-items: stretch; padding: 26px; }
-      .container { width: calc(100% - 32px); }
-      .btn, .chip { width: 100%; }
-      .nav { min-height: 76px; flex-wrap: nowrap; }
-      .brand { font-size: clamp(14px, 4.4vw, 17px); white-space: nowrap; min-width: 0; gap: 8px; }
-      .ui-tools { flex-wrap: nowrap; }
-      .ui-tools .tool-btn { padding: 8px; }
-      .tb-ic { display: inline; }
-      .tb-tx { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-      .eyebrow { font-size: 12px; letter-spacing: .04em; }
-      .trust { display: grid; grid-template-columns: repeat(3, auto); gap: 12px; font-size: 12px; }
-      .trust b { font-size: 17px; }
-      .g-flow { order: 3; }
-      /* stage becomes a stacked card layout on phones */
-      .stage { aspect-ratio: auto; display: grid; gap: 12px; perspective: none; }
-      .stage-inner { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; transform: none !important; }
-      .glass { position: static; width: auto !important; transform: none !important; animation: none; }
-      .g-chart, .g-flow { grid-column: 1 / -1; }
-      .stage-note { position: static; text-align: right; }
-      .ring svg { width: 52px; height: 52px; }
-      .ring b { top: 15px; font-size: 16px; }
-      .ring { width: 52px; }
+    @media (max-width: 900px) {
+      .menu { display: none; }
+      .stage-sticky { --gx: 50% !important; }
+      .chapter { align-items: flex-end; padding: 0 0 76px; }
+      .chapter .wrap, .chapter.right .wrap { justify-content: flex-start; }
+      .copy, .hero-copy { max-width: none; width: 100%; padding-top: 56px; position: relative; }
+      .copy::before { content: ""; position: absolute; z-index: -1; top: 0; bottom: -76px; left: -20px; right: -20px; top: -64px; background: linear-gradient(180deg, rgba(12, 14, 13, 0), rgba(12, 14, 13, .55) 56px, rgba(12, 14, 13, .9) 130px, rgba(12, 14, 13, .94)); }
+      .poster { transform: translate(-50%, -17%) scale(.76); }
+      .hero h1 { margin-bottom: 20px; }
+      .hero-actions { margin-top: 28px; }
+      .ch-num { font-size: 60px; }
+      .stage-meta { top: 76px; bottom: auto; }
+      .stage-meta .live, .stage-meta .drag { display: none; }
+    }
+    @media (max-width: 640px) {
+      :root { --wrap: calc(100% - 40px); }
+      .nav { height: 64px; gap: 12px; }
+      .wordmark { font-size: 20px; }
+      .wordmark b { display: none; }
+      .sec-head { grid-template-columns: 1fr; margin-bottom: 36px; }
+      .sec-head p { text-align: left; }
+      .row, .works .row { grid-template-columns: 1fr; gap: 8px; padding: 32px 0; }
+      .row > div:last-child, .works .result { grid-column: 1; }
+      .row:hover { padding-left: 0; padding-right: 0; background: none; }
+      .facts { grid-template-columns: 1fr; row-gap: 0; }
+      .fact, .fact:nth-child(3) { border-left: 0; padding: 24px 0; border-bottom: 1px solid rgba(239, 233, 220, .18); }
+      .hero-actions .pill { flex: 1 1 100%; justify-content: center; }
     }
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation: none !important; transition: none !important; }
       html { scroll-behavior: auto; }
-      .reveal, .reveal .card { opacity: 1; transform: none; }
-      .draw, .ring .arc { stroke-dashoffset: 0; }
-      .ring .arc { stroke-dashoffset: var(--off); }
-      .fade-area { opacity: 1; }
-      .scroll-progress { display: none; }
+      *, *::before, *::after { animation: none !important; transition-duration: 0s !important; }
+      .statement .seg { opacity: 1; }
     }
   </style>
+  <script type="module" src="assets/js/stage.js"></script>
 </head>
 <body>
   <a href="#main" class="skip">本文へスキップ</a>
-  <div class="scroll-progress" aria-hidden="true"></div>
 
-  <svg class="sprite" aria-hidden="true" focusable="false">
-    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21M8.5 11h5"/></symbol>
-    <symbol id="i-cursor" viewBox="0 0 24 24"><path d="M5 3l14 7-6.2 1.8L11 18z"/><path d="M13 12l5 5"/></symbol>
-    <symbol id="i-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.4 2.3c-.6.3-.9.8-.9 1.4v.6"/><path d="M12 17h.01"/></symbol>
-    <symbol id="i-type" viewBox="0 0 24 24"><path d="M4 7V5h16v2M12 5v14M9 19h6"/></symbol>
-    <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h5a3 3 0 0 0 0-6h-2a3 3 0 0 1 0-6h5"/></symbol>
-    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 20h18M7 16v-4M12 16V8M17 16V5"/></symbol>
-    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
-    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
-    <symbol id="i-a11y" viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1.8"/><path d="M4 8.5l8 1.5 8-1.5M12 10v5M9 21l3-6 3 6"/></symbol>
-  </svg>
-
-  <header id="header" class="on-dark">
-    <div class="container nav">
-      <a href="#hero" class="brand"><span class="brand-mark" aria-hidden="true"></span>Taro Yamada Studio</a>
-      <nav class="links" aria-label="セクションメニュー">
-        <a href="#why">なぜ改善が必要か</a>
-        <a href="#solution">どう解決するか</a>
-        <a href="#projects">実績</a>
+  <header class="site-header" id="header">
+    <div class="nav">
+      <a href="#top" class="wordmark">Taro Yamada<b>Studio</b></a>
+      <nav class="menu" aria-label="メインメニュー">
+        <a href="#craft">Craft</a>
+        <a href="#works">Works</a>
         <a href="#faq">FAQ</a>
-        <a href="#contact">相談</a>
+        <a href="#contact">Contact</a>
       </nav>
-      <div class="ui-tools" aria-label="表示補助">
-        <button class="tool-btn" id="fontBtn" aria-pressed="false"><span class="tb-ic" aria-hidden="true">A+</span><span class="tb-tx">文字を大きく</span></button>
-        <button class="tool-btn" id="contrastBtn" aria-pressed="false"><span class="tb-ic" aria-hidden="true">◐</span><span class="tb-tx">高コントラスト</span></button>
+      <div class="tools" role="group" aria-label="表示の調整">
+        <button class="tool" id="fontBtn" aria-pressed="false" title="文字を大きく"><span aria-hidden="true">A+</span><span class="vh">文字を大きく</span></button>
+        <button class="tool" id="contrastBtn" aria-pressed="false" title="高コントラスト"><span aria-hidden="true">◐</span><span class="vh">高コントラスト</span></button>
       </div>
     </div>
   </header>
 
-  <section id="hero" class="hero">
-    <canvas id="hero-canvas" aria-hidden="true"></canvas>
-    <div class="container hero-grid">
-      <div class="hero-copy">
-        <span class="eyebrow">Professional / Accessible / Conversion</span>
-        <h1>最新の表現技術で、<br><span class="grad"><span class="nw">情報を美しく、</span><span class="nw">直感的に。</span></span></h1>
-        <p class="lead">リアルタイム描画のビジュアル、データを語るグラフィック、繊細なUIアニメーション。最初の3秒で「品質が違う」と伝わるトップページを、視認性と操作性を犠牲にせず設計します。</p>
-        <div class="cta">
-          <a href="#solution" class="btn primary">解決策を見る <span class="arrow" aria-hidden="true">→</span></a>
-          <a href="#projects" class="btn ghost">最新事例を見る</a>
-        </div>
-        <div class="trust" aria-label="実績サマリー">
-          <div><b>120+</b>支援プロジェクト</div>
-          <div><b>WCAG 2.1 AA</b>準拠設計</div>
-          <div><b>LCP 2.5s</b>以内を標準に</div>
+  <main id="main">
+    <section id="stage" aria-label="3Dドレスの体験">
+      <div class="stage-sticky" id="top">
+        <p class="bigword" aria-hidden="true"><span id="bigword">Tangible</span></p>
+        <img class="poster" src="assets/img/gown-poster.webp" width="1200" height="1600" alt="" fetchpriority="high" />
+        <canvas id="gown-canvas" data-model="assets/models/gown.glb" tabindex="0" role="img"
+          aria-label="青磁色と象牙色のドレスの3Dモデル。ドラッグ、または左右の矢印キーで回転できます。"></canvas>
+        <div class="stage-meta" aria-hidden="true">
+          <span class="live">Live render in your browser</span>
+          <span class="drag">Drag to rotate</span>
+          <span id="stage-loader"></span>
         </div>
       </div>
 
-      <div class="stage" id="stage" role="img" aria-label="改善前後のCVR推移、問い合わせ増加率、進行プロセス、品質スコアをまとめたダッシュボードのイメージ">
-        <div class="stage-inner" id="stage-inner">
-          <div class="glass g-chart chart">
-            <h3>CVR 推移</h3>
-            <svg viewBox="0 0 400 190" aria-hidden="true">
-              <defs>
-                <linearGradient id="lineG" x1="0" x2="1"><stop offset="0" stop-color="#3d9bff"/><stop offset=".6" stop-color="#45d4f5"/><stop offset="1" stop-color="#45e0ad"/></linearGradient>
-                <linearGradient id="areaG" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#45d4f5" stop-opacity=".38"/><stop offset="1" stop-color="#45d4f5" stop-opacity="0"/></linearGradient>
-              </defs>
-              <g stroke="rgba(255,255,255,.1)" stroke-width="1">
-                <path d="M0 30H400M0 75H400M0 120H400M0 165H400"/>
-              </g>
-              <g fill="rgba(226,236,255,.5)" font-size="10" font-family="system-ui">
-                <text x="0" y="186">1月</text><text x="128" y="186">2月</text><text x="258" y="186">3月</text><text x="376" y="186">4月</text>
-              </g>
-              <path pathLength="1" class="draw" d="M0 128 C40 132 70 122 100 130 S160 140 200 134 S270 142 300 138 S370 146 400 144" fill="none" stroke="#ffb547" stroke-width="2.2" stroke-dasharray="4 5" opacity=".85"/>
-              <path class="fade-area" d="M0 132 C50 126 80 118 120 104 S190 88 230 72 S300 48 340 38 S385 26 400 22 V168 H0Z" fill="url(#areaG)"/>
-              <path pathLength="1" class="draw" d="M0 132 C50 126 80 118 120 104 S190 88 230 72 S300 48 340 38 S385 26 400 22" fill="none" stroke="url(#lineG)" stroke-width="3.2" stroke-linecap="round"/>
-              <circle class="fade-area" cx="400" cy="22" r="5" fill="#45e0ad"/>
-              <circle class="pulse-dot" cx="400" cy="22" r="5" fill="none" stroke="#45e0ad" stroke-width="2"/>
-            </svg>
-            <div class="legend"><span><i style="background:var(--glow-amber)"></i>施策前</span><span><i style="background:var(--glow-cyan)"></i>施策後</span></div>
-          </div>
-
-          <div class="glass g-kpi">
-            <h3>問い合わせ</h3>
-            <div class="kpi-val">+38%</div>
-            <div class="kpi-sub">初期3ヶ月・前年同期比</div>
-            <div class="bars" aria-hidden="true">
-              <span style="height:28%;animation-delay:.5s"></span><span style="height:36%;animation-delay:.58s"></span><span style="height:33%;animation-delay:.66s"></span><span style="height:48%;animation-delay:.74s"></span><span style="height:57%;animation-delay:.82s"></span><span style="height:70%;animation-delay:.9s"></span><span style="height:84%;animation-delay:.98s"></span><span style="height:100%;animation-delay:1.06s"></span>
-            </div>
-          </div>
-
-          <div class="glass g-flow">
-            <h3>Process</h3>
-            <div class="flow-steps" id="motion-steps">
-              <span class="flow-step active">課題分析</span>
-              <span class="flow-step">UX設計</span>
-              <span class="flow-step">実装</span>
-              <span class="flow-step">改善</span>
-            </div>
-            <div class="flow-label" id="motion-label" aria-live="off">現状のボトルネックを可視化</div>
-            <div class="flow-track" aria-hidden="true"><span id="flow-bar"></span></div>
-          </div>
-
-          <div class="glass g-score">
-            <h3>Quality</h3>
-            <div class="rings">
-              <div class="ring"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="3"/><circle class="arc" pathLength="100" style="--off:2" cx="18" cy="18" r="15.9" fill="none" stroke="#45e0ad" stroke-width="3" stroke-linecap="round"/></svg><b>98</b>Perf.</div>
-              <div class="ring"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="3"/><circle class="arc" pathLength="100" style="--off:0" cx="18" cy="18" r="15.9" fill="none" stroke="#45d4f5" stroke-width="3" stroke-linecap="round"/></svg><b>100</b>A11y</div>
+      <div class="chapters">
+        <div class="chapter hero left">
+          <div class="wrap">
+            <div class="copy hero-copy">
+              <p class="eyebrow">Real-time 3D &amp; Web Experience</p>
+              <h1><span class="line"><span>手触りまで、</span></span><span class="line"><span>画面の向こうへ。</span></span></h1>
+              <p>素材の光沢、刺繍の凹凸、色を変えたときの表情。店頭で手に取る体験を、そのままWebに。3D・モーション・アクセシビリティを一つの設計で仕上げるスタジオです。</p>
+              <div class="hero-actions">
+                <a class="pill solid" href="#contact">制作の相談をする <span class="arr" aria-hidden="true">→</span></a>
+                <a class="pill ghost" href="#ch-360">体験をスクロール <span class="arr" aria-hidden="true">↓</span></a>
+              </div>
             </div>
           </div>
         </div>
-        <div class="stage-note">※ 表示はイメージです</div>
+
+        <div class="chapter right" id="ch-360">
+          <div class="wrap">
+            <div class="copy">
+              <p class="ch-num">01</p>
+              <p class="ch-tag">360° — Every angle</p>
+              <h2>ぐるりと、<br>確かめられる。</h2>
+              <p>スクロールに合わせて一回転。写真を何十枚も並べる代わりに、ひとつのモデルがすべての角度に答えます。</p>
+              <p class="hint">ドラッグ／← → キーで自由に回転</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter left">
+          <div class="wrap">
+            <div class="copy">
+              <p class="ch-num">02</p>
+              <p class="ch-tag">Detail — Up close</p>
+              <h2>一針の刺繍まで、<br>寄って見る。</h2>
+              <p>スクロールするとカメラが寄り、帯の装飾や刺繍の流れを間近に。168の部位に分かれていたテクスチャを一枚にまとめ、描画命令を1回に集約して、軽さも確保しています。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter right">
+          <div class="wrap">
+            <div class="copy">
+              <p class="ch-num">03</p>
+              <p class="ch-tag">Colorway — Live dye</p>
+              <h2>その場で、<br>染め替える。</h2>
+              <p>生地の色だけを抽出し、金糸の刺繍や象牙色はそのまま。色を選ぶと、染料が流れ落ちるように上から切り替わります。</p>
+              <div class="swatches" role="group" aria-label="生地の色">
+                <button class="swatch" data-colorway="celadon" data-label="Celadon — 青磁" aria-pressed="true" style="--c:#9fb5a8"><span class="vh">青磁</span></button>
+                <button class="swatch" data-colorway="rose" data-label="Rosé — 薄紅" aria-pressed="false" style="--c:#c07f8b"><span class="vh">薄紅</span></button>
+                <button class="swatch" data-colorway="indigo" data-label="Indigo — 藍" aria-pressed="false" style="--c:#2f437f"><span class="vh">藍</span></button>
+                <button class="swatch" data-colorway="crimson" data-label="Crimson — 深緋" aria-pressed="false" style="--c:#8a1a2b"><span class="vh">深緋</span></button>
+                <button class="swatch" data-colorway="sumi" data-label="Sumi — 墨" aria-pressed="false" style="--c:#1b1d20"><span class="vh">墨</span></button>
+              </div>
+              <p class="colorway-name" id="colorway-name" aria-live="polite">Celadon — 青磁</p>
+              <p class="webgl-note">この環境では3D表示に対応していないため、静止画でご覧いただいています。</p>
+            </div>
+          </div>
+        </div>
       </div>
+    </section>
+
+    <div class="paper">
+      <section class="sec statement" aria-label="ステートメント">
+        <div class="wrap">
+          <p id="statement">見るためのWebではなく、確かめるためのWebを。光の当たり方、布の重なり、色を選び直したときの印象まで。手に取る前の迷いを、画面の中で解いていく。それが、私たちのつくる体験です。</p>
+          <p class="sig">— Taro Yamada Studio</p>
+        </div>
+      </section>
+
+      <section class="sec" id="craft">
+        <div class="wrap">
+          <div class="sec-head reveal">
+            <h2>Craft<em>.</em></h2>
+            <p>できること</p>
+          </div>
+          <ol class="rows">
+            <li class="row reveal">
+              <span class="n">01</span>
+              <h3>リアルタイム3D<small>Real-time 3D</small></h3>
+              <div>
+                <p>商品や空間を、ブラウザの中で動かせる形に。モデルの軽量化、ライティング、質感の調整まで一貫して行います。</p>
+                <ul class="tags"><li>WebGL / three.js</li><li>glTF 最適化</li><li>シェーダー</li></ul>
+              </div>
+            </li>
+            <li class="row reveal">
+              <span class="n">02</span>
+              <h3>スクロール演出<small>Motion &amp; Storytelling</small></h3>
+              <div>
+                <p>読み進める動作そのものを演出に。カメラ、文字、光を一本の流れで設計し、情報が自然に頭に入る順序をつくります。</p>
+                <ul class="tags"><li>Scroll-driven Animations</li><li>カメラ演出</li><li>タイポグラフィ</li></ul>
+              </div>
+            </li>
+            <li class="row reveal">
+              <span class="n">03</span>
+              <h3>コンフィギュレーター<small>Configurator</small></h3>
+              <div>
+                <p>色・素材・仕様の切り替えを、その場で。撮影カットを増やさずに選択肢を見せ、購入前の迷いを減らします。</p>
+                <ul class="tags"><li>カラーバリエーション</li><li>素材切替</li><li>EC連携</li></ul>
+              </div>
+            </li>
+            <li class="row reveal">
+              <span class="n">04</span>
+              <h3>誰にでも届く設計<small>Accessible by default</small></h3>
+              <div>
+                <p>演出と読みやすさは両立できます。文字拡大・高コントラスト（右上）、キーボード操作、動きを減らす設定への対応を標準で組み込みます。</p>
+                <ul class="tags"><li>WCAG 2.2 AA</li><li>prefers-reduced-motion</li><li>キーボード操作</li></ul>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="sec proof" aria-labelledby="proof-title">
+        <div class="wrap">
+          <div class="sec-head reveal">
+            <h2 id="proof-title">Proof<em>.</em></h2>
+            <p>このページ自体が、実証です。</p>
+          </div>
+          <div class="facts">
+            <div class="fact reveal"><b>47<i>k</i></b><span>ポリゴンを、ブラウザで毎フレーム描画</span></div>
+            <div class="fact reveal"><b>71<i>%</i></b><span>モデルデータを軽量化（3.9MB → 1.1MB）</span></div>
+            <div class="fact reveal"><b>168<i>→1</i></b><span>描画命令を集約（テクスチャ統合）</span></div>
+            <div class="fact reveal"><b>0</b><span>外部サーバーへの依存。フォントもライブラリも自前で配信</span></div>
+          </div>
+          <p class="proof-note reveal">3D表示に対応していない環境や、OSで「視差効果を減らす」を選んでいる場合は、静止画と動きを止めた表示に切り替わります。体験に差はあっても、情報は欠けない設計です。</p>
+        </div>
+      </section>
+
+      <section class="sec works" id="works">
+        <div class="wrap">
+          <div class="sec-head reveal">
+            <h2>Works<em>.</em></h2>
+            <p>課題と、その答え</p>
+          </div>
+          <ol class="rows">
+            <li class="row reveal">
+              <span class="n">01</span>
+              <h3>公共情報サイト再設計<span class="cat">Accessibility</span></h3>
+              <span class="result">完遂率 +31%</span>
+            </li>
+            <li class="row reveal">
+              <span class="n">02</span>
+              <h3>B2B相談導線の最適化<span class="cat">Conversion</span></h3>
+              <span class="result">CVR 1.9×</span>
+            </li>
+            <li class="row reveal">
+              <span class="n">03</span>
+              <h3>ブランドページ刷新<span class="cat">Branding</span></h3>
+              <span class="result">滞在 +47%</span>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="sec faq" id="faq">
+        <div class="wrap">
+          <div class="sec-head reveal">
+            <h2>FAQ<em>.</em></h2>
+            <p>よくある質問</p>
+          </div>
+          <details>
+            <summary>3Dを入れると、ページが重くなりませんか？</summary>
+            <p>最初に軽い静止画を表示し、3Dは裏で読み込んでから切り替えます。モデルは形状の圧縮とテクスチャの統合で軽くし、画面の外にあるときは描画を止めます。このページのドレスも同じ仕組みで動いています。</p>
+          </details>
+          <details>
+            <summary>スマートフォンや古い端末でも見られますか？</summary>
+            <p>はい。3Dに対応していない環境では静止画に、「視差効果を減らす」設定では動きを止めた表示に切り替わります。どの環境でも同じ情報に届くことを優先しています。</p>
+          </details>
+          <details>
+            <summary>既存のサイトに、一部だけ組み込めますか？</summary>
+            <p>可能です。商品ページの一枠だけ、キャンペーンページだけ、といった段階的な導入から始められます。</p>
+          </details>
+          <details>
+            <summary>3Dモデルが手元になくても依頼できますか？</summary>
+            <p>はい。CADデータや写真からの制作、生成ツールで作ったモデルのWeb向け最適化まで対応します。</p>
+          </details>
+        </div>
+      </section>
     </div>
-  </section>
 
-  <div class="container metrics reveal">
-    <div class="card">
-      <div class="metrics-head">
-        <h2>成果イメージ</h2>
-        <p class="sub">初期3ヶ月で目指す変化</p>
-      </div>
-      <div class="grid-3">
-        <div class="metric"><b data-count="38">0</b><span>問い合わせ増加</span><div class="meter"><i data-w="38"></i></div></div>
-        <div class="metric"><b data-count="52">0</b><span>離脱率改善</span><div class="meter"><i data-w="52"></i></div></div>
-        <div class="metric"><b data-count="91">0</b><span>操作完遂率</span><div class="meter"><i data-w="91"></i></div></div>
-      </div>
-    </div>
-  </div>
-
-  <main id="main" class="container">
-    <section id="why" class="reveal">
-      <div class="kicker">Problem</div>
-      <h2>なぜこの設計が良いのか（課題の見える化）</h2>
-      <p class="sub">よくある失敗を明確化し、どこでユーザーが困るのかを先に示します。</p>
-      <div class="grid-3">
-        <article class="card pain"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg><h3>文字が小さく読みにくい</h3><p>小さな文字や情報密度の高さは、読解負担を増やし途中離脱につながります。</p></article>
-        <article class="card pain"><svg class="ico" aria-hidden="true"><use href="#i-cursor"/></svg><h3>どこを押せばよいか不明</h3><p>導線が曖昧だと、目的行動（相談・問い合わせ）に進めません。</p></article>
-        <article class="card pain"><svg class="ico" aria-hidden="true"><use href="#i-question"/></svg><h3>価値が抽象的で伝わらない</h3><p>「何が解決できるか」が見えないと、信頼形成が進みません。</p></article>
-      </div>
-    </section>
-
-    <section id="solution" class="reveal">
-      <div class="kicker">Solution</div>
-      <h2>どうすれば解決できるのか（解決策の視覚化）</h2>
-      <p class="sub">課題→解決策→成果までを1画面で追える構成にしています。</p>
-      <div class="flow">
-        <article class="card solve" data-step="STEP 1"><svg class="ico" aria-hidden="true"><use href="#i-type"/></svg><h3>読みやすいUI</h3><p>初期フォント19px、行間1.85、ボタン最小48pxで押しやすさを担保。</p></article>
-        <article class="card solve" data-step="STEP 2"><svg class="ico" aria-hidden="true"><use href="#i-route"/></svg><h3>行動導線の明確化</h3><p>各セクションに明確なCTAを配置し、次アクションを迷わせません。</p></article>
-        <article class="card solve" data-step="STEP 3"><svg class="ico" aria-hidden="true"><use href="#i-chart"/></svg><h3>成果の定量可視化</h3><p>数値・事例・比較で、価値を主観でなく客観で示します。</p></article>
-      </div>
-      <div class="grid-3" style="margin-top:16px">
-        <article class="card effect"><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg><h3>理解速度の向上</h3><p>「何を提供しているか」が短時間で把握できます。</p></article>
-        <article class="card effect"><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg><h3>問い合わせ率の向上</h3><p>導線が明確なため、相談までの心理的負担が下がります。</p></article>
-        <article class="card effect"><svg class="ico" aria-hidden="true"><use href="#i-a11y"/></svg><h3>誰にとっても公平な体験</h3><p>視認性・操作性を重視し、利用環境に依存しない体験を実現します。</p></article>
-      </div>
-    </section>
-
-    <section id="projects" class="reveal">
-      <div class="kicker">Works</div>
-      <h2>実績（課題と解決の具体例）</h2>
-      <div class="chips" role="group" aria-label="実績の絞り込み">
-        <button class="chip active" data-filter="all" aria-pressed="true">すべて</button>
-        <button class="chip" data-filter="accessibility" aria-pressed="false">視認性最適化</button>
-        <button class="chip" data-filter="conversion" aria-pressed="false">CV改善</button>
-        <button class="chip" data-filter="branding" aria-pressed="false">ブランド訴求</button>
-      </div>
-      <div class="grid-3" id="projectList">
-        <article class="card project" tabindex="0" role="button" aria-label="公共情報サイト再設計の詳細を開く" data-cat="accessibility" data-title="公共情報サイト再設計" data-desc="文字サイズ調整・高コントラスト・大きなボタンで、手続き完遂率が向上。">
-          <div class="thumb">
-            <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="大きな文字とボタンで再設計された公共情報サイトのUIイメージ">
-              <defs><linearGradient id="t1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e3efff"/><stop offset="1" stop-color="#c9ddff"/></linearGradient></defs>
-              <rect width="320" height="200" fill="url(#t1)"/>
-              <circle cx="290" cy="20" r="70" fill="#005fcc" opacity=".08"/>
-              <rect x="34" y="26" width="200" height="150" rx="12" fill="#fff" stroke="#b9cff0"/>
-              <rect x="34" y="26" width="200" height="22" rx="12" fill="#10233f"/><rect x="34" y="38" width="200" height="10" fill="#10233f"/>
-              <circle cx="48" cy="37" r="3" fill="#ff7a7a"/><circle cx="58" cy="37" r="3" fill="#ffc861"/><circle cx="68" cy="37" r="3" fill="#5fd49a"/>
-              <text x="50" y="80" font-family="system-ui" font-weight="800" font-size="22" fill="#10233f">手続きガイド</text>
-              <rect x="50" y="92" width="150" height="7" rx="3.5" fill="#c6d5eb"/><rect x="50" y="105" width="118" height="7" rx="3.5" fill="#c6d5eb"/>
-              <rect x="50" y="126" width="120" height="34" rx="9" fill="#005fcc"/>
-              <text x="110" y="148" text-anchor="middle" font-family="system-ui" font-weight="700" font-size="13" fill="#fff">申請をはじめる</text>
-              <g transform="translate(246 124)">
-                <circle r="38" fill="#fff" stroke="#005fcc" stroke-width="5"/>
-                <text y="11" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="32" fill="#10233f">Aa</text>
-                <path d="M27 27 L46 46" stroke="#005fcc" stroke-width="10" stroke-linecap="round"/>
-              </g>
-              <g transform="translate(252 30)"><rect width="46" height="24" rx="12" fill="#10233f"/><circle cx="34" cy="12" r="8" fill="#fff"/></g>
-            </svg>
-          </div>
-          <h3>公共情報サイト再設計</h3><p class="sub">視認性最適化 / 完遂率 +31%</p>
-        </article>
-        <article class="card project" tabindex="0" role="button" aria-label="B2B相談導線最適化の詳細を開く" data-cat="conversion" data-title="B2B相談導線最適化" data-desc="比較表とCTA再配置で、問い合わせ率を1.9倍に改善。">
-          <div class="thumb">
-            <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="問い合わせ率が段階的に向上する棒グラフとCTAのイメージ">
-              <defs>
-                <linearGradient id="t2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#062a22"/><stop offset="1" stop-color="#0b1a33"/></linearGradient>
-                <linearGradient id="t2b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#45e0ad"/><stop offset="1" stop-color="#0b8f57" stop-opacity=".35"/></linearGradient>
-              </defs>
-              <rect width="320" height="200" fill="url(#t2)"/>
-              <g stroke="rgba(255,255,255,.08)"><path d="M30 60H290M30 100H290M30 140H290"/></g>
-              <g fill="rgba(255,255,255,.18)"><rect x="42" y="128" width="26" height="42" rx="5"/><rect x="80" y="120" width="26" height="50" rx="5"/></g>
-              <g fill="url(#t2b)"><rect x="118" y="104" width="26" height="66" rx="5"/><rect x="156" y="86" width="26" height="84" rx="5"/><rect x="194" y="62" width="26" height="108" rx="5"/><rect x="232" y="40" width="26" height="130" rx="5"/></g>
-              <path d="M55 124 L93 116 L131 98 L169 80 L207 56 L245 34" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="245" cy="34" r="5" fill="#fff"/>
-              <g transform="translate(30 22)"><rect width="92" height="30" rx="15" fill="#45e0ad"/><text x="46" y="20" text-anchor="middle" font-family="system-ui" font-weight="800" font-size="14" fill="#062a22">CVR 1.9x</text></g>
-            </svg>
-          </div>
-          <h3>B2B相談導線最適化</h3><p class="sub">CV改善 / CVR 1.9x</p>
-        </article>
-        <article class="card project" tabindex="0" role="button" aria-label="ブランドページ刷新の詳細を開く" data-cat="branding" data-title="ブランドページ刷新" data-desc="価値訴求を課題起点で再構成し、滞在時間を47%改善。">
-          <div class="thumb">
-            <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="グラデーションと大きなタイポグラフィで刷新されたブランドページのイメージ">
-              <defs>
-                <radialGradient id="t3a" cx=".75" cy=".3" r=".7"><stop offset="0" stop-color="#7b5cff"/><stop offset=".55" stop-color="#2b3fbf" stop-opacity=".6"/><stop offset="1" stop-color="#0a0f24" stop-opacity="0"/></radialGradient>
-                <radialGradient id="t3b" cx=".15" cy=".95" r=".6"><stop offset="0" stop-color="#ff7ab6" stop-opacity=".75"/><stop offset="1" stop-color="#ff7ab6" stop-opacity="0"/></radialGradient>
-                <linearGradient id="t3c" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#c9b8ff"/></linearGradient>
-              </defs>
-              <rect width="320" height="200" fill="#0a0f24"/>
-              <rect width="320" height="200" fill="url(#t3a)"/><rect width="320" height="200" fill="url(#t3b)"/>
-              <circle cx="238" cy="92" r="46" fill="none" stroke="rgba(255,255,255,.35)"/>
-              <circle cx="238" cy="92" r="70" fill="none" stroke="rgba(255,255,255,.15)"/>
-              <circle cx="238" cy="92" r="26" fill="rgba(255,255,255,.12)"/>
-              <text x="28" y="92" font-family="system-ui" font-weight="900" font-size="34" letter-spacing="-1" fill="url(#t3c)">Brand</text>
-              <text x="28" y="126" font-family="system-ui" font-weight="900" font-size="34" letter-spacing="-1" fill="url(#t3c)">Story.</text>
-              <rect x="28" y="144" width="96" height="6" rx="3" fill="rgba(255,255,255,.35)"/>
-              <rect x="28" y="158" width="64" height="6" rx="3" fill="rgba(255,255,255,.2)"/>
-            </svg>
-          </div>
-          <h3>ブランドページ刷新</h3><p class="sub">ブランド訴求 / 滞在 +47%</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="faq" class="reveal">
-      <div class="kicker">FAQ</div>
-      <h2>よくある質問</h2>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">視認性重視のデザインは本当に必要ですか？</button>
-        <div class="faq-a"><p>はい。読みやすさと操作しやすさはすべてのユーザー体験を改善し、結果的にCV向上にもつながります。</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">現状のmainだけでも改善可能ですか？</button>
-        <div class="faq-a"><p>可能です。まずはトップページ改善から着手し、必要に応じて段階的に拡張できます。</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">なぜ“課題→解決→成果”を見せるのですか？</button>
-        <div class="faq-a"><p>ユーザーの納得形成が早まり、提案の妥当性が直感的に理解されるためです。</p></div>
-      </div>
-    </section>
-
-    <section id="contact" class="reveal">
-      <div class="card contact">
-        <div>
-          <h2 style="margin:0 0 8px">現状の課題を、具体的に整理しませんか？</h2>
-          <p class="sub" style="margin:0">「今のどこが弱いか」「どう直すと成果が出るか」を、初回相談で可視化します。</p>
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <h2 id="contact-title" class="reveal">Let’s make it<br><em>tangible.</em></h2>
+        <div class="contact-row reveal">
+          <p>3Dを使うべきか迷っている段階から、ご相談ください。目的に対して最適な表現を、一緒に選びます。</p>
+          <a class="pill solid" href="mailto:hello@example.com">hello@example.com <span class="arr" aria-hidden="true">→</span></a>
         </div>
-        <a class="btn primary" href="mailto:hello@example.com">無料相談を予約する <span class="arrow" aria-hidden="true">→</span></a>
+        <div class="foot">
+          <span>© <span id="year"></span> Taro Yamada Studio</span>
+          <span>Rendered live with WebGL — three.js / glTF</span>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <div class="container">© <span id="year"></span> Taro Yamada Studio / Accessible Professional Interface</div>
-  </footer>
-
-  <div class="modal" id="modal" aria-hidden="true">
-    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="btn" id="closeModal">閉じる</button>
-      <div class="modal-art" id="modalArt"></div>
-      <h3 id="modalTitle"></h3>
-      <p id="modalDesc" class="sub"></p>
-    </div>
-  </div>
-
   <script>
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const header = document.getElementById('header');
-    const hero = document.getElementById('hero');
-    const links = document.querySelectorAll('.links a');
-    const sections = document.querySelectorAll('main section, #hero');
 
-    const onScroll = () => {
-      header.classList.toggle('scrolled', window.scrollY > 8);
-      header.classList.toggle('on-dark', window.scrollY < hero.offsetHeight - 80);
+    // header: light text over dark bands, paper style elsewhere
+    const darkZones = [...document.querySelectorAll('#stage, .proof, #contact')];
+    const updateHeader = () => {
+      const y = header.offsetHeight / 2;
+      const onDark = darkZones.some((el) => { const r = el.getBoundingClientRect(); return r.top <= y && r.bottom >= y; });
+      header.classList.toggle('on-paper', !onDark);
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    new ResizeObserver(() => {
-      document.documentElement.style.setProperty('--header-h', `${header.offsetHeight}px`);
-    }).observe(header);
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    updateHeader();
 
-    const secObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const id = entry.target.id;
-        links.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === `#${id}`));
-      });
-    }, { threshold: 0.4 });
-    sections.forEach((s) => secObserver.observe(s));
-
-    const revealObserver = new IntersectionObserver((entries, obs) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('in');
-        obs.unobserve(entry.target);
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach((target) => revealObserver.observe(target));
-
-    const countObserver = new IntersectionObserver((entries, obs) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        const target = Number(el.dataset.count || 0);
-        const meter = el.parentElement.querySelector('.meter i');
-        if (meter) meter.style.width = `${meter.dataset.w}%`;
-        if (reduceMotion.matches) { el.textContent = target; obs.unobserve(el); return; }
-        const start = performance.now();
-        const tick = (now) => {
-          const p = Math.min(1, (now - start) / 1400);
-          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-        obs.unobserve(el);
-      });
-    }, { threshold: 0.6 });
-    document.querySelectorAll('[data-count]').forEach((el) => countObserver.observe(el));
-
-    const chips = document.querySelectorAll('.chip');
-    const projects = document.querySelectorAll('.project');
-    projects.forEach((p, i) => { p.style.viewTransitionName = `project-${i}`; });
-    chips.forEach((chip) => {
-      chip.addEventListener('click', () => {
-        const apply = () => {
-          chips.forEach((c) => { c.classList.toggle('active', c === chip); c.setAttribute('aria-pressed', String(c === chip)); });
-          const filter = chip.dataset.filter;
-          projects.forEach((p) => {
-            p.style.display = (filter === 'all' || p.dataset.cat === filter) ? '' : 'none';
-          });
-        };
-        if (document.startViewTransition && !reduceMotion.matches) document.startViewTransition(apply);
-        else apply();
-      });
-    });
-
-    const modal = document.getElementById('modal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalDesc = document.getElementById('modalDesc');
-    const modalArt = document.getElementById('modalArt');
-    const closeBtn = document.getElementById('closeModal');
-    let lastFocused = null;
-    const openProjectModal = (card) => {
-      modalTitle.textContent = card.dataset.title;
-      modalDesc.textContent = card.dataset.desc;
-      const art = card.querySelector('.thumb svg').cloneNode(true);
-      // gradient ids must stay unique in the document
-      art.querySelectorAll('[id]').forEach((node) => {
-        const id = node.id;
-        node.id = `m-${id}`;
-        art.querySelectorAll('*').forEach((n) => {
-          ['fill', 'stroke'].forEach((attr) => {
-            if (n.getAttribute(attr) === `url(#${id})`) n.setAttribute(attr, `url(#m-${id})`);
-          });
-        });
-      });
-      modalArt.replaceChildren(art);
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
-      lastFocused = document.activeElement;
-      closeBtn.focus();
+    // chapter → giant outlined word behind the gown + spotlight side
+    const words = ['Tangible', 'Every angle', 'Up close', 'Colorway'];
+    const sides = ['66%', '34%', '64%', '36%'];
+    const bigword = document.getElementById('bigword');
+    const sticky = document.querySelector('.stage-sticky');
+    const chapterEls = [...document.querySelectorAll('.chapter')];
+    let current = 0, swapTimer = 0;
+    const setChapter = (i) => {
+      if (i === current || i < 0) return;
+      current = i;
+      sticky.style.setProperty('--gx', sides[i]);
+      clearTimeout(swapTimer);
+      bigword.classList.add('out');
+      swapTimer = setTimeout(() => { bigword.textContent = words[i]; bigword.classList.remove('out'); }, reduceMotion.matches ? 0 : 360);
     };
-    projects.forEach((card) => {
-      card.addEventListener('click', () => openProjectModal(card));
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          openProjectModal(card);
-        }
-      });
-    });
-    const closeModal = () => {
-      if (!modal.classList.contains('open')) return;
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden', 'true');
-      if (lastFocused) lastFocused.focus();
-    };
-    closeBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    const chapterIO = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) setChapter(chapterEls.indexOf(e.target)); });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    chapterEls.forEach((el) => chapterIO.observe(el));
 
-    document.querySelectorAll('.faq-q').forEach((q) => {
-      q.addEventListener('click', () => {
-        const item = q.parentElement;
-        const open = item.classList.toggle('open');
-        q.setAttribute('aria-expanded', String(open));
-      });
-    });
+    // statement: phrase-by-phrase reveal tied to scroll position
+    const statement = document.getElementById('statement');
+    if ('Segmenter' in Intl) {
+      const text = statement.textContent;
+      const segs = [...new Intl.Segmenter('ja', { granularity: 'word' }).segment(text)].map((s) => s.segment);
+      statement.setAttribute('aria-label', text);
+      statement.innerHTML = segs.map((s) => `<span class="seg" aria-hidden="true">${s}</span>`).join('');
+      const spans = [...statement.children];
+      const paint = () => {
+        const r = statement.getBoundingClientRect();
+        const prog = reduceMotion.matches ? 1 : Math.min(1, Math.max(0, (window.innerHeight * 0.85 - r.top) / (r.height + window.innerHeight * 0.3)));
+        const n = Math.round(prog * spans.length);
+        spans.forEach((s, i) => s.classList.toggle('on', i < n));
+      };
+      window.addEventListener('scroll', paint, { passive: true });
+      paint();
+    }
 
+    // display tools
     const fontBtn = document.getElementById('fontBtn');
     const contrastBtn = document.getElementById('contrastBtn');
-
     fontBtn.addEventListener('click', () => {
-      const large = document.body.classList.toggle('large-font');
-      document.documentElement.style.setProperty('--base-size', large ? '22px' : '19px');
+      const large = fontBtn.getAttribute('aria-pressed') !== 'true';
+      document.documentElement.style.setProperty('--base-size', large ? '20px' : '17px');
       fontBtn.setAttribute('aria-pressed', String(large));
-      fontBtn.querySelector('.tb-tx').textContent = large ? '標準サイズに戻す' : '文字を大きく';
     });
-
     contrastBtn.addEventListener('click', () => {
       const hc = document.body.classList.toggle('hc');
       contrastBtn.setAttribute('aria-pressed', String(hc));
-      contrastBtn.querySelector('.tb-tx').textContent = hc ? '標準配色に戻す' : '高コントラスト';
     });
-
-    document.querySelectorAll('.btn, .tool-btn').forEach((btn) => {
-      btn.addEventListener('pointermove', (e) => {
-        if (reduceMotion.matches) return;
-        const rect = btn.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 5;
-        const y = ((e.clientY - rect.top) / rect.height - 0.5) * 5;
-        btn.style.transform = `translate(${x}px, ${y}px)`;
-      });
-      btn.addEventListener('pointerleave', () => {
-        btn.style.transform = '';
-      });
-    });
-
-    // Hero stage: process cycle
-    const motionLabel = document.getElementById('motion-label');
-    const flowBar = document.getElementById('flow-bar');
-    const motionSteps = [...document.querySelectorAll('.flow-step')];
-    const labels = [
-      '現状のボトルネックを可視化',
-      '迷わない導線を設計',
-      '体験品質を高い精度で構築',
-      '計測しながら継続的に最適化'
-    ];
-    let stepIndex = 0;
-    const updateStep = (index) => {
-      motionSteps.forEach((s, i) => {
-        s.classList.toggle('active', i === index);
-        s.classList.toggle('done', i < index);
-      });
-      motionLabel.textContent = labels[index];
-      flowBar.style.width = `${(index + 1) * 25}%`;
-    };
-    updateStep(0);
-    if (!reduceMotion.matches) {
-      setInterval(() => {
-        if (document.hidden) return;
-        stepIndex = (stepIndex + 1) % labels.length;
-        updateStep(stepIndex);
-      }, 3200);
-    }
-
-    // Hero stage: pointer-driven depth
-    const stage = document.getElementById('stage');
-    const stageInner = document.getElementById('stage-inner');
-    const finePointer = window.matchMedia('(pointer: fine)');
-    hero.addEventListener('pointermove', (e) => {
-      if (reduceMotion.matches || !finePointer.matches) return;
-      const r = stage.getBoundingClientRect();
-      const x = (e.clientX - (r.left + r.width / 2)) / r.width;
-      const y = (e.clientY - (r.top + r.height / 2)) / r.height;
-      stageInner.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 8}deg)`;
-    });
-    hero.addEventListener('pointerleave', () => { stageInner.style.transform = ''; });
-
-    // Hero background: WebGL2 domain-warped noise field. CSS gradient stays as fallback.
-    (() => {
-      const canvas = document.getElementById('hero-canvas');
-      const gl = canvas.getContext('webgl2', { antialias: false, alpha: false, powerPreference: 'low-power' });
-      if (!gl) return;
-      const vs = `#version 300 es
-        in vec2 p; void main(){ gl_Position = vec4(p, 0., 1.); }`;
-      const fs = `#version 300 es
-        precision highp float;
-        uniform vec2 r; uniform float t; uniform vec2 m;
-        out vec4 o;
-        float h(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
-        float n(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 u = f * f * (3. - 2. * f);
-          return mix(mix(h(i), h(i + vec2(1, 0)), u.x), mix(h(i + vec2(0, 1)), h(i + 1.), u.x), u.y); }
-        float fbm(vec2 p){ float v = 0., a = .5; for (int i = 0; i < 5; i++) { v += a * n(p); p = p * 2.03 + vec2(1.7, 9.2); a *= .5; } return v; }
-        void main(){
-          vec2 uv = gl_FragCoord.xy / r;
-          vec2 p = (gl_FragCoord.xy - .5 * r) / r.y;
-          float tt = t * .045;
-          vec2 q = vec2(fbm(p * 1.3 + tt), fbm(p * 1.3 - tt + 3.1));
-          vec2 w = vec2(fbm(p * 1.7 + 2.2 * q + vec2(1.7, 9.2) + tt * 1.4), fbm(p * 1.7 + 2.2 * q + vec2(8.3, 2.8) - tt));
-          float f = fbm(p * 1.1 + 2.5 * w + (m - .5) * .35);
-          vec3 col = vec3(.027, .05, .11);
-          col = mix(col, vec3(.0, .30, .78), smoothstep(.38, .9, f));
-          col = mix(col, vec3(.27, .83, .96), smoothstep(.62, 1.05, length(w)) * .55);
-          col = mix(col, vec3(.27, .88, .68), smoothstep(.58, .92, q.y) * .32 * uv.x);
-          col += vec3(.9, .95, 1.) * pow(smoothstep(.55, 1., f), 4.) * .35;
-          col *= mix(.45, 1.05, smoothstep(.05, .8, uv.x));
-          col += (h(gl_FragCoord.xy + fract(t)) - .5) * .03;
-          o = vec4(col, 1.);
-        }`;
-      const compile = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null; };
-      const v = compile(gl.VERTEX_SHADER, vs), f = compile(gl.FRAGMENT_SHADER, fs);
-      if (!v || !f) return;
-      const prog = gl.createProgram();
-      gl.attachShader(prog, v); gl.attachShader(prog, f); gl.linkProgram(prog);
-      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
-      gl.useProgram(prog);
-      gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-      const loc = gl.getAttribLocation(prog, 'p');
-      gl.enableVertexAttribArray(loc);
-      gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-      const uR = gl.getUniformLocation(prog, 'r'), uT = gl.getUniformLocation(prog, 't'), uM = gl.getUniformLocation(prog, 'm');
-      const mouse = [0.5, 0.5], target = [0.5, 0.5];
-      hero.addEventListener('pointermove', (e) => { target[0] = e.clientX / innerWidth; target[1] = 1 - e.clientY / innerHeight; });
-
-      // render at reduced resolution; the field is soft so upscaling is invisible
-      const SCALE = 0.5;
-      const resize = () => {
-        canvas.width = Math.max(1, Math.round(canvas.clientWidth * SCALE));
-        canvas.height = Math.max(1, Math.round(canvas.clientHeight * SCALE));
-        gl.viewport(0, 0, canvas.width, canvas.height);
-      };
-      resize();
-
-      let visible = true, raf = 0;
-      const t0 = performance.now();
-      const frame = (now) => {
-        mouse[0] += (target[0] - mouse[0]) * 0.04;
-        mouse[1] += (target[1] - mouse[1]) * 0.04;
-        gl.uniform2f(uR, canvas.width, canvas.height);
-        gl.uniform1f(uT, (now - t0) / 1000 + 12);
-        gl.uniform2f(uM, mouse[0], mouse[1]);
-        gl.drawArrays(gl.TRIANGLES, 0, 3);
-        canvas.classList.add('ready');
-        raf = (visible && !document.hidden && !reduceMotion.matches) ? requestAnimationFrame(frame) : 0;
-      };
-      const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
-      new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) kick(); }).observe(hero);
-      document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
-      reduceMotion.addEventListener('change', kick);
-      new ResizeObserver(() => { resize(); kick(); }).observe(canvas);
-      kick();
-    })();
 
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
